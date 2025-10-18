@@ -2,10 +2,10 @@ from flask import Blueprint, jsonify
 
 from firebase_admin import firestore
 
-api = Blueprint("api", __name__)
+guide_bp = Blueprint("guide", __name__)
 
 
-@api.route("/guides/<string:id>/<int:day>", methods=["POST"])
+@guide_bp.route("/guides/<string:id>/<int:day>", methods=["POST"])
 def toggle_complete(id: str, day: int):
     print("Chegou aqui")
     db = firestore.client()

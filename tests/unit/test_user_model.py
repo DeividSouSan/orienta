@@ -29,8 +29,9 @@ class TestUserCreation:
             )
 
         assert (
-            error.value.message == "O nome de usuario deve ser maior que 3 caracteres."
+            error.value.message == "Ocorreu um erro de validação nos dados fornecidos."
         )
+        assert error.value.action == "Insira um username maior que 3 caracteres."
 
     def test_with_empty_email(self):
         with pytest.raises(ValidationError) as error:
@@ -39,8 +40,10 @@ class TestUserCreation:
                 email="",
                 password="123456",
             )
-
-        assert error.value.message == "O email fornecido é inválido."
+        assert (
+            error.value.message == "Ocorreu um erro de validação nos dados fornecidos."
+        )
+        assert error.value.action == "Insira um email válido."
 
     def test_with_empty_password_(self):
         with pytest.raises(ValidationError) as error:
@@ -49,8 +52,11 @@ class TestUserCreation:
                 email="empty.password@orienta.com",
                 password="",
             )
+        assert (
+            error.value.message == "Ocorreu um erro de validação nos dados fornecidos."
+        )
 
-        assert error.value.message == "A senha informada é muito curta."
+        assert error.value.action == "Insira uma senha maior que 6 caracteres."
 
     def test_with_duplicated_email(self):
         user.create(
@@ -63,14 +69,20 @@ class TestUserCreation:
                 email="valid.email@orienta.com",
                 password="123456",
             )
+        assert (
+            error.value.message == "Ocorreu um erro de validação nos dados fornecidos."
+        )
 
-        assert error.value.message == "O email informado já está sendo utilizado."
+        assert error.value.action == "O email informado já está sendo utilizado."
 
     def test_with_invalid_email(self):
         with pytest.raises(ValidationError) as error:
             user.create(username="valid.email", email="email", password="123456")
+        assert (
+            error.value.message == "Ocorreu um erro de validação nos dados fornecidos."
+        )
 
-        assert error.value.message == "O email fornecido é inválido."
+        assert error.value.action == "Insira um email válido."
 
     def test_with_short_password_(self):
         with pytest.raises(ValidationError) as error:
@@ -79,5 +91,8 @@ class TestUserCreation:
                 email="short.password@orienta.com",
                 password="12345",
             )
+        assert (
+            error.value.message == "Ocorreu um erro de validação nos dados fornecidos."
+        )
 
-        assert error.value.message == "A senha informada é muito curta."
+        assert error.value.action == "Insira uma senha maior que 6 caracteres."
