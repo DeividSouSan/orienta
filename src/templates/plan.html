@@ -1,0 +1,64 @@
+{% extends 'template.html' %}
+
+{% block title %}
+Bem-vindo ao Orienta
+{% endblock %}
+
+{% block header %}
+<!-- Cabeçalho Público -->
+{% include 'partials/private-header.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% include 'partials/messages.html' %}
+
+<!-- Conteúdo Principal -->
+<div class="flex flex-grow flex-col items-center justify-center p-4">
+    <div class="text-center mb-12 animate-fade-in">
+        <span class="text-5xl mb-4">🧭</span>
+        <h1 class="text-4xl font-semibold text-gray-900 mt-2">Bem-vindo ao Orienta</h1>
+        <p class="text-gray-600 mt-3 text-lg">Seu planejador de estudos inteligente.</p>
+        <p class="text-gray-500 mt-1">O que você gostaria de fazer hoje?</p>
+    </div>
+
+    <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Card 1: Gerar Novo Guia -->
+        <a href="/generate"
+            class="group block p-8 bg-white border border-gray-300 rounded-sm shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out animate-fade-in animation-delay-200">
+            <div class="flex flex-col items-center text-center">
+                <!-- Ícone de "Criar" ou "Faísca" -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-16 w-16 text-blue-800 group-hover:text-blue-700 transition-colors" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0m-8.486-4.242A5 5 0 0112 15a5 5 0 012.828 8.485" />
+                </svg>
+                <h2 class="text-2xl font-semibold text-gray-900 mt-6">Gerar Novo Guia</h2>
+                <p class="text-gray-600 mt-2">Crie um plano de estudos personalizado do zero, definindo seu tópico,
+                    objetivos e ritmo.</p>
+            </div>
+        </a>
+
+        <!-- Card 2: Ver Guias Gerados -->
+        <a href="/guides"
+            class="group block p-8 bg-white border border-gray-300 rounded-sm shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out animate-fade-in animation-delay-200">
+            <div class="flex flex-col items-center text-center">
+                <!-- Ícone de "Explorar" ou "Biblioteca" -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-16 w-16 text-blue-800 group-hover:text-blue-700 transition-colors" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6.253v11.494m-5.747-8.995l11.494 0M4.125 12l15.75 0" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 12a8.25 8.25 0 1116.5 0 8.25 8.25 0 01-16.5 0z" />
+                </svg>
+
+                <h2 class="text-2xl font-semibold text-gray-900 mt-6">Ver Meus Guias</h2>
+                <p class="text-gray-600 mt-2">Acesse sua biblioteca pessoal de planos de estudo, revise seu
+                    progresso e continue de onde parou.</p>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
