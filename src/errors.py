@@ -23,8 +23,8 @@ class ValidationError(Exception):
 class UnauthorizedError(Exception):
     def __init__(
         self,
-        message: str = "Usuário não autenticado.",
-        action: str = "Faça login novamente para continuar.",
+        message: str = "Você não está autorizado a acessar este recurso.",
+        action: str = "Verifique os dados e tente novamente.",
     ):
         self.name = "UnauthorizedError"
         self.message = message
@@ -32,6 +32,14 @@ class UnauthorizedError(Exception):
         self.code = 401
 
         super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
+        }
 
 
 class InternalServerError(Exception):

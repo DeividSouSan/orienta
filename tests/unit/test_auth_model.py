@@ -18,47 +18,37 @@ class TestAuthentication:
             auth.authenticate(email="wrong-mock@orienta.com", password="123456")
 
         assert error.value.name == "UnauthorizedError"
-        assert (
-            error.value.message
-            == "Dados de autenticação não conferem, email ou senha errados."
-        )
+        assert error.value.message == "Email ou senha inválidos."
+        assert error.value.action == "Verifique os dados e tente novamente."
 
     def test_with_correct_email_and_wrong_password(self):
         with pytest.raises(UnauthorizedError) as error:
             auth.authenticate(email="mock@orienta.com", password="wrong-password")
 
         assert error.value.name == "UnauthorizedError"
-        assert (
-            error.value.message
-            == "Dados de autenticação não conferem, email ou senha errados."
-        )
+        assert error.value.message == "Email ou senha inválidos."
+        assert error.value.action == "Verifique os dados e tente novamente."
 
     def test_with_empty_email_and_correct_password(self):
         with pytest.raises(UnauthorizedError) as error:
             auth.authenticate(email="", password="123456")
 
         assert error.value.name == "UnauthorizedError"
-        assert (
-            error.value.message
-            == "Dados de autenticação não conferem, email ou senha errados."
-        )
+        assert error.value.message == "Email ou senha inválidos."
+        assert error.value.action == "Verifique os dados e tente novamente."
 
     def test_with_correct_email_and_empty_password(self):
         with pytest.raises(UnauthorizedError) as error:
             auth.authenticate(email="mock@orienta.com", password="")
 
         assert error.value.name == "UnauthorizedError"
-        assert (
-            error.value.message
-            == "Dados de autenticação não conferem, email ou senha errados."
-        )
+        assert error.value.message == "Email ou senha inválidos."
+        assert error.value.action == "Verifique os dados e tente novamente."
 
     def test_with_invalid_email(self):
         with pytest.raises(UnauthorizedError) as error:
             auth.authenticate(email="mock", password="123456")
 
         assert error.value.name == "UnauthorizedError"
-        assert (
-            error.value.message
-            == "Dados de autenticação não conferem, email ou senha errados."
-        )
+        assert error.value.message == "Email ou senha inválidos."
+        assert error.value.action == "Verifique os dados e tente novamente."
