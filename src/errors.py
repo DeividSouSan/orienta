@@ -1,13 +1,23 @@
 class ValidationError(Exception):
     def __init__(
         self,
-        message: str = "Um erro de validação ocorreu.",
-        action: str = "Ajuste os dados enviados e tente novamente.",
+        message: str = "Ocorreu um erro de validação nos dados fornecidos.",
+        action: str = "Verifique os dados e tente novamente.",
     ):
         self.name = "ValidationError"
         self.message = message
         self.action = action
+        self.code = 400
+
         super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
+        }
 
 
 class UnauthorizedError(Exception):
@@ -19,6 +29,8 @@ class UnauthorizedError(Exception):
         self.name = "UnauthorizedError"
         self.message = message
         self.action = action
+        self.code = 401
+
         super().__init__(self.message)
 
 
@@ -29,7 +41,18 @@ class InternalServerError(Exception):
     ):
         self.name = "InternalServerError"
         self.message = message
+        self.action = "Tente novamente mais tarde."
+        self.code = 500
+
         super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": 400,
+        }
 
 
 class ServiceError(Exception):
@@ -41,4 +64,14 @@ class ServiceError(Exception):
         self.name = "ServiceError"
         self.message = message
         self.action = action
+        self.code = 300
+
         super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": 300,
+        }
