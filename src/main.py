@@ -6,7 +6,7 @@ from flask import (
     jsonify,
     make_response,
 )
-
+from flask_cors import CORS
 from src.errors import InternalServerError, ServiceError, ValidationError
 import src.models.firebase as firebase
 
@@ -16,6 +16,7 @@ from src.api.user import user_bp
 # App configuration
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
 
 ENV = os.getenv("ENVIRONMENT")
 
