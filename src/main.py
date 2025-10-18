@@ -7,11 +7,17 @@ from flask import (
     make_response,
 )
 from flask_cors import CORS
-from src.errors import InternalServerError, ServiceError, ValidationError
+from src.errors import (
+    InternalServerError,
+    ServiceError,
+    UnauthorizedError,
+    ValidationError,
+)
 import src.models.firebase as firebase
 
 
 from src.api.user import user_bp
+from src.api.sessions import session_bp
 
 # App configuration
 
@@ -22,6 +28,7 @@ ENV = os.getenv("ENVIRONMENT")
 
 # Register blueprints
 app.register_blueprint(user_bp, url_prefix="/api/v1")
+app.register_blueprint(session_bp, url_prefix="/api/v1")
 
 # Initialize Firebase
 firebase.initialize_app()
@@ -35,7 +42,11 @@ def handle_api_error(error: Exception) -> Response:
     print("O erro foi ", error)
     traceback.print_exc()
 
-    if isinstance(error, ValidationError) or isinstance(error, ServiceError):
+    if (
+        isinstance(error, ValidationError)
+        or isinstance(error, ServiceError)
+        or isinstance(error, UnauthorizedError)
+    ):
         return make_response(jsonify(error.toDict()), error.code)
 
     error = InternalServerError()

@@ -23,7 +23,8 @@ def authenticate(email: str, password: str) -> dict[str, any]:
 
         if error_code in KNOWN_ERRORS:
             raise UnauthorizedError(
-                "Dados de autenticação não conferem, email ou senha errados.",
+                "Email ou senha inválidos.",
+                "Verifique os dados e tente novamente.",
             ) from error
 
         raise
