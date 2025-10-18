@@ -1,11 +1,15 @@
 import requests
+from dotenv import load_dotenv
+import os
 
-API_URL = "http://orienta.local:5000/api/v1/user"
+load_dotenv()
+
+API_URL = os.getenv("API_URL") or "http://localhost:5000/api/v1/"
 
 
 def test_create_user():
     response = requests.post(
-        API_URL,
+        API_URL + "user",
         json={
             "username": "testuser",
             "email": "testuser@example.com",
@@ -22,7 +26,7 @@ def test_create_user():
 
 def test_create_user_without_username():
     response = requests.post(
-        API_URL,
+        API_URL + "user",
         json={
             "email": "testuser@example.com",
             "password": "testpassword",
@@ -41,7 +45,7 @@ def test_create_user_without_username():
 
 def test_create_user_without_email():
     response = requests.post(
-        API_URL,
+        API_URL + "user",
         json={
             "username": "testuser",
             "password": "testpassword",
@@ -60,7 +64,7 @@ def test_create_user_without_email():
 
 def test_create_user_without_password():
     response = requests.post(
-        API_URL,
+        API_URL + "user",
         json={
             "username": "testuser",
             "email": "testuser2@example.com",
@@ -79,7 +83,7 @@ def test_create_user_without_password():
 
 def test_create_user_with_duplicated_email():
     response_1 = requests.post(
-        API_URL,
+        API_URL + "user",
         json={
             "username": "testuser",
             "email": "in.use.email@example.com",
@@ -90,7 +94,7 @@ def test_create_user_with_duplicated_email():
     assert response_1.status_code == 200
 
     response_2 = requests.post(
-        API_URL,
+        API_URL + "user",
         json={
             "username": "anotheruser",
             "email": "in.use.email@example.com",  # Using the same email

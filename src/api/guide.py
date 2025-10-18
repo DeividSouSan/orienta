@@ -1,5 +1,4 @@
-import traceback
-from flask import Blueprint, Response, jsonify, request, make_response
+from flask import Blueprint, jsonify
 
 from firebase_admin import firestore
 

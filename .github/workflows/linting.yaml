@@ -1,0 +1,72 @@
+name: Run Formatter, Linting and Commit Linter
+
+on: pull_request
+
+jobs:
+  ruff-linter:
+    name: Run Ruff Check (Linter)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.3"
+
+      - name: Instala dependências
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Rodando `ruff check`
+        run: |
+          ruff check
+
+  ruff-formatter:
+    name: Run Ruff Format (Formatter)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.3"
+
+      - name: Install requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Running `ruff format` (formatter)
+        run: |
+          ruff format --check
+
+  commits-check:
+    name: Run Commitizen Check (Commitlint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.3"
+
+      - name: Install requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Running `cz check` (commitlint)
+        run: |
+          cz check --rev-range ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }}..${{ github.event.pull_request.head.sha }}
