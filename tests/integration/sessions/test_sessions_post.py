@@ -19,6 +19,7 @@ def test_create_session():
 
     assert response.json() == {
         "userId": response.json().get("userId"),
+        "username": "mock",
         "email": "mock@orienta.com",
         "sessionCookie": response.json().get("sessionCookie"),
         "sessionExpiresIn": 1209600,
