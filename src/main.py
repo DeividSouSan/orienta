@@ -6,7 +6,6 @@ from flask import (
     jsonify,
     make_response,
 )
-from flask_cors import CORS
 from src.errors import (
     InternalServerError,
     ServiceError,
@@ -22,7 +21,6 @@ from src.api.sessions import session_bp
 # App configuration
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"])
 
 ENV = os.getenv("ENVIRONMENT")
 
