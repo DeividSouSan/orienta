@@ -11,9 +11,10 @@ from src.errors import (
     ServiceError,
     UnauthorizedError,
     ValidationError,
+    MethodNotAllowed,
 )
 import src.models.firebase as firebase
-
+import werkzeug
 
 from src.api.user import user_bp
 from src.api.sessions import session_bp
@@ -74,6 +75,12 @@ firebase.initialize_app()
 
 
 # Global error handler
+
+
+@app.errorhandler(405)
+def handle_method_not_allowed(error: werkzeug.exceptions.MethodNotAllowed):
+    error = MethodNotAllowed()
+    return make_response(jsonify(error.toDict()), error.code)
 
 
 @app.errorhandler(Exception)  # type: ignore

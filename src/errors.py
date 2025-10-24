@@ -59,7 +59,7 @@ class InternalServerError(Exception):
             "name": self.name,
             "message": self.message,
             "action": self.action,
-            "code": 400,
+            "code": self.code,
         }
 
 
@@ -72,7 +72,7 @@ class ServiceError(Exception):
         self.name = "ServiceError"
         self.message = message
         self.action = action
-        self.code = 300
+        self.code = 403
 
         super().__init__(self.message)
 
@@ -81,5 +81,27 @@ class ServiceError(Exception):
             "name": self.name,
             "message": self.message,
             "action": self.action,
-            "code": 300,
+            "code": self.code,
+        }
+
+
+class MethodNotAllowed(Exception):
+    def __init__(
+        self,
+        message: str = "O método HTTP utilizado não é permitido.",
+        action: str = "Corrija o método HTTP utilizado.",
+    ):
+        self.name = "MethodNotAllowed"
+        self.message = message
+        self.action = action
+        self.code = 405
+
+        super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
         }
