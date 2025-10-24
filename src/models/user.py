@@ -31,6 +31,12 @@ def create(*, username, email, password) -> dict[str, str]:
             )
 
     def validate_password(password: str) -> None:
+        if not isinstance(password, str):
+            raise ValidationError(
+                "A senha do usuário precisa ser um texto.",
+                "Coloque aspas em torno da senha e tente novamente.",
+            )
+
         if len(password) < 6:
             raise ValidationError(
                 action="Insira uma senha maior que 6 caracteres.",

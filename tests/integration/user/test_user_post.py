@@ -108,3 +108,23 @@ def test_create_user_with_duplicated_email():
         "action": "O email informado já está sendo utilizado.",
         "code": 400,
     }
+
+
+def test_create_user_with_int_password():
+    response = requests.post(
+        API_URL + "user",
+        json={
+            "username": "testuser",
+            "email": "testuser2@example.com",
+            "password": 123456,
+        },
+    )
+
+    assert response.status_code == 400
+
+    assert response.json() == {
+        "name": "ValidationError",
+        "message": "A senha do usuário precisa ser um texto.",
+        "action": "Coloque aspas em torno da senha e tente novamente.",
+        "code": 400,
+    }
