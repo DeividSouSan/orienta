@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from src.errors import ServiceError, ValidationError
 from google import genai
-from google.genai import errors
+from google.api_core import exceptions as api_exceptions
 from pydantic import BaseModel, Field
 
 load_dotenv()
@@ -28,11 +28,15 @@ def process(user_input: dict) -> dict:
     return user_input
 
 
-def validate(user_input: dict) -> None:
+def validate(user_input: dict, type: str = "both") -> None:
     """Realiza validações determinísticas e semânticas nos dados de entrada.
 
     Args:
         user_input (dict): Dados de entrada do usuário na forma de dicionário.
+        type (str): Tipo da validação
+            - "both": semântica e determinística;
+            - "undet": somente validação semântica via LLM;
+            - "det": somente validação determinística via validações comuns;
     """
 
     def validate_topic(topic: str) -> None:
@@ -262,36 +266,69 @@ def validate(user_input: dict) -> None:
 </CHECKLIST_BEFORE_OUTPUT>
 """
 
+        VALIDATION_MODELS = [
+            "gemini-2.0-flash-lite",
+            "gemini-2.5-flash-lite",
+            "gemini-2.0-flash",
+        ]
+
         client = genai.Client()
 
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash-lite",
-                contents=user_prompt,
-                config={
-                    "response_mime_type": "application/json",
-                    "system_instruction": system_instruction,
-                    "temperature": 0,  # respostas mais consistentes, menos criatividade
-                    "response_schema": ValidationResult,
-                },
-            )
+        for model_name in VALIDATION_MODELS:
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=user_prompt,
+                    config={
+                        "response_mime_type": "application/json",
+                        "system_instruction": system_instruction,
+                        "temperature": 0,  # respostas mais consistentes, menos criatividade
+                        "response_schema": ValidationResult,
+                    },
+                )
 
-            result: ValidationResult = response.parsed
+                result: ValidationResult = response.parsed  # type: ignore
 
-            if result.is_valid is False:
-                raise ValidationError(message=result.motive)
+                if result.is_valid is False:
+                    raise ValidationError(message=result.motive)
 
-        except errors.APIError as error:
-            raise ServiceError("O modelo não conseguiu validar a entrada.") from error
+                print("O modelo ", model_name, "conseguiu gerar!")
 
-    validate_topic(user_input["topic"])
-    validate_objective(user_input["objective"])
-    validate_study_time(user_input["study_time"])
-    validate_duration(user_input["duration_time"])
-    validate_knowledge(user_input["knowledge"])
-    validate_semantic(user_prompt(user_input))
+                return result
+
+            except (
+                api_exceptions.ResourceExhausted,
+                api_exceptions.TooManyRequests,
+                api_exceptions.PermissionDenied,
+            ):
+                continue
+            except Exception as error:
+                raise error
+
+        raise ServiceError(
+            "O modelo não consegiu gerar o conteúdo, a cota foi excedida ou seu acesso o modelo negado."
+        )
+
+    det_validation, undet_validation = True, True
+
+    if type == "undet":
+        det_validation = False
+
+    if type == "det":
+        undet_validation = False
+
+    if det_validation:
+        validate_topic(user_input["topic"])
+        validate_objective(user_input["objective"])
+        validate_study_time(user_input["study_time"])
+        validate_duration(user_input["duration_time"])
+        validate_knowledge(user_input["knowledge"])
+
+    if undet_validation:
+        validate_semantic(user_prompt(user_input))
 
 
+# prompt.format()
 def user_prompt(user_input: dict) -> str:
     """Transforma os dados de entrada em str para ser utilizado como prompt.
 
@@ -315,7 +352,8 @@ def user_prompt(user_input: dict) -> str:
     """
 
 
-def build(user_input: dict) -> str:
+# prompt.make()
+def build(user_input: dict, validation_type: str = "both") -> str:
     """Realiza a orquestração entre os métodos process(), validate() e user_prompt().
 
     Args:
@@ -325,5 +363,5 @@ def build(user_input: dict) -> str:
         str: Dados de entrada (dict) formatados em prompt (str).
     """
     user_input = process(user_input)
-    validate(user_input)
+    validate(user_input, validation_type)
     return user_prompt(user_input)

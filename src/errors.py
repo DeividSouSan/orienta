@@ -105,3 +105,47 @@ class MethodNotAllowed(Exception):
             "action": self.action,
             "code": self.code,
         }
+
+
+class NotFoundError(Exception):
+    def __init__(
+        self,
+        message: str = "O recurso solicitado não foi encontrado.",
+        action: str = "Verifique se o recurso solicitado exisste e tente novamente.",
+    ):
+        self.name = "NotFoundError"
+        self.message = message
+        self.action = action
+        self.code = 404
+
+        super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
+        }
+
+
+class ConflictError(Exception):
+    def __init__(
+        self,
+        message: str = "Um erro de conflito aconteceu.",
+        action: str = "Verifique se o dado fornecido é único e tente novamemnte.",
+    ):
+        self.name = "ConflictError"
+        self.message = message
+        self.action = action
+        self.code = 409
+
+        super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
+        }
