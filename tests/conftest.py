@@ -2,10 +2,13 @@ from time import sleep
 from dotenv import load_dotenv
 import pytest
 from firebase_admin.auth import ListUsersPage
-from firebase_admin import auth
-import firebase_admin
+from firebase_admin import auth as fireauth
+from firebase_admin import firestore
 
-from src.models import user
+import firebase_admin
+import requests
+
+from src.models import user, guide, auth, session
 
 load_dotenv()
 
@@ -31,40 +34,58 @@ def initialize_firebase_app():
 def clear_firebase_auth(initialize_firebase_app):
     print("🧹 Limpando usuários do Firebase Auth...")
 
-    users: ListUsersPage = auth.list_users()
+    users: ListUsersPage = fireauth.list_users()
     batch = []
 
     for user_account in users.iterate_all():
         batch.append(user_account.uid)
 
         if len(batch) == ACCOUNTS_BATCH_SIZE:
-            auth.delete_users(batch)
-            print(f"  - Removidos {len(batch)} usuários")
+            fireauth.delete_users(batch)
+            print(f"  - Removidos {len(batch)} usuários.")
             batch.clear()
             sleep(DELAY_SECONDS)
 
     if batch:
-        auth.delete_users(batch)
-        print(f"  - Removidos {len(batch)} usuários (último lote)")
+        fireauth.delete_users(batch)
+        print(f"  - Removidos {len(batch)} usuários (último lote).")
 
     print("✅ Limpeza concluída.")
 
 
 @pytest.fixture(scope="session", autouse=True)
-def clear_study_guides_collection(initialize_firebase_app):
-    from firebase_admin import firestore
-
-    print("🧹 Limpando a coleção 'study_guides' do Firestore...")
+def clear_users_guides_collection(initialize_firebase_app):
+    print("🧹 Limpando a coleção 'users_guides' do Firestore...")
 
     db = firestore.client()
-    guides_collection_ref = db.collection("study_guides")
+    guides_collection_ref = db.collection("users_guides")
     batch = []
 
-    for guide in guides_collection_ref.list_documents():
-        batch.append(guide.id)
-        guide.delete()
+    for guide_ref in guides_collection_ref.list_documents():
+        batch.append(guide_ref.id)
+        guide_ref.delete()
 
         if len(batch) == GUIDES_BATCH_SIZE:
+            print(f"  - Removidos {len(batch)} guias.")
+            batch.clear()
+            sleep(DELAY_SECONDS)
+
+    print("✅ Limpeza concluída.")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def clear_users_collection(initialize_firebase_app):
+    print("🧹 Limpando a coleção 'users' do Firestore...")
+
+    db = firestore.client()
+    users_collection_ref = db.collection("users")
+    batch = []
+
+    for user_ref in users_collection_ref.list_documents():
+        batch.append(user_ref.id)
+        user_ref.delete()
+
+        if len(batch) == ACCOUNTS_BATCH_SIZE:
             print(f"  - Removidos {len(batch)} usuários")
             batch.clear()
             sleep(DELAY_SECONDS)
@@ -73,8 +94,11 @@ def clear_study_guides_collection(initialize_firebase_app):
 
 
 @pytest.fixture(scope="session", autouse=True)
-def add_mock_user(
-    initialize_firebase_app, clear_firebase_auth, clear_study_guides_collection
+def add_mock_user_and_guides(
+    initialize_firebase_app,
+    clear_firebase_auth,
+    clear_users_guides_collection,
+    clear_users_collection,
 ):
     print("👤 Adicionando usuário mock ao Firebase Auth...")
 
@@ -84,4 +108,48 @@ def add_mock_user(
         password="123456",
     )
 
+    guide1 = guide.generate_with_metadata(
+        owner="mock",
+        is_public=True,
+        inputs={
+            "topic": "Workers",
+            "objective": "Eu quero entender o que são os workers que eu tenho que configurar no gunicorn.",
+            "study_time": "60",
+            "duration_time": "3",
+            "knowledge": "Eu sei um pouco sobre aplicações web, acabei de estudar sobre WSGI e entendi bem.",
+        },
+        validation_type="det",
+    )
+
+    guide2 = guide.generate_with_metadata(
+        owner="mock",
+        is_public=False,
+        inputs={
+            "topic": "Bioeletrogênese",
+            "objective": "Quero compreender como o cérebro humano é capaz de gerar sua própria eletricidade.",
+            "study_time": "30",
+            "duration_time": "3",
+            "knowledge": "Sei um pouco de biologia do ensino médio, e neurociência bem superficialmente.",
+        },
+        validation_type="det",
+    )
+
+    guide.save(guide1)
+    guide.save(guide2)
+
     print("✅ Usuário criado com sucesso..")
+
+
+@pytest.fixture(scope="module")
+def mock_session():
+    print("\n🍪 Criando sessão e adicionando cookie...")
+    sess = requests.Session()
+
+    user_data = auth.authenticate("mock@orienta.com", "123456")
+    session_cookie = session.create(user_data["idToken"])
+
+    sess.cookies.set("session_id", session_cookie)
+
+    yield sess
+
+    print("\n🧹 Fechando a sessão.\n")

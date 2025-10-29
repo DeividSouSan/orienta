@@ -1,82 +1,59 @@
-import os
+import sys
+from flask import Flask
+
+from src.api.v1.user import user_bp
+from src.api.v1.sessions import session_bp
+from src.api.v1.guides import guides_bp
+from src.api.v1.users import users_bp
+from src.utils import validate_config, initialize_app
+
 import traceback
-from flask import (
-    Flask,
-    Response,
-    jsonify,
-    make_response,
-)
+from flask import Response, jsonify, make_response
+
 from src.errors import (
     InternalServerError,
+    MethodNotAllowed,
+    NotFoundError,
     ServiceError,
     UnauthorizedError,
     ValidationError,
+    ConflictError,
 )
-import src.models.firebase as firebase
 
 
-from src.api.user import user_bp
-from src.api.sessions import session_bp
+# Check environment variables and initialize firebase
+try:
+    validate_config()
+    initialize_app()
+except EnvironmentError as e:
+    print(f"Falha na inicialização: {e}")
+    sys.exit(1)
 
-# Check environment variables
-ENV = os.getenv("ENVIRONMENT")
-
-print(f"Variáveis de Ambiente ({ENV}): ")
-if os.getenv("GOOGLE_APPLICATION_CREDENTIALS") is None:
-    print("❌ GOOGLE_APPLICATION_CREDENTIALS")
-else:
-    print("✔ GOOGLE_APPLICATION_CREDENTIALS")
-
-if ENV != "development":
-    if os.getenv("GOOGLE_SERVICES_JSON") is None:
-        print("❌ GOOGLE_SERVICES_JSON")
-    else:
-        print("✔ GOOGLE_SERVICES_JSON")
-
-
-if os.getenv("GEMINI_API_KEY") is None:
-    print("❌ GEMINI_API_KEY")
-else:
-    print("✔ GEMINI_API_KEY")
-
-if os.getenv("FIREBASE_API_KEY") is None:
-    print("❌ FIREBASE_API_KEY")
-else:
-    print("✔ FIREBASE_API_KEY")
-
-if ENV != "production":
-    if os.getenv("API_URL") is None:
-        print("❌ API_URL")
-    else:
-        print("✔ API_URL")
-
-print("\n")
-
-print("Arquivos: ")
-
-if os.path.exists("service-account.json"):
-    print("✔ 'service-account.json' EXISTE")
-else:
-    print("❌ 'service-account.json' NÃO EXISTE")
-
-print("\n\n")
 # App configuration
-
 app = Flask(__name__)
 
 
 # Register blueprints
-app.register_blueprint(user_bp, url_prefix="/api/v1")
-app.register_blueprint(session_bp, url_prefix="/api/v1")
-
-# Initialize Firebase
-firebase.initialize_app()
-
-
-# Global error handler
+app.register_blueprint(blueprint=user_bp, url_prefix="/api/v1")
+app.register_blueprint(blueprint=users_bp, url_prefix="/api/v1")
+app.register_blueprint(blueprint=session_bp, url_prefix="/api/v1")
+app.register_blueprint(blueprint=guides_bp, url_prefix="/api/v1")
 
 
-@app.errorhandler(Exception)  # type: ignore
+# Error handlers
+@app.errorhandler(405)
+def handle_method_not_allowed(error):
+    error = MethodNotAllowed()
+    return make_response(jsonify(error.toDict()), error.code)
+
+
+@app.errorhandler(404)
+def handle_not_found_error(error):
+    error = NotFoundError()
+    return make_response(jsonify(error.toDict()), error.code)
+
+
+@app.errorhandler(Exception)
 def handle_api_error(error: Exception) -> Response:
     print("O erro foi ", error)
     traceback.print_exc()
@@ -85,6 +62,8 @@ def handle_api_error(error: Exception) -> Response:
         isinstance(error, ValidationError)
         or isinstance(error, ServiceError)
         or isinstance(error, UnauthorizedError)
+        or isinstance(error, NotFoundError)
+        or isinstance(error, ConflictError)
     ):
         return make_response(jsonify(error.toDict()), error.code)
 

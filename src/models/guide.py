@@ -1,111 +1,94 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from google import genai
-from pydantic import BaseModel, Field
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
+from src.schemas import DailyStudySchema
 
-from src.errors import ServiceError
+from src.errors import NotFoundError, ServiceError, UnauthorizedError
 from src.models import prompt
-from google.genai import errors
+from google.api_core import exceptions as api_exceptions
+import google.genai.errors as genai_errors
 
 
-class DailyStudySchema(BaseModel):
-    """
-    Represents the study plan for a given day,
-    with goals, research topics, practical activities, and
-    learning verification methods.
-    """
-
-    day: int = Field(
-        ...,
-        description="O número do dia no plano de estudos.",
-        json_schema_extra={"example": 7},
-    )
-    title: str = Field(
-        ...,
-        description="O título ou tema principal do dia.",
-        json_schema_extra={"example": "Modelagem: Aplicações e Desafios"},
-    )
-    goal: str = Field(
-        ...,
-        alias="Meta do Dia",
-        description="O objetivo claro e principal a ser alcançado no dia.",
-        json_schema_extra={
-            "example": "Aplicar e aprofundar os conhecimentos em Modelagem."
-        },
-    )
-    theoretical_research: list[str] = Field(
-        ...,
-        alias="O Quê Pesquisar (Teoria)",
-        description="Lista de 2 a 3 termos ou perguntas-chave para o aluno pesquisar.",
-        json_schema_extra={
-            "example": "Pesquise 'Modelagem em diferentes cenários.', 'Desafios comuns na modelagem.'"
-        },
-    )
-    practical_activity: str = Field(
-        ...,
-        alias="Mão na Massa (Prática)",
-        description="Uma tarefa ou atividade prática a serem realizadas para aplicar a teoria.",
-        json_schema_extra={"example": "Resolver diferentes exemplos de modelagem."},
-    )
-    learning_verification: str = Field(
-        ...,
-        alias="Verificação de Aprendizado",
-        description="Questão ou método para o aluno autoavaliar o seu entendimento do conteúdo.",
-        json_schema_extra={
-            "example": "Como a modelagem pode ser aplicada em diferentes contextos?"
-        },
-    )
-
-
-def format_date(date):
-    """Transforma um objeto datetime em uma data personalizada como 'DIA de MÊS de ANO'"
+def find_by_username(username: str, only_public: bool = False) -> list[dict]:
+    """Busca os guias de um usuário.
 
     Args:
-        date (datetime): o objeto datetime com a data a ser formatada
+        username (str): nome do usuário proprietário dos guias
+        only_public (bool):
+            True: busca APENAS os guias que o usuário marcou como 'is_public: true'.
+            False: busca TODOS os guias do usuário em questão.
 
     Returns:
-        str: string com a data formatada
+        list[dict]: uma lista contendo todos os metadados dos guias encontrados.
+
+    Raises:
+        ServiceError: se o serviço do Firebase falhar.
+
     """
-    month = {
-        1: "Janeiro",
-        2: "Fevereiro",
-        3: "Março",
-        4: "Abril",
-        5: "Maio",
-        6: "Junho",
-        7: "Julho",
-        8: "Agosto",
-        9: "Setembro",
-        10: "Outubro",
-        11: "Novembro",
-        12: "Dezembro",
-    }
-
-    return f"{date.day} de {month[date.month]} de {date.year}"
-
-
-def find_guides(user_id: str) -> list[dict]:
     try:
         db = firestore.client()
-        results = db.collection("study_guides").where("user_id", "==", user_id).get()
 
-        guides = list()
-        for guide in results:
-            guides.append(
+        guides_snapshots = []
+        if only_public:
+            guides_snapshots = (
+                db.collection("users_guides")
+                .where("owner", "==", username)
+                .where("is_public", "==", True)
+                .get()
+            )
+        else:
+            guides_snapshots = (
+                db.collection("users_guides").where("owner", "==", username).get()
+            )
+
+        guides_metadata = list()
+        for guide in guides_snapshots:
+            guides_metadata.append(
                 {
                     "id": guide.id,
-                    "topic": guide.get("prompt.topic"),
-                    "objective": guide.get("prompt.objective"),
-                    "duration": guide.get("prompt.duration_time"),
-                    "created_at": format_date(guide.get("created_at")),
+                    "topic": guide.get("inputs.topic"),
+                    "objective": guide.get("inputs.objective"),
+                    "duration": guide.get("inputs.duration_time"),
+                    "created_at": guide.get("created_at"),
                 }
             )
 
-        return guides
+        return guides_metadata
+
     except FirebaseError as error:
         raise ServiceError(
-            "Houve um erro ao buscar os seus guias. Tente novamente mais tarde."
+            "Ocorreu um erro ao recuperar os guias.", "Tente novamente mais tarde."
+        ) from error
+
+
+def delete(guide_id: str, username: str) -> None:
+    """Deleta o guia do banco de dados.
+
+    Args:
+        guide_id (str): o ID do guia a ser deletado.
+        username (str): o o nodedo usuário que executou a ação de deletar.
+
+    """
+    try:
+        db = firestore.client()
+        guide_ref = db.collection("users_guides").document(guide_id)
+        guide_doc = guide_ref.get()
+
+        if guide := guide_doc.to_dict():
+            if guide.get("owner") != username:
+                raise UnauthorizedError(
+                    "Você não tem permissão para deletar esse guia."
+                )
+
+            guide_doc.reference.delete()
+        else:
+            raise NotFoundError(
+                "Guia não encontrado.", "Verifique o ID e tente novamente."
+            )
+    except FirebaseError as error:
+        raise ServiceError(
+            "Não foi possível deletar o guia.", "Tente novamente mais tarde."
         ) from error
 
 
@@ -130,28 +113,23 @@ def retrieve_daily_plan(guide_id: str) -> list[dict]:
         ) from error
 
 
-def save(guide_info: dict) -> None:
+def save(guide_info: dict) -> str:
+    """Persiste o guia gerado no banco de dados.
+
+    Args:
+        guide_info (dict): guia gerado através de guide.build().
+
+    Returns:
+        str: ID do documento salvo no Firestore.
+    """
     try:
         db = firestore.client()
-        guide_collection_ref = db.collection("study_guides")
+        guides_collection_ref = db.collection("users_guides")
+        guide_doc_ref = guides_collection_ref.document()
+        guide_doc_ref.set(guide_info)
 
-        guide_doc_ref = guide_collection_ref.document()
-        guide_doc_ref.set(
-            {
-                "user_id": guide_info["uid"],
-                "prompt": guide_info["inputs"],
-                "model": guide_info["model"],
-                "temperature": guide_info["temperature"],
-                "generation_time_ms": guide_info["generation_time_ms"],
-                "created_at": firestore.SERVER_TIMESTAMP,
-            }
-        )
+        return guide_doc_ref.id
 
-        daily_plans_subcollection_ref = guide_doc_ref.collection("daily_plans")
-        for plan in guide_info["daily_study"]:
-            plan_doc_ref = daily_plans_subcollection_ref.document(f"Study_{plan.day}")
-            plan_dict = plan.model_dump()
-            plan_doc_ref.set(plan_dict)
     except FirebaseError as error:
         raise ServiceError(
             "Não foi possível salvar o guia no banco de dados. Sentimos muito."
@@ -163,14 +141,8 @@ def generate(
     model: str = "gemini-2.0-flash-lite",
     temperature: int = 2,
 ) -> list[DailyStudySchema]:
-    """Gera um guia de estudos a partir de um prompt.
+    "Gera um guia de estudos a partir de um prompt."
 
-    Args:
-        user_prompt: Prompt com as entradas do usuário.
-
-    Return:
-        list[DailyStudySchema]: Lista com a saída formatada em DailyStudySchema.
-    """
     system_instruction = """
     <ROLE>
         Você é um especialista em design instrucional e um planejador de currículo acadêmico. Sua especialidade é decompor tópicos complexos em roteiros de aprendizagem lógicos e sequenciais para estudantes autônomos. Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras definidas."
@@ -210,6 +182,7 @@ def generate(
 
     INICIE A GERAÇÃO DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE A SAÍDA É UM JSON VÁLIDO.
     """
+
     try:
         client = genai.Client()
         response = client.models.generate_content(
@@ -223,29 +196,138 @@ def generate(
             },
         )
 
-        return response.parsed
-
-    except errors.APIError as error:
+        return response.parsed  # type: ignore
+    except (
+        api_exceptions.ResourceExhausted,
+        api_exceptions.TooManyRequests,
+        api_exceptions.PermissionDenied,
+        api_exceptions.ServiceUnavailable,  # the model is overloaded
+    ):
         raise ServiceError(
-            "Ocorreu um erro ao tentar gerar o guia. Tente novamente mais tarde."
-        ) from error
+            "O modelo não consegiu gerar o conteúdo, a cota foi excedida ou seu acesso o modelo negado."
+        )
+
+    except Exception as error:
+        raise error
 
 
-def build(
-    uid: str,
-    inputs: dict,
-    model: str = "gemini-2.0-flash-lite",
+def generate_with_fallback(
+    user_prompt: str,
     temperature: int = 2,
+) -> list[DailyStudySchema]:
+    """Gera um guia de estudos a partir de um prompt usando fallback de modelos.
+
+    Args:
+        user_prompt (str): prompt do usuário com as informações do guia.
+        tempreature (int): nível de criatividade do modelo (0 - 2)
+
+    Returns:
+        list[DailyStudySchema]: lista com os guias de estudos diários.
+
+    """
+    print("⚠⚠⚠ O MODELO ESTÁ EM MODO DE FALLBACK!!!")
+    FALLBACK_MODELS_LIST = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash"]
+
+    system_instruction = """
+    <ROLE>
+        Você é um especialista em design instrucional e um planejador de currículo acadêmico. Sua especialidade é decompor tópicos complexos em roteiros de aprendizagem lógicos e sequenciais para estudantes autônomos. Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras definidas."
+    </ROLE>
+
+    <TASK>
+        Com base nos <INPUTS>, sua tarefa é gerar um Guia de Estudos detalhado, dividido em dias.
+
+        Primeiro, analise o Tempo Total (minutos) = (<DAILY_DEDICATION> * <DURATION_IN_DAYS>) e distribua o conteúdo de forma realista. O plano deve ter uma progressão lógica e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior. O <OBJECTIVE> deve receber atenção especial e ser aprofundado na segunda metade do plano.
+
+        **Restrição Crítica:** Seu único trabalho é criar o cronograma. NÃO forneça explicações, aulas ou resumos sobre os tópicos. Apenas liste o que o aluno deve fazer.
+    </TAREFA>
+
+    <OUTPUT_FORMAT>
+        Formate a saída em JSON. O guia deve ser estruturado exatamente da seguinte forma, sem exceções:
+
+        {{
+            "Dia": (Número do Dia),
+            "Titulo": (Título Conciso do Dia),
+            "Meta do Dia": (Escreva um objetivo claro e alcançável. Ex: "Entender o que é uma variável e como declará-la."),
+            "O Quê Pesquisar (Teoria)": (Liste no mínimo 2 a 3 termos ou perguntas-chave para o aluno pesquisar. Ex: "O que são tipos de dados em Python?", "Como atribuir valores a variáveis?"),
+            "Mão na Massa (Prática)": (Descreva uma tarefa prática e curta para aplicar a teoria. Ex: "Escrever um código que declare 5 variáveis de tipos diferentes (inteiro, texto, booleano, etc.) e imprima seus valores."),
+            "Verificação de Aprendizado": (Crie uma única pergunta conceitual para o aluno se autoavaliar. Ex: "Qual a diferença entre uma variável e um valor constante?")
+        }}
+    </OUTPUT_FORMAT>
+
+    <EXAMPLE>
+        {{
+            "Dia": 7,
+            "Titulo": "Modelagem: Aplicações e Desafios",
+            "Meta do Dia": "Aplicar e aprofundar os conhecimentos em Modelagem.",
+            "O Quê Pesquisar (Teoria)": "Modelagem em diferentes cenários.", "Desafios comuns na modelagem.",
+            "Mão na Massa (Prática)": "Resolver diferentes exemplos de modelagem.",
+            "Verificação de Aprendizado": "Como a modelagem pode ser aplicada em diferentes contextos?"
+        }}
+    </EXAMPLE>
+
+    INICIE A GERAÇÃO DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE A SAÍDA É UM JSON VÁLIDO.
+    """
+
+    client = genai.Client()
+
+    for model_name in FALLBACK_MODELS_LIST:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=user_prompt,
+                config={
+                    "system_instruction": system_instruction,
+                    "response_mime_type": "application/json",
+                    "response_schema": list[DailyStudySchema],
+                    "temperature": temperature,
+                },
+            )
+
+            return response.parsed  # type: ignore
+
+        except genai_errors.ServerError as error:
+            if error.code == 503:
+                continue
+
+        except genai_errors.ClientError as error:
+            if error.code == 429:
+                continue
+
+        except Exception as error:
+            print("⚠⚠⚠ O ERRO NÃO FOI CAPTURADO DIREITO!!!")
+            raise error
+
+    raise ServiceError(
+        "O modelo não consegiu gerar o conteúdo, a cota foi excedida ou seu acesso o modelo negado."
+    )
+
+
+def generate_with_metadata(
+    owner: str,
+    inputs: dict,
+    model: str | None = None,
+    is_public: bool = False,
+    temperature: int = 2,
+    validation_type: str = "both",
 ) -> dict:
     start_time = datetime.now()
-    daily_study = generate(prompt.build(inputs))
+
+    user_prompt = prompt.build(inputs, validation_type)
+
+    if model:
+        daily_study = generate(user_prompt, model, temperature)
+    else:
+        daily_study = generate_with_fallback(user_prompt, temperature)
+
     finished_time = datetime.now()
 
     return {
-        "uid": uid,
+        "owner": owner,
         "inputs": inputs,
         "model": model,
         "temperature": temperature,
-        "generation_time_ms": int((finished_time - start_time).total_seconds()),
-        "daily_study": daily_study,
+        "generation_time_seconds": int((finished_time - start_time).total_seconds()),
+        "daily_study": list(map(lambda study: study.model_dump(), daily_study)),
+        "created_at": datetime.now(timezone.utc),
+        "is_public": is_public,
     }

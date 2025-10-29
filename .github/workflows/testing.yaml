@@ -46,6 +46,7 @@ jobs:
       - name: Subindo o servidor e rodando o Pytest...
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ./service-account.json
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
