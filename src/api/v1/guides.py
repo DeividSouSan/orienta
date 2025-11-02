@@ -14,16 +14,14 @@ def create():
     data = request.get_json()
     guide_inputs = {
         "topic": data.get("topic", ""),
-        "objective": data.get("objective", ""),
-        "study_time": data.get("study_time", ""),
-        "duration_time": data.get("duration_time", ""),
         "knowledge": data.get("knowledge", ""),
+        "focus_time": data.get("focus_time", ""),
+        "days": data.get("days", ""),
     }
 
     model_inputs = {
-        "model": data.get("model", "gemini-2.0-flash-lite"),
+        "model": data.get("model", ""),
         "temperature": data.get("temperature", 2),
-        "validation": data.get("validation", "both"),
     }
 
     study_guide: dict = guide.generate_with_metadata(
@@ -31,7 +29,6 @@ def create():
         inputs=guide_inputs,
         model=model_inputs["model"],
         temperature=model_inputs["temperature"],
-        validation_type=model_inputs["validation"],
     )
 
     guide.save(study_guide)

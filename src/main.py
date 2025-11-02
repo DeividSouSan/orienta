@@ -5,6 +5,7 @@ from src.api.v1.user import user_bp
 from src.api.v1.sessions import session_bp
 from src.api.v1.guides import guides_bp
 from src.api.v1.users import users_bp
+from src.api.v1.validate import validations_bp
 from src.utils import validate_config, initialize_app
 
 import traceback
@@ -38,6 +39,7 @@ app.register_blueprint(blueprint=user_bp, url_prefix="/api/v1")
 app.register_blueprint(blueprint=users_bp, url_prefix="/api/v1")
 app.register_blueprint(blueprint=session_bp, url_prefix="/api/v1")
 app.register_blueprint(blueprint=guides_bp, url_prefix="/api/v1")
+app.register_blueprint(blueprint=validations_bp, url_prefix="/api/v1")
 
 
 # Error handlers

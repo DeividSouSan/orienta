@@ -109,29 +109,25 @@ def add_mock_user_and_guides(
     )
 
     guide1 = guide.generate_with_metadata(
-        owner="mock",
+        owner="test",
         is_public=True,
         inputs={
-            "topic": "Workers",
-            "objective": "Eu quero entender o que são os workers que eu tenho que configurar no gunicorn.",
-            "study_time": "60",
-            "duration_time": "3",
-            "knowledge": "Eu sei um pouco sobre aplicações web, acabei de estudar sobre WSGI e entendi bem.",
+            "topic": "Eu quero entender o que são os workers que eu tenho que configurar no gunicorn.",
+            "focus_time": 60,
+            "days": 3,
+            "knowledge": "zero",
         },
-        validation_type="det",
     )
 
     guide2 = guide.generate_with_metadata(
-        owner="mock",
+        owner="test",
         is_public=False,
         inputs={
-            "topic": "Bioeletrogênese",
-            "objective": "Quero compreender como o cérebro humano é capaz de gerar sua própria eletricidade.",
-            "study_time": "30",
-            "duration_time": "3",
-            "knowledge": "Sei um pouco de biologia do ensino médio, e neurociência bem superficialmente.",
+            "topic": "Quero compreender como o cérebro humano é capaz de gerar sua própria eletricidade.",
+            "focus_time": 30,
+            "days": 3,
+            "knowledge": "iniciante",
         },
-        validation_type="det",
     )
 
     guide.save(guide1)
