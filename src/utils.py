@@ -156,3 +156,20 @@ def format_date(date):
     }
 
     return f"{date.day} de {month[date.month]} de {date.year}"
+
+
+def load_prompt(file_name: str) -> str:
+    """Carrega um arquivo de prompt da pasta /prompts."""
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    prompt_path = os.path.join(base_dir, "src/prompts", file_name)
+    print(prompt_path)
+    try:
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        # Erro grave: o prompt não foi encontrado
+        raise RuntimeError(
+            f"Erro crítico: O arquivo de prompt '{file_name}' não foi encontrado."
+        )
+    except Exception as e:
+        raise RuntimeError(f"Erro ao ler o arquivo de prompt: {e}")

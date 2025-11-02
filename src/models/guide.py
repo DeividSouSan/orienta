@@ -9,6 +9,8 @@ from src.models import prompt
 from google.api_core import exceptions as api_exceptions
 import google.genai.errors as genai_errors
 
+from src.utils import load_prompt
+
 
 def find_by_username(username: str, only_public: bool = False) -> list[dict]:
     """Busca os guias de um usuário.
@@ -48,8 +50,8 @@ def find_by_username(username: str, only_public: bool = False) -> list[dict]:
                 {
                     "id": guide.id,
                     "topic": guide.get("inputs.topic"),
-                    "objective": guide.get("inputs.objective"),
-                    "duration": guide.get("inputs.duration_time"),
+                    "duration": guide.get("inputs.focus_time"),
+                    "days": guide.get("inputs.days"),
                     "created_at": guide.get("created_at"),
                 }
             )
@@ -136,55 +138,16 @@ def save(guide_info: dict) -> str:
         ) from error
 
 
-def generate(
+def generate_with_model(
     user_prompt: str,
     model: str = "gemini-2.0-flash-lite",
     temperature: int = 2,
 ) -> list[DailyStudySchema]:
     "Gera um guia de estudos a partir de um prompt."
 
-    system_instruction = """
-    <ROLE>
-        Você é um especialista em design instrucional e um planejador de currículo acadêmico. Sua especialidade é decompor tópicos complexos em roteiros de aprendizagem lógicos e sequenciais para estudantes autônomos. Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras definidas."
-    </ROLE>
-
-    <TASK>
-        Com base nos <INPUTS>, sua tarefa é gerar um Guia de Estudos detalhado, dividido em dias.
-
-        Primeiro, analise o Tempo Total (minutos) = (<DAILY_DEDICATION> * <DURATION_IN_DAYS>) e distribua o conteúdo de forma realista. O plano deve ter uma progressão lógica e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior. O <OBJECTIVE> deve receber atenção especial e ser aprofundado na segunda metade do plano.
-
-        **Restrição Crítica:** Seu único trabalho é criar o cronograma. NÃO forneça explicações, aulas ou resumos sobre os tópicos. Apenas liste o que o aluno deve fazer.
-    </TAREFA>
-
-    <OUTPUT_FORMAT>
-        Formate a saída em JSON. O guia deve ser estruturado exatamente da seguinte forma, sem exceções:
-
-        {{
-            "Dia": (Número do Dia),
-            "Titulo": (Título Conciso do Dia),
-            "Meta do Dia": (Escreva um objetivo claro e alcançável. Ex: "Entender o que é uma variável e como declará-la."),
-            "O Quê Pesquisar (Teoria)": (Liste no mínimo 2 a 3 termos ou perguntas-chave para o aluno pesquisar. Ex: "O que são tipos de dados em Python?", "Como atribuir valores a variáveis?"),
-            "Mão na Massa (Prática)": (Descreva uma tarefa prática e curta para aplicar a teoria. Ex: "Escrever um código que declare 5 variáveis de tipos diferentes (inteiro, texto, booleano, etc.) e imprima seus valores."),
-            "Verificação de Aprendizado": (Crie uma única pergunta conceitual para o aluno se autoavaliar. Ex: "Qual a diferença entre uma variável e um valor constante?")
-        }}
-    </OUTPUT_FORMAT>
-
-    <EXAMPLE>
-        {{
-            "Dia": 7,
-            "Titulo": "Modelagem: Aplicações e Desafios",
-            "Meta do Dia": "Aplicar e aprofundar os conhecimentos em Modelagem.",
-            "O Quê Pesquisar (Teoria)": "Modelagem em diferentes cenários.", "Desafios comuns na modelagem.",
-            "Mão na Massa (Prática)": "Resolver diferentes exemplos de modelagem.",
-            "Verificação de Aprendizado": "Como a modelagem pode ser aplicada em diferentes contextos?"
-        }}
-    </EXAMPLE>
-
-    INICIE A GERAÇÃO DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE A SAÍDA É UM JSON VÁLIDO.
-    """
-
+    client = genai.Client()
     try:
-        client = genai.Client()
+        system_instruction = load_prompt("generate_guide.md")
         response = client.models.generate_content(
             model=model,
             contents=user_prompt,
@@ -213,65 +176,23 @@ def generate(
 
 def generate_with_fallback(
     user_prompt: str,
-    temperature: int = 2,
 ) -> list[DailyStudySchema]:
     """Gera um guia de estudos a partir de um prompt usando fallback de modelos.
 
     Args:
         user_prompt (str): prompt do usuário com as informações do guia.
-        tempreature (int): nível de criatividade do modelo (0 - 2)
 
     Returns:
-        list[DailyStudySchema]: lista com os guias de estudos diários.
+        Tuple[DailyStudySchema, str, Literal(2)]: Tupla com a lista com os guias de estudos diários, nome do modelo e temperatura.
 
     """
-    print("⚠⚠⚠ O MODELO ESTÁ EM MODO DE FALLBACK!!!")
     FALLBACK_MODELS_LIST = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash"]
-
-    system_instruction = """
-    <ROLE>
-        Você é um especialista em design instrucional e um planejador de currículo acadêmico. Sua especialidade é decompor tópicos complexos em roteiros de aprendizagem lógicos e sequenciais para estudantes autônomos. Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras definidas."
-    </ROLE>
-
-    <TASK>
-        Com base nos <INPUTS>, sua tarefa é gerar um Guia de Estudos detalhado, dividido em dias.
-
-        Primeiro, analise o Tempo Total (minutos) = (<DAILY_DEDICATION> * <DURATION_IN_DAYS>) e distribua o conteúdo de forma realista. O plano deve ter uma progressão lógica e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior. O <OBJECTIVE> deve receber atenção especial e ser aprofundado na segunda metade do plano.
-
-        **Restrição Crítica:** Seu único trabalho é criar o cronograma. NÃO forneça explicações, aulas ou resumos sobre os tópicos. Apenas liste o que o aluno deve fazer.
-    </TAREFA>
-
-    <OUTPUT_FORMAT>
-        Formate a saída em JSON. O guia deve ser estruturado exatamente da seguinte forma, sem exceções:
-
-        {{
-            "Dia": (Número do Dia),
-            "Titulo": (Título Conciso do Dia),
-            "Meta do Dia": (Escreva um objetivo claro e alcançável. Ex: "Entender o que é uma variável e como declará-la."),
-            "O Quê Pesquisar (Teoria)": (Liste no mínimo 2 a 3 termos ou perguntas-chave para o aluno pesquisar. Ex: "O que são tipos de dados em Python?", "Como atribuir valores a variáveis?"),
-            "Mão na Massa (Prática)": (Descreva uma tarefa prática e curta para aplicar a teoria. Ex: "Escrever um código que declare 5 variáveis de tipos diferentes (inteiro, texto, booleano, etc.) e imprima seus valores."),
-            "Verificação de Aprendizado": (Crie uma única pergunta conceitual para o aluno se autoavaliar. Ex: "Qual a diferença entre uma variável e um valor constante?")
-        }}
-    </OUTPUT_FORMAT>
-
-    <EXAMPLE>
-        {{
-            "Dia": 7,
-            "Titulo": "Modelagem: Aplicações e Desafios",
-            "Meta do Dia": "Aplicar e aprofundar os conhecimentos em Modelagem.",
-            "O Quê Pesquisar (Teoria)": "Modelagem em diferentes cenários.", "Desafios comuns na modelagem.",
-            "Mão na Massa (Prática)": "Resolver diferentes exemplos de modelagem.",
-            "Verificação de Aprendizado": "Como a modelagem pode ser aplicada em diferentes contextos?"
-        }}
-    </EXAMPLE>
-
-    INICIE A GERAÇÃO DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE A SAÍDA É UM JSON VÁLIDO.
-    """
 
     client = genai.Client()
 
     for model_name in FALLBACK_MODELS_LIST:
         try:
+            system_instruction = load_prompt("generate_guide.md")
             response = client.models.generate_content(
                 model=model_name,
                 contents=user_prompt,
@@ -279,11 +200,11 @@ def generate_with_fallback(
                     "system_instruction": system_instruction,
                     "response_mime_type": "application/json",
                     "response_schema": list[DailyStudySchema],
-                    "temperature": temperature,
+                    "temperature": 2,
                 },
             )
 
-            return response.parsed  # type: ignore
+            return response.parsed, model_name  # type: ignore
 
         except genai_errors.ServerError as error:
             if error.code == 503:
@@ -294,7 +215,6 @@ def generate_with_fallback(
                 continue
 
         except Exception as error:
-            print("⚠⚠⚠ O ERRO NÃO FOI CAPTURADO DIREITO!!!")
             raise error
 
     raise ServiceError(
@@ -305,19 +225,18 @@ def generate_with_fallback(
 def generate_with_metadata(
     owner: str,
     inputs: dict,
-    model: str | None = None,
+    model: str = "",
     is_public: bool = False,
     temperature: int = 2,
-    validation_type: str = "both",
 ) -> dict:
     start_time = datetime.now()
 
-    user_prompt = prompt.build(inputs, validation_type)
+    user_prompt = prompt.make(inputs)
 
     if model:
-        daily_study = generate(user_prompt, model, temperature)
+        daily_study = generate_with_model(user_prompt, model, temperature)
     else:
-        daily_study = generate_with_fallback(user_prompt, temperature)
+        daily_study, model = generate_with_fallback(user_prompt)
 
     finished_time = datetime.now()
 
