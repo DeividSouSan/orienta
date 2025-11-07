@@ -53,7 +53,7 @@ def clear_firebase_auth(initialize_firebase_app):
     print("✅ Limpeza concluída.")
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def clear_users_guides_collection(initialize_firebase_app):
     print("🧹 Limpando a coleção 'users_guides' do Firestore...")
 
@@ -95,10 +95,7 @@ def clear_users_collection(initialize_firebase_app):
 
 @pytest.fixture(scope="session", autouse=True)
 def add_mock_user_and_guides(
-    initialize_firebase_app,
-    clear_firebase_auth,
-    clear_users_guides_collection,
-    clear_users_collection,
+    initialize_firebase_app, clear_firebase_auth, clear_users_collection
 ):
     print("👤 Adicionando usuário mock ao Firebase Auth...")
 
@@ -137,7 +134,7 @@ def add_mock_user_and_guides(
 
 
 @pytest.fixture(scope="module")
-def mock_session():
+def mock_session(clear_users_guides_collection):
     print("\n🍪 Criando sessão e adicionando cookie...")
     sess = requests.Session()
 

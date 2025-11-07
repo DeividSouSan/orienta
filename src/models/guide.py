@@ -49,12 +49,21 @@ def find_by_username(username: str, only_public: bool = False) -> list[dict]:
             guides_metadata.append(
                 {
                     "id": guide.id,
+                    "title": guide.get("title"),
                     "topic": guide.get("inputs.topic"),
-                    "duration": guide.get("inputs.focus_time"),
                     "days": guide.get("inputs.days"),
+                    "completed_days": guide.get("completed_days"),
                     "created_at": guide.get("created_at"),
+                    "status": guide.get("status"),
                 }
             )
+
+            if guide.get("status") == "completed":
+                guides_metadata[-1].update(
+                    {
+                        "completed_at": guide.get("completed_at"),
+                    }
+                )
 
         return guides_metadata
 
@@ -128,7 +137,14 @@ def save(guide_info: dict) -> str:
         db = firestore.client()
         guides_collection_ref = db.collection("users_guides")
         guide_doc_ref = guides_collection_ref.document()
-        guide_doc_ref.set(guide_info)
+        guide_doc_ref.set(
+            {
+                "title": f"Guia: {guide_doc_ref.id}",
+                "completed_days": 0,
+                "status": "studying",
+                **guide_info,
+            }
+        )
 
         return guide_doc_ref.id
 
