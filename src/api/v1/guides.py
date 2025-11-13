@@ -65,6 +65,16 @@ def get_public_guides_by_username(username: str):
     )
 
 
+@guides_bp.route("/guideline/<string:guide_id>", methods=["GET"])
+@protected
+def get_guideline_by_id(guide_id: str):
+    user_guides: list[dict] = guide.find_guideline_by_id(guide_id)
+
+    return make_response(
+        {"message": "Guideline recuperada com sucesso.", "data": user_guides}, 200
+    )
+
+
 @guides_bp.route("/my-guides", methods=["GET"])
 @protected
 def get_my_guides():

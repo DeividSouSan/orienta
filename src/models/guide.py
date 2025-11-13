@@ -103,19 +103,12 @@ def delete(guide_id: str, username: str) -> None:
         ) from error
 
 
-def retrieve_daily_plan(guide_id: str) -> list[dict]:
+def find_guideline_by_id(guide_id: str) -> list[dict]:
     try:
         db = firestore.client()
-        results = (
-            db.collection("study_guides")
-            .document(guide_id)
-            .collection("daily_plans")
-            .get()
-        )
+        guide_snapshot = db.collection("users_guides").document(guide_id).get()
 
-        daily_study_list = list()
-        for daily_study in results:
-            daily_study_list.append(daily_study.to_dict())
+        daily_study_list = guide_snapshot.get("daily_study")
 
         return daily_study_list
     except FirebaseError as error:
