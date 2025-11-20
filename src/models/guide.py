@@ -1,15 +1,69 @@
 from datetime import datetime, timezone
+from typing import Any
 from google import genai
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
 from src.schemas import DailyStudySchema
 
-from src.errors import NotFoundError, ServiceError, UnauthorizedError
+from src.errors import NotFoundError, ServiceError, UnauthorizedError, ValidationError
 from src.models import prompt
-from google.api_core import exceptions as api_exceptions
 import google.genai.errors as genai_errors
 
 from src.utils import load_prompt
+from pydantic import TypeAdapter
+from pydantic import ValidationError as PydValidationError
+from typing import List
+
+
+def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
+    """Atualiza o campo 'daily_study'."""
+
+    if not isinstance(new_studies, list):
+        raise ValidationError(
+            "O campo 'new_studies_state' enviado não é uma lista.",
+            "Certifique-se de que o campor é uma lista e tente novamente.",
+        )
+
+    try:
+        studies_list_adapter = TypeAdapter(List[DailyStudySchema])
+        studies_list_adapter.validate_python(new_studies)
+
+        guide_is_complete = all(study["completed"] for study in new_studies)
+
+        db = firestore.client()
+        guide_ref = db.collection("users_guides").document(guide_id)
+        guide_snap = guide_ref.get()
+
+        if guide_snap.get("owner") != username:
+            raise UnauthorizedError(
+                "Você não tem acesso à esse guia.",
+                "Acesse um guia de sua autoria e tente novamente.",
+            )
+
+        if guide_is_complete:
+            guide_ref.update(
+                {"status": "completed", "completed_at": datetime.now(timezone.utc)}
+            )
+        else:
+            guide_ref.update({"status": "studying"})
+
+        guide_ref.update({"daily_study": new_studies})
+
+        new_guide_snap = guide_ref.get()
+        db_new_studies: list = new_guide_snap.get("daily_study")
+
+        return db_new_studies
+
+    except PydValidationError as error:
+        raise ValidationError(
+            "O campo 'new_studies_state' é inválido.",
+            "Verifique se o corpo da requisição é uma List[DailyStudySchema] e tente novamente.",
+        ) from error
+
+    except FirebaseError as error:
+        raise ServiceError(
+            "Ocorreu um erro ao recuperar os guias.", "Tente novamente mais tarde."
+        ) from error
 
 
 def find_by_username(username: str, only_public: bool = False) -> list[dict]:
@@ -52,7 +106,7 @@ def find_by_username(username: str, only_public: bool = False) -> list[dict]:
                     "title": guide.get("title"),
                     "topic": guide.get("inputs.topic"),
                     "days": guide.get("inputs.days"),
-                    "completed_days": guide.get("completed_days"),
+                    "daily_studies": guide.get("daily_study"),
                     "created_at": guide.get("created_at"),
                     "status": guide.get("status"),
                 }
@@ -103,21 +157,33 @@ def delete(guide_id: str, username: str) -> None:
         ) from error
 
 
-def retrieve_daily_plan(guide_id: str) -> list[dict]:
+def find_guideline_by_id(guide_id: str) -> list[dict]:
     try:
         db = firestore.client()
-        results = (
-            db.collection("study_guides")
-            .document(guide_id)
-            .collection("daily_plans")
-            .get()
-        )
+        guide_snapshot = db.collection("users_guides").document(guide_id).get()
 
-        daily_study_list = list()
-        for daily_study in results:
-            daily_study_list.append(daily_study.to_dict())
+        daily_study_list = guide_snapshot.get("daily_study")
 
         return daily_study_list
+    except FirebaseError as error:
+        raise ServiceError(
+            "Não foi possível recuperar os dados desse guia. Tente novamente mais tarde."
+        ) from error
+
+
+def find_guide_by_id(guide_id: str) -> dict[str, Any]:
+    try:
+        db = firestore.client()
+        guide_snapshot = db.collection("users_guides").document(guide_id).get()
+
+        if guide_snapshot.exists:
+            return guide_snapshot.to_dict()
+        else:
+            raise NotFoundError(
+                "O guia não foi encontrado.",
+                "Verifique que o guia existe e tente novamente.",
+            )
+
     except FirebaseError as error:
         raise ServiceError(
             "Não foi possível recuperar os dados desse guia. Tente novamente mais tarde."
@@ -157,11 +223,12 @@ def save(guide_info: dict) -> str:
 def generate_with_model(
     user_prompt: str,
     model: str = "gemini-2.0-flash-lite",
-    temperature: int = 2,
+    temperature: float = 2.0,
 ) -> list[DailyStudySchema]:
-    "Gera um guia de estudos a partir de um prompt."
+    """Gera um guia de estudos a partir de um prompt."""
 
     client = genai.Client()
+
     try:
         system_instruction = load_prompt("generate_guide.md")
         response = client.models.generate_content(
@@ -174,20 +241,13 @@ def generate_with_model(
                 "temperature": temperature,
             },
         )
-
-        return response.parsed  # type: ignore
-    except (
-        api_exceptions.ResourceExhausted,
-        api_exceptions.TooManyRequests,
-        api_exceptions.PermissionDenied,
-        api_exceptions.ServiceUnavailable,  # the model is overloaded
-    ):
+        print("Chegou aqui.")
+        print("Veja: ", response.parsed)
+        return response.parsed
+    except Exception as error:
         raise ServiceError(
             "O modelo não consegiu gerar o conteúdo, a cota foi excedida ou seu acesso o modelo negado."
-        )
-
-    except Exception as error:
-        raise error
+        ) from error
 
 
 def generate_with_fallback(
@@ -243,19 +303,23 @@ def generate_with_metadata(
     inputs: dict,
     model: str = "",
     is_public: bool = False,
-    temperature: int = 2,
+    temperature: float = 2.0,
 ) -> dict:
     start_time = datetime.now()
 
     user_prompt = prompt.make(inputs)
 
+    print("Antes aconteceu: ", model, temperature)
+
     if model:
+        print("Entrou aqui e chamou o modelo ", model)
+        print("TEmperatura, ", type(temperature))
         daily_study = generate_with_model(user_prompt, model, temperature)
     else:
         daily_study, model = generate_with_fallback(user_prompt)
 
     finished_time = datetime.now()
-
+    print("Aconteceu o daily_study: ", daily_study)
     return {
         "owner": owner,
         "inputs": inputs,

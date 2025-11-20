@@ -92,7 +92,6 @@ def validate_relevance(topic):
                     "response_schema": ValidationResult,
                 },
             )
-
             result: ValidationResult = response.parsed  # type: ignore
 
             if result.is_valid is False:

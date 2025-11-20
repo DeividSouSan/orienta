@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify, make_response, request, g
 
-from firebase_admin import firestore
 
-from src.models import guide, user
+from src.models import guide
 from src.utils import protected
 
 guides_bp = Blueprint("guides", __name__)
@@ -12,6 +11,7 @@ guides_bp = Blueprint("guides", __name__)
 @protected
 def create():
     data = request.get_json()
+
     guide_inputs = {
         "topic": data.get("topic", ""),
         "knowledge": data.get("knowledge", ""),
@@ -21,7 +21,7 @@ def create():
 
     model_inputs = {
         "model": data.get("model", ""),
-        "temperature": data.get("temperature", 2),
+        "temperature": data.get("temperature", 2.0),
     }
 
     study_guide: dict = guide.generate_with_metadata(
@@ -32,6 +32,8 @@ def create():
     )
 
     guide.save(study_guide)
+
+    print("O resultado é: ", study_guide)
 
     return make_response(
         jsonify(
@@ -51,21 +53,26 @@ def delete(guide_id: str):
     )
 
 
-@guides_bp.route("/guides/<string:username>", methods=["GET"])
+@guides_bp.route("/guides/<string:guide_id>", methods=["GET"])
 @protected
-def get_public_guides_by_username(username: str):
-    found_user = user.find_by_username(username)
+def get_guides_by_id(guide_id: str):
+    # recuperar o guia por id
+    study_guide = guide.find_guide_by_id(guide_id)
 
-    user_guides: list[dict] = guide.find_by_username(
-        found_user["username"], only_public=True
-    )
+    return {"message": "Guia recuperado com sucesso.", "data": study_guide}
+
+
+@guides_bp.route("/guideline/<string:guide_id>", methods=["GET"])
+@protected
+def get_guideline_by_id(guide_id: str):
+    user_guides: list[dict] = guide.find_guideline_by_id(guide_id)
 
     return make_response(
-        {"message": "Guias recuperados com sucesso.", "data": user_guides}, 200
+        {"message": "Guideline recuperada com sucesso.", "data": user_guides}, 200
     )
 
 
-@guides_bp.route("/my-guides", methods=["GET"])
+@guides_bp.route("/guides", methods=["GET"])
 @protected
 def get_my_guides():
     user_guides: list[dict] = guide.find_by_username(g.username)
@@ -75,22 +82,18 @@ def get_my_guides():
     )
 
 
-@guides_bp.route("/guides/<string:id>/<int:day>", methods=["POST"])
-def toggle_complete(id: str, day: int):
-    db = firestore.client()
+@guides_bp.route("/guides/<string:guide_id>", methods=["PATCH"])
+@protected
+def toggle_complete(guide_id: str):
+    data = request.get_json()
 
-    study_day_ref = (
-        db.collection("study_guides")
-        .document(id)
-        .collection("daily_plans")
-        .document(f"Study_{day}")
+    new_studies_list = data.get("new_studies_list", "")
+    db_studies_data: list = guide.update_studies(guide_id, new_studies_list, g.username)
+
+    return make_response(
+        {
+            "message": "O estado da Studies List foi alterado com sucesso!",
+            "data": db_studies_data,
+        },
+        200,
     )
-
-    study_day = study_day_ref.get()
-
-    if study_day.to_dict().get("done", False):
-        study_day_ref.update({"done": False})
-    else:
-        study_day_ref.update({"done": True})
-
-    return jsonify(study_day_ref.get().to_dict())

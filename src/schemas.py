@@ -1,6 +1,6 @@
 # Schemas used for LLM Output Formats
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class DailyStudySchema(BaseModel):
@@ -10,6 +10,9 @@ class DailyStudySchema(BaseModel):
     learning verification methods.
     """
 
+    model_config = ConfigDict(
+        populate_by_name=True
+    )  # permite acessar as chaves pelo nome e pelo alias
     day: int = Field(
         ...,
         description="O número do dia no plano de estudos.",
@@ -50,3 +53,4 @@ class DailyStudySchema(BaseModel):
             "example": "Como a modelagem pode ser aplicada em diferentes contextos?"
         },
     )
+    completed: bool = False
