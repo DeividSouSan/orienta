@@ -47,11 +47,12 @@ def test_generate_guide_with_specific_model(mock_session):
             "focus_time": 60,
             "days": 3,
             "model": "gemini-2.5-flash-lite",
-            "temperature": 0,
+            "temperature": 1.0,
         },
     )
 
     response_body = response.json()
+    print(response_body)
     assert response_body == {
         "message": "Guia de estudos gerado com sucesso.",
         "data": {
@@ -63,7 +64,7 @@ def test_generate_guide_with_specific_model(mock_session):
                 "days": 3,
             },
             "model": "gemini-2.5-flash-lite",
-            "temperature": 0,
+            "temperature": 1.0,
             "generation_time_seconds": response_body["data"]["generation_time_seconds"],
             "daily_study": response_body["data"]["daily_study"],
             "created_at": response_body["data"]["created_at"],
