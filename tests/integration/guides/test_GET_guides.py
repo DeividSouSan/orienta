@@ -10,6 +10,7 @@ API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
 
 def test_get_my_guides(mock_session):
     new_guide = guide.generate_with_metadata(
+        title="Test GET My Guides",
         owner="mock",
         inputs={
             "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
@@ -34,6 +35,6 @@ def test_get_my_guides(mock_session):
         "days": 3,
         "id": new_guide_id,
         "status": "studying",
-        "title": f"Guia: {new_guide_id}",
+        "title": "Test GET My Guides",
         "topic": response_body["data"][0]["topic"],
     }

@@ -9,6 +9,7 @@ API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
 
 def test_delete_guide_with_valid_id(mock_session):
     guide_data = guide.generate_with_metadata(
+        title="Test DELETE Method",
         owner="mock",
         inputs={
             "topic": "Eu gostaria de estudar sobe o Brasil colônia. Gostaria de entender o básico do que aconteceu.",

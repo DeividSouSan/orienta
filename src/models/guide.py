@@ -205,10 +205,8 @@ def save(guide_info: dict) -> str:
         guide_doc_ref = guides_collection_ref.document()
         guide_doc_ref.set(
             {
-                "title": f"Guia: {guide_doc_ref.id}",
-                "completed_days": 0,
-                "status": "studying",
                 **guide_info,
+                "status": "studying",
             }
         )
 
@@ -241,8 +239,7 @@ def generate_with_model(
                 "temperature": temperature,
             },
         )
-        print("Chegou aqui.")
-        print("Veja: ", response.parsed)
+        print("Resposta: ", response)
         return response.parsed
     except Exception as error:
         raise ServiceError(
@@ -300,28 +297,32 @@ def generate_with_fallback(
 
 def generate_with_metadata(
     owner: str,
+    title: str,
     inputs: dict,
     model: str = "",
     is_public: bool = False,
     temperature: float = 2.0,
 ) -> dict:
+    if not title:
+        raise ValidationError(
+            "O título não pode ser vazio.",
+            "Preencha o título do guia e tente novamente.",
+        )
+
     start_time = datetime.now()
 
     user_prompt = prompt.make(inputs)
 
-    print("Antes aconteceu: ", model, temperature)
-
     if model:
-        print("Entrou aqui e chamou o modelo ", model)
-        print("TEmperatura, ", type(temperature))
         daily_study = generate_with_model(user_prompt, model, temperature)
     else:
         daily_study, model = generate_with_fallback(user_prompt)
 
     finished_time = datetime.now()
-    print("Aconteceu o daily_study: ", daily_study)
+
     return {
         "owner": owner,
+        "title": title,
         "inputs": inputs,
         "model": model,
         "temperature": temperature,

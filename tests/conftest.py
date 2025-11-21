@@ -107,6 +107,7 @@ def add_mock_user_and_guides(
 
     guide1 = guide.generate_with_metadata(
         owner="test",
+        title="Guia do Test 1",
         is_public=True,
         inputs={
             "topic": "Eu quero entender o que são os workers que eu tenho que configurar no gunicorn.",
@@ -118,6 +119,7 @@ def add_mock_user_and_guides(
 
     guide2 = guide.generate_with_metadata(
         owner="test",
+        title="Guia do Test 2",
         is_public=False,
         inputs={
             "topic": "Quero compreender como o cérebro humano é capaz de gerar sua própria eletricidade.",
