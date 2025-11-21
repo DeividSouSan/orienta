@@ -142,7 +142,7 @@ def validate_knowledge(knowledge) -> None:
     if not isinstance(knowledge, str):
         raise ValidationError("O conhecimento deve ser um texto.")
 
-    if knowledge not in ["zero", "iniciante", "intermediário"]:
+    if knowledge not in ["zero", "iniciante", "intermediario"]:
         raise ValidationError(
             "O conhecimento deve ser 'zero', 'iniciante' ou 'intermediário'.",
             "Preencha o campo 'knowledge' corretamente e tente novamente.",
