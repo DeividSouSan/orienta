@@ -12,23 +12,24 @@ guides_bp = Blueprint("guides", __name__)
 def create():
     data = request.get_json()
 
-    guide_inputs = {
-        "topic": data.get("topic", ""),
-        "knowledge": data.get("knowledge", ""),
-        "focus_time": data.get("focus_time", ""),
-        "days": data.get("days", ""),
-    }
-
-    model_inputs = {
-        "model": data.get("model", ""),
+    guide_info = {
+        "title": data.get("title", ""),
         "temperature": data.get("temperature", 2.0),
+        "model": data.get("model", ""),
+        "inputs": {
+            "topic": data.get("topic", ""),
+            "knowledge": data.get("knowledge", ""),
+            "focus_time": data.get("focus_time", ""),
+            "days": data.get("days", ""),
+        },
     }
 
     study_guide: dict = guide.generate_with_metadata(
         owner=g.username,
-        inputs=guide_inputs,
-        model=model_inputs["model"],
-        temperature=model_inputs["temperature"],
+        title=guide_info["title"],
+        inputs=guide_info["inputs"],
+        model=guide_info["model"],
+        temperature=guide_info["temperature"],
     )
 
     guide.save(study_guide)

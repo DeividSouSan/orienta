@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 import os
-from time import sleep
 from src.models import user
 from src.models import guide
 
@@ -11,6 +10,7 @@ API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
 def test_get_guide(mock_session):
     user.create(username="ava", email="ava@orienta.com", password="123456")
     new_guide = guide.generate_with_metadata(
+        title="Guide from Ava",
         owner="ava",
         inputs={
             "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
@@ -22,9 +22,6 @@ def test_get_guide(mock_session):
 
     guide.save(new_guide)
 
-    sleep(10)
-
-    print("Até aqui foi o guia foi salvo.")
     guide_from_db = guide.find_by_username("ava")
     assert len(guide_from_db) == 1
 
@@ -38,13 +35,12 @@ def test_get_guide(mock_session):
     assert response_body == {
         "message": "Guia recuperado com sucesso.",
         "data": {
-            "title": f"Guia: {new_guide_id}",
+            "title": "Guide from Ava",
             "model": response_body["data"].get("model", ""),
             "is_public": False,
             "owner": "ava",
             "status": "studying",
-            "temperature": 2,
-            "completed_days": 0,
+            "temperature": 2.0,
             "created_at": response_body["data"].get("created_at", ""),
             "generation_time_seconds": response_body["data"].get(
                 "generation_time_seconds", ""

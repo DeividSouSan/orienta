@@ -10,6 +10,7 @@ API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
 
 def test_update_studies_on_valid_guide(mock_session):
     new_guide = guide.generate_with_metadata(
+        title="Test PATCH",
         owner="mock",
         inputs={
             "topic": "Eu quero estudar sobre desenvolvimento backend com foco em Python.",
@@ -124,6 +125,7 @@ def test_update_studies_with_unauthorized_user():
     cookie = session.create(user_data["idToken"])
 
     new_guide = guide.generate_with_metadata(
+        title="Tes Unauthorized PATCH",
         owner="mock",
         inputs={
             "topic": "Eu quero estudar sobre desenvolvimento backend com foco em Python.",
@@ -197,6 +199,7 @@ def test_update_studies_with_unauthorized_user():
 
 def test_update_studies_with_completed_guide(mock_session):
     new_guide = guide.generate_with_metadata(
+        title="Completed Guide PATCH",
         owner="mock",
         inputs={
             "topic": "Eu quero estudar sobre desenvolvimento backend com foco em Python.",
