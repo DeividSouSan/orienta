@@ -6,6 +6,7 @@ from src.api.v1.sessions import session_bp
 from src.api.v1.guides import guides_bp
 from src.api.v1.users import users_bp
 from src.api.v1.validate import validations_bp
+from src.api.v1.status import status_bp
 from src.utils import initialize_app
 
 import traceback
@@ -34,6 +35,7 @@ app = Flask(__name__)
 
 
 # Register blueprints
+app.register_blueprint(blueprint=status_bp, url_prefix="/api/v1")
 app.register_blueprint(blueprint=user_bp, url_prefix="/api/v1")
 app.register_blueprint(blueprint=users_bp, url_prefix="/api/v1")
 app.register_blueprint(blueprint=session_bp, url_prefix="/api/v1")
