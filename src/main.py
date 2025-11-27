@@ -6,7 +6,7 @@ from src.api.v1.sessions import session_bp
 from src.api.v1.guides import guides_bp
 from src.api.v1.users import users_bp
 from src.api.v1.validate import validations_bp
-from src.utils import validate_config, initialize_app
+from src.utils import initialize_app
 
 import traceback
 from flask import Response, jsonify, make_response
@@ -24,7 +24,6 @@ from src.errors import (
 
 # Check environment variables and initialize firebase
 try:
-    validate_config()
     initialize_app()
 except EnvironmentError as e:
     print(f"Falha na inicialização: {e}")
