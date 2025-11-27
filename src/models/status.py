@@ -8,6 +8,5 @@ def check() -> str | None:
         doc_ref.get()
 
         return "Online"
-    except Exception as error:
-        print(error)
+    except Exception:
         return "Offline"
