@@ -3,7 +3,7 @@ import traceback
 from firebase_admin import auth, exceptions, firestore
 from firebase_admin.auth import UserRecord
 from google.cloud.firestore_v1.base_query import FieldFilter
-from src.errors import ConflictError, NotFoundError, ServiceError, ValidationError
+from errors import ConflictError, NotFoundError, ServiceError, ValidationError
 
 
 def find_by_username(username: str):

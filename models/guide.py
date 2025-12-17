@@ -3,13 +3,13 @@ from typing import Any
 from google import genai
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
-from src.schemas import DailyStudySchema
+from schemas import DailyStudySchema
 
-from src.errors import NotFoundError, ServiceError, UnauthorizedError, ValidationError
-from src.models import prompt
+from errors import NotFoundError, ServiceError, UnauthorizedError, ValidationError
+from models import prompt
 import google.genai.errors as genai_errors
 
-from src.utils import load_prompt
+from utils import load_prompt
 from pydantic import TypeAdapter
 from pydantic import ValidationError as PydValidationError
 from typing import List

@@ -8,7 +8,7 @@ from firebase_admin import firestore
 import firebase_admin
 import requests
 
-from src.models import user, guide, auth, session
+from models import user, guide, auth, session
 
 load_dotenv()
 

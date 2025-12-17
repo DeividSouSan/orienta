@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
-from src.errors import ServiceError, ValidationError
+from errors import ServiceError, ValidationError
 from google import genai
 from pydantic import BaseModel, Field
 import google.genai.errors as genai_errors
-from src.utils import load_prompt
+from utils import load_prompt
 
 load_dotenv()
 

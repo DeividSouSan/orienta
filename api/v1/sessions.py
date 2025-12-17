@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, Response, jsonify, make_response, request
 
-from src.models import auth, session
+from models import auth, session
 from dotenv import load_dotenv
 
 load_dotenv()

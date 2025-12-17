@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, make_response, request, g
 
 
-from src.models import guide
-from src.utils import protected
+from models import guide
+from utils import protected
 
 guides_bp = Blueprint("guides", __name__)
 

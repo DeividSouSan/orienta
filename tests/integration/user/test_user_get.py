@@ -2,7 +2,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-from src.models import auth, session, user
+from models import auth, session, user
 
 load_dotenv()
 

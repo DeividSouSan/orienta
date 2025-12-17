@@ -1,6 +1,6 @@
 from flask import Blueprint, Response, jsonify, make_response
 
-from src.models import status
+from models import status
 
 status_bp = Blueprint("status", __name__)
 

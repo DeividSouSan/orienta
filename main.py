@@ -1,18 +1,18 @@
 import sys
 from flask import Flask
 
-from src.api.v1.user import user_bp
-from src.api.v1.sessions import session_bp
-from src.api.v1.guides import guides_bp
-from src.api.v1.users import users_bp
-from src.api.v1.validate import validations_bp
-from src.api.v1.status import status_bp
-from src.utils import initialize_app
+from api.v1.user import user_bp
+from api.v1.sessions import session_bp
+from api.v1.guides import guides_bp
+from api.v1.users import users_bp
+from api.v1.validate import validations_bp
+from api.v1.status import status_bp
+from utils import initialize_app
 
 import traceback
 from flask import Response, jsonify, make_response
 
-from src.errors import (
+from errors import (
     InternalServerError,
     MethodNotAllowed,
     NotFoundError,

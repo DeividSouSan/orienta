@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, make_response, request
 
-from src.models import prompt
-from src.utils import protected
+from models import prompt
+from utils import protected
 
 validations_bp = Blueprint("validate", __name__)
 

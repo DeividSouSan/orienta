@@ -51,7 +51,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           ENVIRONMENT: Actions
-          FLASK_APP: src.main
+          FLASK_APP: main
         run: |
           flask run &
 

@@ -5,8 +5,8 @@ import firebase_admin
 from firebase_admin import firestore
 from flask import request, g
 
-from src.errors import UnauthorizedError
-from src.models import session
+from errors import UnauthorizedError
+from models import session
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -161,7 +161,7 @@ def format_date(date):
 def load_prompt(file_name: str) -> str:
     """Carrega um arquivo de prompt da pasta /prompts."""
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    prompt_path = os.path.join(base_dir, "src/prompts", file_name)
+    prompt_path = os.path.join(base_dir, "prompts", file_name)
     print(prompt_path)
     try:
         with open(prompt_path, "r", encoding="utf-8") as f:

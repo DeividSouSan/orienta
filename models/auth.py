@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 import requests
-from src.errors import UnauthorizedError, ServiceError, ValidationError
+from errors import UnauthorizedError, ServiceError, ValidationError
 
 load_dotenv()
 

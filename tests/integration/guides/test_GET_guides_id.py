@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
-from src.models import user
-from src.models import guide
+from models import user
+from models import guide
 
 load_dotenv()
 API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")

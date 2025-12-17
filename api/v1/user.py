@@ -1,8 +1,8 @@
 from flask import Blueprint, Response, jsonify, make_response, g
 
-from src.utils import protected
-from src.errors import UnauthorizedError
-from src.models import user
+from utils import protected
+from errors import UnauthorizedError
+from models import user
 
 user_bp = Blueprint("user", __name__)
 
