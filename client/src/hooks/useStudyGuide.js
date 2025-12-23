@@ -10,24 +10,22 @@ export function useStudyGuide(guideId) {
     useEffect(() => {
         async function getGuide() {
             if (!guideId) return;
-
             try {
-                const response = await fetch(`/api/guides/${guideId}`, {
+                const response = await fetch(`/api/v1/guides/${guideId}`, {
                     method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
                     credentials: "include",
                 });
 
-                const responseBody = await response.json();
-                console.log(responseBody);
-                setGuide(responseBody.data);
-                lastSavedBatch.current = JSON.stringify(
-                    responseBody.data.daily_study,
-                );
+                if (response.ok) {
+                    const responseBody = await response.json();
+                    console.log(responseBody);
+                    setGuide(responseBody.data);
+                    lastSavedBatch.current = JSON.stringify(
+                        responseBody.data.daily_study,
+                    );
+                }
             } catch (error) {
-                console.log("Erro ao buscar o guia: ", error);
+                console.error("Erro ao buscar o guia: ", error);
             } finally {
                 setIsLoading(false);
             }
@@ -58,7 +56,7 @@ export function useStudyGuide(guideId) {
             setIsSavingBatch(true);
 
             try {
-                await fetch(`/api/guides/${guideId}`, {
+                await fetch(`/api/v1/guides/${guideId}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",

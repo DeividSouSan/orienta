@@ -13,7 +13,6 @@ def test_get_status():
     assert response.status_code in [200, 503]
 
     response_body = response.json()
-    print(response_body)
 
     assert "status" in response_body["data"]
     assert response_body["data"]["status"] in ["Online", "Offline"]

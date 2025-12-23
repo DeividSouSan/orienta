@@ -1,6 +1,6 @@
 "use client";
 
-import { useMessage } from "@/contexts/MessageContext";
+import { useMessage } from "@/hooks/useMessage";
 import { ToastMessage } from "./toast-message";
 import { useState, useEffect } from "react";
 
@@ -16,7 +16,6 @@ export function MessageContainer() {
             }));
             setDisplayedMessages(newMessages);
 
-            // Auto-remove message after 5 seconds
             const timer = setTimeout(() => {
                 setDisplayedMessages([]);
                 clear();
@@ -25,6 +24,10 @@ export function MessageContainer() {
             return () => clearTimeout(timer);
         }
     }, [messages, clear]);
+
+    useEffect(() => {
+        console.log("Displayed Messages:", displayedMessages);
+    }, [displayedMessages]);
 
     const handleClose = (id) => {
         setDisplayedMessages((prev) =>

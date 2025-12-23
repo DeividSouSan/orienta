@@ -31,28 +31,25 @@ export default function RootLayout({ children }) {
         <html lang="pt-br" suppressHydrationWarning>
             <body
                 className={cn(
-                    "font-sans antialiased ",
+                    "font-sans antialiased min-h-screen flex flex-col",
                     lato.variable,
                     lora.variable,
                 )}
             >
-                <div className="flex flex-col min-h-screen">
-                    <MessageProvider>
-                        <MessageContainer />
-                        <AuthProvider>
-                            <Header />
-                            <main className="flex-1 flex">{children}</main>
-                        </AuthProvider>
-                    </MessageProvider>
-                    <footer className="bg-white border border-t-2 py-4">
-                        <div className="max-w-5xl mx-auto px-4 text-center text-gray-500 text-sm">
-                            <p>
-                                &copy; 2025 Orienta. Todos os direitos
-                                reservados.
-                            </p>
-                        </div>
-                    </footer>
-                </div>
+                <MessageProvider>
+                    <MessageContainer />
+                    <AuthProvider>
+                        <Header />
+                        <main className="flex-1">{children}</main>
+                    </AuthProvider>
+                </MessageProvider>
+                <footer className="bg-white border border-t-2 py-4">
+                    <div className="max-w-5xl mx-auto px-4 text-center text-gray-500 text-sm">
+                        <p>
+                            &copy; 2025 Orienta. Todos os direitos reservados.
+                        </p>
+                    </div>
+                </footer>
             </body>
         </html>
     );

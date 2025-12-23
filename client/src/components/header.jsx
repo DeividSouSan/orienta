@@ -4,11 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavigationMenu, NavigationMenuLink } from "./ui/navigation-menu";
 
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
-import { useMessage } from "@/contexts/MessageContext";
+import { useMessage } from "@/hooks/useMessage";
 import { LogOut, BookOpen, PlusCircle } from "lucide-react";
-import { Spinner } from "./ui/spinner";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -33,11 +32,13 @@ const authenticatedRoutes = [
 
 export default function Header() {
     const router = useRouter();
-    const { isAuthenticated, user, loading, logout } = useAuth();
+    const { isAuthenticated, currentUser, isLoading, logout } = useAuth();
     const { messages, addMessage, clear } = useMessage();
 
     const pathname = usePathname();
-    const isActive = (route) => pathname === route.href;
+    const normalizedPathname =
+        pathname === "/" ? "/" : pathname.replace(/\/$/, "");
+    const isActive = (route) => normalizedPathname === route.href;
 
     const handleLogout = async () => {
         await fetch("/api/v1/sessions", {
@@ -57,14 +58,13 @@ export default function Header() {
                 </Link>
             </div>
             <nav>
-                {loading ? (
-                    <Spinner />
-                ) : (
+                {isLoading ? null : (
                     <>
                         {isAuthenticated ? (
                             <div className="flex flex-row justify-center items-center gap-3 sm:gap-8 animate-fade-in">
                                 <span className="cursor-default hidden md:block text-sm sm:text-base">
-                                    Bem vindo, <strong>{user.username}</strong>
+                                    Bem vindo,{" "}
+                                    <strong>{currentUser.username}</strong>
                                 </span>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="border-1 px-3 sm:px-4 py-1 shadow-2xs rounded-sm cursor-pointer text-sm sm:text-base">
@@ -86,10 +86,11 @@ export default function Header() {
                                                                 href={
                                                                     route.href
                                                                 }
-                                                                className={`cursor-pointer flex flex-row gap-2 items-center px-3 sm:px-4 py-2 rounded-xs transition-colors text-sm sm:text-base ${active
+                                                                className={`cursor-pointer flex flex-row gap-2 items-center px-3 sm:px-4 py-2 rounded-xs transition-colors text-sm sm:text-base ${
+                                                                    active
                                                                         ? "bg-button-focus text-white font-bold"
                                                                         : "data-[active=true]:bg-accent data-[active=true]:text-accent-foreground hover:bg-accent/50"
-                                                                    }`}
+                                                                }`}
                                                             >
                                                                 <Icon
                                                                     size={18}

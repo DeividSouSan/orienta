@@ -10,14 +10,24 @@ import {
     CardTitle,
 } from "./ui/card";
 
-export function ConfirmDialog({ title, description, onConfirm, onCancel, isLoading = false }) {
+export function ConfirmDialog({
+    title,
+    description,
+    onConfirm,
+    onCancel,
+    isLoading = false,
+}) {
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <Card className="w-full max-w-sm">
                 <CardHeader className="pb-3">
-                    <CardTitle className="text-lg sm:text-xl">{title}</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl">
+                        {title}
+                    </CardTitle>
                     {description && (
-                        <CardDescription className="text-xs sm:text-sm mt-2">{description}</CardDescription>
+                        <CardDescription className="text-xs sm:text-sm mt-2">
+                            {description}
+                        </CardDescription>
                     )}
                 </CardHeader>
                 <CardFooter className="flex gap-2 justify-end flex-col-reverse sm:flex-row">

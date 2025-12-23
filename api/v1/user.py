@@ -12,9 +12,17 @@ user_bp = Blueprint("user", __name__)
 def get_user() -> Response:
     if not g.get("username"):
         raise UnauthorizedError(
-            "Usuário não autenticado.", "Faça login para continuar."
+            message="Usuário não autenticado.", action="Faça login para continuar."
         )
 
-    currentUser = user.find_by_username(g.username)
+    current_user = user.find_by_username(g.username)
 
-    return make_response(jsonify(currentUser), 200)
+    return make_response(
+        jsonify(
+            {
+                "message": "Usuário atual recuperado com sucesso.",
+                "data": {"user": current_user},
+            }
+        ),
+        200,
+    )

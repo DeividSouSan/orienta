@@ -1,10 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 
 const MessageContext = createContext({
     messages: [],
     addMessage: () => {},
+    successMessage: () => {},
+    errorMessage: () => {},
     clear: () => {},
 });
 
@@ -15,6 +17,19 @@ export const MessageProvider = ({ children }) => {
         setMessages((prevMessages) => [...prevMessages, message]);
     };
 
+    const successMessage = (text) => {
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            { type: "success", text },
+        ]);
+    };
+    const errorMessage = (text) => {
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            { type: "error", text },
+        ]);
+    };
+
     const clear = () => {
         setMessages([]);
     };
@@ -22,6 +37,8 @@ export const MessageProvider = ({ children }) => {
     const value = {
         messages,
         addMessage,
+        successMessage,
+        errorMessage,
         clear,
     };
 
@@ -32,4 +49,4 @@ export const MessageProvider = ({ children }) => {
     );
 };
 
-export const useMessage = () => useContext(MessageContext);
+export { MessageContext };

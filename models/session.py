@@ -78,7 +78,7 @@ def verify_cookie(
             "Ocorreu um erro ao verificar a sessão: sessão expirada ou revogada."
         ) from error
     except auth.InvalidSessionCookieError as error:
-        raise ServiceError(
+        raise UnauthorizedError(
             "Ocorreu um erro ao validar o cookie de sessão. O cookie não é um cookie de sessão do Firebase válido."
         ) from error
     except auth.CertificateFetchError as error:

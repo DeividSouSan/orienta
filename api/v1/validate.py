@@ -8,7 +8,7 @@ validations_bp = Blueprint("validate", __name__)
 
 @validations_bp.route("/validate/topic", methods=["POST"])
 @protected
-def create():
+def validate():
     data = request.get_json()
     topic = data.get("topic", "")
 
@@ -16,6 +16,13 @@ def create():
     prompt.validate_relevance(topic)
 
     return make_response(
-        jsonify({"message": "O tópico é válido."}),
-        201,
+        jsonify(
+            {
+                "message": "O tópico é válido.",
+                "data": {
+                    "topic": topic,
+                },
+            }
+        ),
+        200,
     )

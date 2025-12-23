@@ -18,7 +18,7 @@ def test_create_session_with_valid_data():
     assert "session_id" in response.cookies
 
     body = response.json()
-    print("o corpo é: ", body)
+
     assert body == {
         "message": "Sessão criada com sucesso.",
         "data": {

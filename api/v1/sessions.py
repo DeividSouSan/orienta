@@ -1,6 +1,7 @@
 import os
 from flask import Blueprint, Response, jsonify, make_response, request
 
+from errors import UnauthorizedError
 from models import auth, session
 from dotenv import load_dotenv
 

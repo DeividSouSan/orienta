@@ -55,7 +55,7 @@ def find_by_email(username: str):
     Returns:
         dict[str, str]: os dados do usuário consultado.
     """
-    print(username)
+
     pass
 
 

@@ -20,8 +20,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SpinnerButton } from "./ui/spinner-button";
-import { useAuth } from "@/contexts/AuthContext";
-import { useMessage } from "@/contexts/MessageContext";
+import { useAuth } from "@/hooks/useAuth";
+import { useMessage } from "@/hooks/useMessage";
 
 export function LoginForm({ className, ...props }) {
     const router = useRouter();

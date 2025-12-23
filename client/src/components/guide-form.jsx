@@ -1,14 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Field,
     FieldDescription,
@@ -23,13 +16,12 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SpinnerButton } from "./ui/spinner-button";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Textarea } from "./ui/textarea";
-import { ArrowBigLeftDash, RotateCcw, Sparkles } from "lucide-react";
+import { ArrowLeft, RotateCcw, Sparkles } from "lucide-react";
 import { Progress } from "./ui/progress";
-import { ErrorAlert } from "./error-alert";
+import { useMessage } from "@/hooks/useMessage";
 
-// Constantes de validação
 const VALIDATION_LIMITS = {
     TITLE_MIN: 3,
     TITLE_MAX: 40,
@@ -41,161 +33,170 @@ const VALIDATION_LIMITS = {
     DAYS_MAX: 30,
 };
 
-export function GuideForm({ className, ...props }) {
-    const { logout } = useAuth();
+export function GuideForm() {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [step, setStep] = useState(1);
 
-    // Form state
-    const [title, setTitle] = useState("");
-    const [topic, setTopic] = useState("");
-    const [knowledge, setKnowledge] = useState("zero");
-    const [focusTime, setFocusTime] = useState(30);
-    const [days, setDays] = useState(3);
+    const { messages, errorMessage } = useMessage();
+    const { logout } = useAuth();
 
-    function nextForm(e) {
-        e.preventDefault();
-        setStep(step + 1);
-    }
+    const [isGenerating, setIsGenerating] = useState(false);
 
-    function previousForm(e) {
-        e.preventDefault();
-        setStep(step - 1);
-    }
+    const [currentStep, setCurrentStep] = useState(1);
+    const progressPercentage = (currentStep / 3) * 100;
 
-    function resetForm(e) {
-        e.preventDefault();
-        setTitle("");
-        setTopic("");
-        setKnowledge("zero");
-        setFocusTime(30);
-        setDays(3);
-        setStep(1);
-        setError("");
-    }
+    const [formData, setFormData] = useState({
+        title: "",
+        topic: "",
+        knowledgeLevel: null,
+        focusTime: 30,
+        days: 7,
+    });
 
-    async function validateTopicRelevance(event) {
-        if (!validateStep1()) {
-            return;
-        }
+    const handleNext = async () => {
+        console.log("O passo atual é: ", currentStep);
+        if (currentStep === 1) {
+            if (!stepOneValidation()) return;
 
-        setLoading(true);
+            setIsGenerating(true);
+            try {
+                const response = await callValidateTopicAPI();
+                const body = await response.json();
 
-        try {
-            const response = await fetch("/api/v1/validate/topic", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    topic: topic,
-                }),
-            });
-
-            const responseBody = await response.json();
-
-            if (response.ok) {
-                setLoading(false);
-                nextForm(event);
-            } else {
-                if (response.status === 401) {
-                    logout();
-                    router.push("/login");
+                if (!response.ok) {
+                    if (response.status === 401 && body.code === 401) {
+                        errorMessage(body.message);
+                        logout();
+                        return router.push("/login");
+                    }
+                    errorMessage(body.message);
+                    return;
                 }
-                setLoading(false);
-                setError(
-                    responseBody.message || "Tópico não aprovado. Tente outro.",
+            } catch (error) {
+                errorMessage(
+                    "Não conseguimos validar seu tópico. Tente novamente.",
                 );
+                return;
+            } finally {
+                setIsGenerating(false);
             }
-        } catch (error) {
-            setLoading(false);
-            setError(
-                "Não conseguimos validar seu tópico. Verifique sua conexão e tente novamente.",
-            );
+
+            async function callValidateTopicAPI() {
+                const response = await fetch("/api/v1/validate/topic", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        topic: formData.topic,
+                    }),
+                });
+
+                return response;
+            }
+        } else if (currentStep === 2) {
+            if (formData.knowledgeLevel === null) return;
+        } else if (currentStep === 3) {
+            const parsedFocusTime = parseInt(formData.focusTime) || 0;
+            if (
+                !parsedFocusTime ||
+                parsedFocusTime < VALIDATION_LIMITS.FOCUS_TIME_MIN
+            ) {
+                errorMessage(
+                    `Você precisa dedicar no mínimo ${VALIDATION_LIMITS.FOCUS_TIME_MIN} minutos por dia.`,
+                );
+                return;
+            }
+
+            if (parsedFocusTime > VALIDATION_LIMITS.FOCUS_TIME_MAX) {
+                errorMessage(
+                    `O máximo de tempo é ${VALIDATION_LIMITS.FOCUS_TIME_MAX} minutos por dia.`,
+                );
+                return;
+            }
+
+            const parsedDays = parseInt(formData.days) || 0;
+            if (!parsedDays || parsedDays < VALIDATION_LIMITS.DAYS_MIN) {
+                errorMessage(
+                    `Seu guia precisa ter no mínimo ${VALIDATION_LIMITS.DAYS_MIN} dias.`,
+                );
+                return;
+            }
+
+            if (parsedDays > VALIDATION_LIMITS.DAYS_MAX) {
+                errorMessage(
+                    `O máximo de dias é ${VALIDATION_LIMITS.DAYS_MAX}.`,
+                );
+                return;
+            }
         }
-    }
 
-    function validateStep1() {
-        setError("");
+        console.log("Agora aumentando o currentStep");
+        if (currentStep < 3) {
+            setCurrentStep((prev) => prev + 1);
+            console.log("O currentStep é agora: ", currentStep);
+        } else {
+            handleGenerate();
+        }
+    };
 
-        const trimmedTitle = title.trim();
-        const trimmedTopic = topic.trim();
+    const handleBack = () => {
+        if (currentStep > 1) {
+            setCurrentStep((prev) => prev - 1);
+        } else {
+            router.push("/");
+        }
+    };
+
+    const handleRestart = () => {
+        setFormData({
+            title: "",
+            topic: "",
+            knowledgeLevel: null,
+            dailyMinutes: 30,
+            totalDays: 7,
+        });
+        setCurrentStep(1);
+    };
+
+    const stepOneValidation = () => {
+        const trimmedTitle = formData.title.trim();
+        const trimmedTopic = formData.topic.trim();
 
         if (!trimmedTitle) {
-            setError("Qual é o título do seu estudo?");
+            errorMessage("Qual é o título do seu estudo?");
             return false;
         }
 
         if (trimmedTitle.length < VALIDATION_LIMITS.TITLE_MIN) {
-            setError(
+            errorMessage(
                 `O título precisa ter pelo menos ${VALIDATION_LIMITS.TITLE_MIN} caracteres.`,
             );
             return false;
         }
 
         if (!trimmedTopic) {
-            setError("Conte-nos sobre o que você quer estudar.");
+            errorMessage("Conte-nos sobre o que você quer estudar.");
             return false;
         }
 
         if (trimmedTopic.length < VALIDATION_LIMITS.TOPIC_MIN) {
-            setError("Descreva melhor seu tópico (mínimo 10 caracteres).");
+            errorMessage("Descreva melhor seu tópico (mínimo 10 caracteres).");
             return false;
         }
 
         return true;
-    }
+    };
 
-    async function submit(e) {
-        e.preventDefault();
-
-        // Validação centralizada dentro do submit
-        setError("");
-
-        // Validar focusTime
-        const parsedFocusTime = parseInt(focusTime) || 0;
-        if (
-            !parsedFocusTime ||
-            parsedFocusTime < VALIDATION_LIMITS.FOCUS_TIME_MIN
-        ) {
-            setError(
-                `Você precisa dedicar no mínimo ${VALIDATION_LIMITS.FOCUS_TIME_MIN} minutos por dia.`,
-            );
-            return;
-        }
-
-        if (parsedFocusTime > VALIDATION_LIMITS.FOCUS_TIME_MAX) {
-            setError(
-                `O máximo de tempo é ${VALIDATION_LIMITS.FOCUS_TIME_MAX} minutos por dia.`,
-            );
-            return;
-        }
-
-        // Validar days
-        const parsedDays = parseInt(days) || 0;
-        if (!parsedDays || parsedDays < VALIDATION_LIMITS.DAYS_MIN) {
-            setError(
-                `Seu guia precisa ter no mínimo ${VALIDATION_LIMITS.DAYS_MIN} dias.`,
-            );
-            return;
-        }
-
-        if (parsedDays > VALIDATION_LIMITS.DAYS_MAX) {
-            setError(`O máximo de dias é ${VALIDATION_LIMITS.DAYS_MAX}.`);
-            return;
-        }
-
-        setLoading(true);
+    async function handleGenerate() {
+        setIsGenerating(true);
 
         const guideInputs = {
-            title: title.trim(),
-            topic: topic.trim(),
-            knowledge: knowledge,
-            focus_time: parsedFocusTime,
-            days: parsedDays,
+            title: formData.title.trim(),
+            topic: formData.topic.trim(),
+            knowledge: formData.knowledgeLevel,
+            focus_time: parseInt(formData.focusTime),
+            days: parseInt(formData.days),
         };
 
         try {
@@ -208,308 +209,290 @@ export function GuideForm({ className, ...props }) {
                 body: JSON.stringify(guideInputs),
             });
 
-            if (response.ok) {
-                router.push("/dashboard/my-guides");
-            } else {
-                if (response.status === 401) {
+            const body = await response.json();
+
+            if (response.ok) return router.push("/dashboard/my-guides");
+            else {
+                if (response.status === 401 && body.status === 401) {
+                    errorMessage(body.message);
                     logout();
-                    router.push("/login");
-                    return;
+                    return router.push("/login");
                 }
-                const responseBody = await response.json();
-                setError(
-                    responseBody.message ||
-                    "Não conseguimos gerar seu guia. Tente novamente.",
-                );
-                setLoading(false);
+                errorMessage(body.message);
             }
         } catch (error) {
-            setError("Erro ao conectar com o servidor. Verifique sua conexão.");
-            setLoading(false);
-        }
-    }
-
-    function renderGuideSteps() {
-        if (step === 1) {
-            // Formulário 1: Tópico
-            const hasError = error !== "";
-            return (
-                <FieldGroup>
-                    <Field className="animate-fade-in animation-delay-400">
-                        <FieldLabel
-                            htmlFor="title"
-                            className="text-sm sm:text-base"
-                        >
-                            Dê um nome para esse seu novo estudo
-                        </FieldLabel>
-                        <Input
-                            id="title"
-                            type="text"
-                            placeholder="Ex.: Estudo sobre a Segunda Guerra Mundial"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            maxLength={VALIDATION_LIMITS.TITLE_MAX}
-                            className={`text-sm sm:text-base ${hasError && !title.trim()
-                                    ? "border-red-500 focus:ring-red-500"
-                                    : ""
-                                }`}
-                            required
-                        />
-                        <FieldDescription className="text-xs sm:text-sm">
-                            {title.length}/{VALIDATION_LIMITS.TITLE_MAX}
-                        </FieldDescription>
-
-                        <FieldLabel
-                            htmlFor="topic"
-                            className="text-sm sm:text-base"
-                        >
-                            O que você gostaria de estudar?
-                        </FieldLabel>
-                        <Textarea
-                            id="topic"
-                            placeholder="Ex.: Como a Segunda Guerra Mundial chegou ao fim e seus impactos globais."
-                            value={topic}
-                            onChange={(e) => setTopic(e.target.value)}
-                            maxLength={VALIDATION_LIMITS.TOPIC_MAX}
-                            className={`text-sm sm:text-base ${hasError && !topic.trim()
-                                    ? "border-red-500 focus:ring-red-500"
-                                    : ""
-                                }`}
-                            required
-                        />
-                        <FieldDescription className="text-xs sm:text-sm">
-                            {topic.length}/{VALIDATION_LIMITS.TOPIC_MAX}
-                        </FieldDescription>
-                    </Field>
-                    {error && (
-                        <div className="mt-3">
-                            <ErrorAlert
-                                message={error}
-                                onClose={() => setError("")}
-                            />
-                        </div>
-                    )}
-                    <Field>
-                        {loading ? (
-                            <SpinnerButton className="w-full">
-                                Validando...
-                            </SpinnerButton>
-                        ) : (
-                            <Button
-                                className="w-full"
-                                onClick={(e) => validateTopicRelevance(e)}
-                            >
-                                Avançar
-                            </Button>
-                        )}
-                    </Field>
-                </FieldGroup>
+            errorMessage(
+                "Erro ao conectar com o servidor. Verifique sua conexão.",
             );
-        } else if (step === 2) {
-            // Formulário 2: Nível de Conhecimento
-            return (
-                <FieldSet>
-                    <FieldLegend className="text-sm sm:text-base">
-                        Qual seu nível de conhecimento em relação a:
-                    </FieldLegend>
-                    <FieldDescription className="text-center text-sm sm:text-base break-words font-medium">
-                        "{topic}"
-                    </FieldDescription>
-                    <FieldSeparator></FieldSeparator>
-                    <RadioGroup value={knowledge} onValueChange={setKnowledge}>
-                        <Field orientation="horizontal">
-                            <RadioGroupItem value="zero" id="knowledge-zero" />
-                            <FieldLabel
-                                htmlFor="knowledge-zero"
-                                className="text-sm sm:text-base cursor-pointer"
-                            >
-                                Nenhum conhecimento
-                            </FieldLabel>
-                        </Field>
-                        <Field orientation="horizontal">
-                            <RadioGroupItem
-                                value="iniciante"
-                                id="knowledge-beginner"
-                            />
-                            <FieldLabel
-                                htmlFor="knowledge-beginner"
-                                className="text-sm sm:text-base cursor-pointer"
-                            >
-                                Iniciante
-                            </FieldLabel>
-                        </Field>
-                        <Field orientation="horizontal">
-                            <RadioGroupItem
-                                value="intermediario"
-                                id="knowledge-intermediate"
-                            />
-                            <FieldLabel
-                                htmlFor="knowledge-intermediate"
-                                className="text-sm sm:text-base cursor-pointer"
-                            >
-                                Intermediário/Avançado
-                            </FieldLabel>
-                        </Field>
-                    </RadioGroup>
-                    <Field className="flex flex-col sm:flex-row mt-5">
-                        <Button
-                            className="w-full sm:flex-1"
-                            onClick={(e) => nextForm(e)}
-                        >
-                            Avançar
-                        </Button>
-                    </Field>
-                </FieldSet>
-            );
-        } else {
-            // Formulário 3: Tempo de Estudo
-            const hasError = error !== "";
-            return (
-                <FieldSet>
-                    <FieldLegend className="font-bold text-lg sm:text-xl">
-                        Informações temporais:
-                    </FieldLegend>
-                    <Field className="animate-fade-in">
-                        <FieldLabel
-                            htmlFor="focus-time"
-                            className="text-sm sm:text-base"
-                        >
-                            Quanto tempo você pode se dedicar por dia (em
-                            minutos)?
-                        </FieldLabel>
-                        <Input
-                            id="focus-time"
-                            type="number"
-                            value={focusTime}
-                            onChange={(e) => {
-                                setFocusTime(e.target.value);
-                            }}
-                            min={VALIDATION_LIMITS.FOCUS_TIME_MIN}
-                            max={VALIDATION_LIMITS.FOCUS_TIME_MAX}
-                            className={`text-sm sm:text-base ${hasError &&
-                                    (focusTime < VALIDATION_LIMITS.FOCUS_TIME_MIN ||
-                                        focusTime >
-                                        VALIDATION_LIMITS.FOCUS_TIME_MAX)
-                                    ? "border-red-500 focus:ring-red-500"
-                                    : ""
-                                }`}
-                            required
-                        />
-                        <FieldDescription className="text-xs sm:text-sm">
-                            {VALIDATION_LIMITS.FOCUS_TIME_MIN} a{" "}
-                            {VALIDATION_LIMITS.FOCUS_TIME_MAX} minutos
-                        </FieldDescription>
-                    </Field>
-                    <Field className="animate-fade-in">
-                        <FieldLabel
-                            htmlFor="days"
-                            className="text-sm sm:text-base"
-                        >
-                            Qual será a duração total do estudo (em dias)?
-                        </FieldLabel>
-                        <Input
-                            id="days"
-                            type="number"
-                            value={days}
-                            onChange={(e) => {
-                                setDays(e.target.value);
-                            }}
-                            min={VALIDATION_LIMITS.DAYS_MIN}
-                            max={VALIDATION_LIMITS.DAYS_MAX}
-                            className={`text-sm sm:text-base ${hasError &&
-                                    (days < VALIDATION_LIMITS.DAYS_MIN ||
-                                        days > VALIDATION_LIMITS.DAYS_MAX)
-                                    ? "border-red-500 focus:ring-red-500"
-                                    : ""
-                                }`}
-                            required
-                        />
-                        <FieldDescription className="text-xs sm:text-sm">
-                            {VALIDATION_LIMITS.DAYS_MIN} a{" "}
-                            {VALIDATION_LIMITS.DAYS_MAX} dias
-                        </FieldDescription>
-                    </Field>
-                    {error && (
-                        <div className="mt-3">
-                            <ErrorAlert
-                                message={error}
-                                onClose={() => setError("")}
-                            />
-                        </div>
-                    )}
-                    <Field className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                        {loading ? (
-                            <SpinnerButton className="w-full">
-                                <Sparkles size={18} />
-                                Gerando seu guia...
-                            </SpinnerButton>
-                        ) : (
-                            <>
-                                <Button
-                                    className="w-full sm:flex-1 font-bold bg-gray-300 text-black hover:bg-gray-400"
-                                    onClick={(e) => previousForm(e)}
-                                >
-                                    <ArrowBigLeftDash size={18} />
-                                    Voltar
-                                </Button>
-                                <Button
-                                    className="w-full sm:flex-1 font-bold"
-                                    onClick={(e) => submit(e)}
-                                >
-                                    <Sparkles size={18} />
-                                    Gerar o guia
-                                </Button>
-                            </>
-                        )}
-                    </Field>
-                </FieldSet>
-            );
+        } finally {
+            setIsGenerating(false);
         }
     }
 
     return (
-        <div
-            className={cn(
-                "flex flex-col gap-4 sm:gap-6 px-3 sm:px-0",
-                className,
-            )}
-            {...props}
-        >
-            <Card className="animate-fade-in">
-                <CardHeader className="flex flex-col items-center text-base sm:text-xl font-serif justify-center gap-3 sm:gap-5">
-                    <CardTitle className="flex flex-col justify-between w-full text-center gap-3 sm:gap-5 animate-fade-in">
-                        <div className="text-gray-500 text-xs sm:text-base">
-                            <div className="mb-3 sm:mb-5">
-                                Etapa {step} de 3
-                            </div>
-                            <Progress value={(step / 3) * 100} />
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+            <div className="w-full max-w-2xl">
+                <div className="bg-white rounded-sm shadow-md border border-gray-200 p-8 md:p-12">
+                    <div className="mb-8">
+                        <p className="font-sans text-sm text-gray-600 text-center mb-3">
+                            Etapa {currentStep} de 3
+                        </p>
+                        <div className="w-full bg-gray-200 rounded-sm h-2 mb-6">
+                            <div
+                                className="bg-gray-900 h-2 rounded-sm transition-all duration-500 ease-out"
+                                style={{ width: `${progressPercentage}%` }}
+                            />
                         </div>
-                        <div className="font-bold text-xl sm:text-2xl lg:text-3xl">
-                            <h1>O que vamos dominar hoje?</h1>
-                            <h2 className="font-thin text-xs sm:text-sm text-gray-500 mt-2">
-                                Defina um tema e vamos criar um guia
-                                personalizado
-                            </h2>
-                        </div>
-                    </CardTitle>
-                    {topic !== "" && (
-                        <Button
-                            variant="ghost"
-                            className="text-xs sm:text-sm text-gray-600 hover:text-red-600 hover:bg-red-50"
-                            onClick={resetForm}
-                            title="Limpar formulário"
+
+                        <h1 className="font-serif text-3xl md:text-4xl text-gray-900 text-center mb-3 text-balance">
+                            O que vamos dominar hoje?
+                        </h1>
+                        <p className="font-sans text-gray-600 text-center text-pretty">
+                            {currentStep === 1 &&
+                                "Defina um tema e vamos criar um guia personalizado"}
+                            {currentStep === 2 &&
+                                "Ajuste o guia ao seu nível atual de conhecimento"}
+                            {currentStep === 3 &&
+                                "Configure a duração e ritmo dos seus estudos"}
+                        </p>
+
+                        <button
+                            onClick={handleRestart}
+                            className="flex items-center gap-2 mx-auto mt-6 font-sans text-sm text-gray-600 hover:text-gray-900 transition-colors"
                         >
-                            <RotateCcw size={16} className="mr-2" />
+                            <RotateCcw className="w-4 h-4" />
                             Recomeçar
-                        </Button>
-                    )}
-                </CardHeader>
-                <CardContent className="px-3 sm:px-6">
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        {renderGuideSteps()}
-                    </form>
-                </CardContent>
-            </Card>
+                        </button>
+                    </div>
+
+                    <div className="mb-8">
+                        {currentStep === 1 && (
+                            <div className="space-y-6 animate-fade-in">
+                                <div>
+                                    <label
+                                        htmlFor="title"
+                                        className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                    >
+                                        Dê um nome para esse seu novo estudo
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="title"
+                                        value={formData.title}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                title: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Ex: Observabilidade (Intro)"
+                                        maxLength={40}
+                                        className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
+                                    />
+                                    <p className="font-sans text-xs text-gray-500 mt-1 text-right">
+                                        {formData.title.length}/40
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label
+                                        htmlFor="topic"
+                                        className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                    >
+                                        O que você gostaria de estudar?
+                                    </label>
+                                    <textarea
+                                        id="topic"
+                                        value={formData.topic}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                topic: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Descreva em detalhes o que você quer aprender..."
+                                        rows={4}
+                                        maxLength={150}
+                                        className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all resize-none"
+                                    />
+                                    <p className="font-sans text-xs text-gray-500 mt-1 text-right">
+                                        {formData.topic.length}/150
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentStep === 2 && (
+                            <div className="space-y-4 animate-fade-in">
+                                <label className="block font-sans text-sm font-bold text-gray-900 mb-4">
+                                    Qual seu nível de conhecimento em relação a:
+                                </label>
+                                <div className="bg-gray-50 border border-gray-200 rounded-sm p-4 mb-6">
+                                    <p className="font-sans text-gray-700 italic text-sm leading-relaxed">
+                                        {formData.topic}
+                                    </p>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {[
+                                        {
+                                            value: "zero",
+                                            label: "Nenhum conhecimento",
+                                            topic: "Estou começando do zero",
+                                        },
+                                        {
+                                            value: "iniciante",
+                                            label: "Iniciante",
+                                            topic: "Tenho conhecimentos básicos",
+                                        },
+                                        {
+                                            value: "intermediario",
+                                            label: "Intermediário/Avançado",
+                                            topic: "Quero me aprofundar",
+                                        },
+                                    ].map((option) => (
+                                        <label
+                                            key={option.value}
+                                            className={`flex items-start gap-4 p-4 border-2 rounded-sm cursor-pointer transition-all ${
+                                                formData.knowledgeLevel ===
+                                                option.value
+                                                    ? "border-gray-900 bg-gray-50"
+                                                    : "border-gray-200 bg-white hover:border-gray-300"
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="knowledgeLevel"
+                                                value={option.value}
+                                                checked={
+                                                    formData.knowledgeLevel ===
+                                                    option.value
+                                                }
+                                                onChange={(e) =>
+                                                    setFormData({
+                                                        ...formData,
+                                                        knowledgeLevel:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="mt-1 w-5 h-5 text-gray-900 cursor-pointer"
+                                            />
+                                            <div className="flex-1">
+                                                <p className="font-sans font-bold text-gray-900">
+                                                    {option.label}
+                                                </p>
+                                                <p className="font-sans text-sm text-gray-600">
+                                                    {option.topic}
+                                                </p>
+                                            </div>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {currentStep === 3 && (
+                            <div className="space-y-6 animate-fade-in">
+                                <div className="mb-8">
+                                    <h3 className="font-serif text-xl text-gray-900 mb-6">
+                                        Informações temporais:
+                                    </h3>
+
+                                    <div className="space-y-6">
+                                        <div>
+                                            <label
+                                                htmlFor="dailyMinutes"
+                                                className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                            >
+                                                Quanto tempo você pode se
+                                                dedicar por dia (em minutos)?
+                                            </label>
+                                            <input
+                                                type="number"
+                                                id="dailyMinutes"
+                                                value={formData.focusTime}
+                                                onChange={(e) =>
+                                                    setFormData({
+                                                        ...formData,
+                                                        focusTime: parseInt(
+                                                            e.target.value,
+                                                        ),
+                                                    })
+                                                }
+                                                min={30}
+                                                max={480}
+                                                className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
+                                            />
+                                            <p className="font-sans text-xs text-gray-500 mt-1">
+                                                30 a 480 minutos
+                                            </p>
+                                        </div>
+
+                                        <div>
+                                            <label
+                                                htmlFor="totalDays"
+                                                className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                            >
+                                                Qual será a duração total do
+                                                estudo (em dias)?
+                                            </label>
+                                            <input
+                                                type="number"
+                                                id="totalDays"
+                                                value={formData.days}
+                                                onChange={(e) =>
+                                                    setFormData({
+                                                        ...formData,
+                                                        days: parseInt(
+                                                            e.target.value,
+                                                        ),
+                                                    })
+                                                }
+                                                min={3}
+                                                max={30}
+                                                className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
+                                            />
+                                            <p className="font-sans text-xs text-gray-500 mt-1">
+                                                3 a 30 dias
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex gap-3">
+                        <button
+                            onClick={handleBack}
+                            className="flex-1 bg-gray-200 text-gray-900 font-bold py-3 px-6 rounded-sm hover:bg-gray-300 transition-colors flex items-center justify-center gap-2"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                            Voltar
+                        </button>
+
+                        <button
+                            onClick={handleNext}
+                            disabled={isGenerating}
+                            className="flex-1 bg-gray-900 text-white font-bold py-3 px-6 rounded-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:not-allowed flex items-center justify-center gap-2"
+                        >
+                            {isGenerating ? (
+                                <>
+                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    Gerando...
+                                </>
+                            ) : currentStep === 3 ? (
+                                <>
+                                    <Sparkles className="w-5 h-5" />
+                                    Gerar o guia
+                                </>
+                            ) : (
+                                "Avançar"
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

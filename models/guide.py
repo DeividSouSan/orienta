@@ -239,7 +239,7 @@ def generate_with_model(
                 "temperature": temperature,
             },
         )
-        print("Resposta: ", response)
+
         return response.parsed
     except Exception as error:
         raise ServiceError(

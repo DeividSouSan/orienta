@@ -2,34 +2,33 @@ import { useState } from "react";
 import { GuideSchema } from "@/schemas/guideSchema";
 import { z } from "zod";
 
-export function useGuideApi() {
-    const [loading, setLoading] = useState(false);
+export function useGuideAPI() {
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleError = (err, defaultMessage) => {
+    const handleError = (error, defaultMessage) => {
         let message = defaultMessage;
 
-        if (err instanceof z.ZodError) {
+        if (error instanceof z.ZodError) {
             message = "Dados inválidos recebidos da API.";
-        } else if (err instanceof TypeError && err.message.includes("fetch")) {
+        } else if (
+            error instanceof TypeError &&
+            error.message.includes("fetch")
+        ) {
             message = "Erro de conexão. Verifique sua internet.";
         }
 
         setError(message);
-        console.error(err);
         return message;
     };
 
     const fetchGuides = async () => {
-        setLoading(true);
+        setIsLoading(true);
         setError(null);
 
         try {
             const response = await fetch("/api/v1/guides", {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 credentials: "include",
             });
 
@@ -38,34 +37,35 @@ export function useGuideApi() {
             if (!response.ok) {
                 throw new Error(
                     responseBody.message ||
-                    "Erro ao buscar guias. Tente novamente."
+                        "Erro ao buscar guias. Tente novamente.",
                 );
             }
 
-            let ongoingGuidesList = [];
-            let completedGuidesList = [];
+            let inProgressGuides = [];
+            let completedGuides = [];
 
             responseBody.data.forEach((guideInfo) => {
                 try {
                     GuideSchema.parse(guideInfo);
+
                     if (guideInfo.status === "studying") {
-                        ongoingGuidesList.push(guideInfo);
+                        inProgressGuides.push(guideInfo);
                     } else {
-                        completedGuidesList.push(guideInfo);
+                        completedGuides.push(guideInfo);
                     }
-                } catch (validationError) {
+                } catch (error) {
                     handleError(
-                        validationError,
-                        "Alguns dados dos guias estão inválidos."
+                        error,
+                        "Alguns dados dos guias estão inválidos.",
                     );
                 }
             });
 
-            setLoading(false);
-            return { ongoingGuidesList, completedGuidesList };
-        } catch (err) {
-            handleError(err, "Erro ao buscar guias. Tente novamente.");
-            setLoading(false);
+            setIsLoading(false);
+            return { inProgressGuides, completedGuides };
+        } catch (error) {
+            handleError(error, "Erro ao buscar guias. Tente novamente.");
+            setIsLoading(false);
             return null;
         }
     };
@@ -74,11 +74,8 @@ export function useGuideApi() {
         setError(null);
 
         try {
-            const response = await fetch(`/api/guides/${guideId}`, {
+            const response = await fetch(`/api/v1/guides/${guideId}`, {
                 method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 credentials: "include",
             });
 
@@ -87,22 +84,22 @@ export function useGuideApi() {
             if (!response.ok) {
                 throw new Error(
                     responseBody.message ||
-                    "Erro ao deletar guia. Tente novamente."
+                        "Erro ao deletar guia. Tente novamente.",
                 );
             }
 
-            return { success: true };
-        } catch (err) {
+            return { ok: true };
+        } catch (error) {
             const message = handleError(
-                err,
-                "Erro ao deletar guia. Tente novamente."
+                error,
+                "Erro ao deletar guia. Tente novamente.",
             );
-            return { success: false, error: message };
+            return { ok: false, error: message };
         }
     };
 
     return {
-        loading,
+        isLoading,
         error,
         setError,
         fetchGuides,

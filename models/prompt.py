@@ -37,6 +37,14 @@ def process(user_input: dict) -> dict:
 
 
 def validate_topic(topic):
+    """Valida o tópico de estudo sintaticamente.
+
+    Args:
+        topic (str): o tópico de estudo a ser validado.
+
+    Raises:
+        ValidationError: Se o tópico não for uma string ou se o tópico não estiver entre 10 e 150 caracteres.
+    """
     if not isinstance(topic, str):
         raise ValidationError(
             "O tópico de estudo precisa ser um texto.",
@@ -72,9 +80,8 @@ def validate_relevance(topic):
         )
 
     VALIDATION_MODELS = [
-        "gemini-2.0-flash-lite",
+        "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-2.0-flash",
     ]
 
     client = genai.Client()

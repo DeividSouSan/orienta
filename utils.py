@@ -127,7 +127,6 @@ def initialize_app():
 
         print("🔥 Firebase INICIALIZADO com sucesso!")
     except Exception as error:
-        print(error)
         raise Exception("❌ NÃO FOI POSSÍVEL inicializar o Firebase nesta aplicação!")
 
 
@@ -161,8 +160,8 @@ def format_date(date):
 def load_prompt(file_name: str) -> str:
     """Carrega um arquivo de prompt da pasta /prompts."""
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    prompt_path = os.path.join(base_dir, "prompts", file_name)
-    print(prompt_path)
+    prompt_path = os.path.join(base_dir, "orienta-api", "prompts", file_name)
+
     try:
         with open(prompt_path, "r", encoding="utf-8") as f:
             return f.read()

@@ -3,7 +3,13 @@
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-export function EmptyState({ icon: Icon, title, description, ctaText, ctaHref }) {
+export function EmptyState({
+    icon: Icon,
+    title,
+    description,
+    ctaText,
+    ctaHref,
+}) {
     return (
         <div className="flex flex-col items-center justify-center py-12 sm:py-16 px-4">
             <div className="mb-4">

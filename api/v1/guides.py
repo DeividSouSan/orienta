@@ -34,8 +34,6 @@ def create():
 
     guide.save(study_guide)
 
-    print("O resultado é: ", study_guide)
-
     return make_response(
         jsonify(
             {"message": "Guia de estudos gerado com sucesso.", "data": study_guide}
@@ -58,6 +56,7 @@ def delete(guide_id: str):
 @protected
 def get_guides_by_id(guide_id: str):
     # recuperar o guia por id
+
     study_guide = guide.find_guide_by_id(guide_id)
 
     return {"message": "Guia recuperado com sucesso.", "data": study_guide}

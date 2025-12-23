@@ -72,7 +72,7 @@ class ServiceError(Exception):
         self.name = "ServiceError"
         self.message = message
         self.action = action
-        self.code = 403
+        self.code = 503
 
         super().__init__(self.message)
 

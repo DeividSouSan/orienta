@@ -37,8 +37,6 @@ export default function GuideView({ guideId }) {
     const progressPercentage =
         totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
 
-
-
     return (
         <main className="flex flex-col w-full items-center min-h-screen bg-gray-50">
             {/* Container principal responsivo */}
@@ -129,16 +127,17 @@ export default function GuideView({ guideId }) {
                             className="flex flex-col w-full space-y-3"
                         >
                             {Array.isArray(guide.daily_study) &&
-                                guide.daily_study.length ? (
+                            guide.daily_study.length ? (
                                 guide.daily_study.map((study, index) => {
                                     return (
                                         <AccordionItem
                                             key={study.day}
                                             value={"dia" + study.day}
-                                            className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${study.completed
-                                                ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
-                                                : "bg-white border-gray-200"
-                                                }`}
+                                            className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${
+                                                study.completed
+                                                    ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
+                                                    : "bg-white border-gray-200"
+                                            }`}
                                         >
                                             <AccordionTrigger className="hover:no-underline py-4">
                                                 <div className="flex items-start sm:items-center gap-3 text-left w-full">
@@ -169,10 +168,11 @@ export default function GuideView({ guideId }) {
                                                         )}
                                                     </div>
                                                     <span
-                                                        className={`text-sm sm:text-base flex-1 ${study.completed
-                                                            ? "font-bold text-gray-900 line-through opacity-75"
-                                                            : "font-medium text-gray-700"
-                                                            }`}
+                                                        className={`text-sm sm:text-base flex-1 ${
+                                                            study.completed
+                                                                ? "font-bold text-gray-900 line-through opacity-75"
+                                                                : "font-medium text-gray-700"
+                                                        }`}
                                                     >
                                                         Dia {study.day} -{" "}
                                                         {study.title}

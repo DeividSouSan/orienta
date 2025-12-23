@@ -121,7 +121,7 @@ def test_create_user_with_duplicated_email():
             "password": "testpassword",
         },
     )
-    print(response_2.json())
+
     assert response_2.status_code == 409
 
     assert response_2.json() == {
@@ -152,7 +152,7 @@ def test_create_user_with_duplicated_username():
             "password": "testpassword",
         },
     )
-    print(response_2.json())
+
     assert response_2.status_code == 409
 
     assert response_2.json() == {
