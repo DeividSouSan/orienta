@@ -8,7 +8,7 @@ export function ToastMessage({ type, message, onClose, className, ...props }) {
     return (
         <div
             className={cn(
-                "fixed top-20 right-6 z-50 flex items-center justify-between px-4 py-3 rounded-sm shadow-lg border gap-3",
+                "relative z-50 flex items-center justify-between px-4 py-3 rounded-sm shadow-lg border gap-3",
                 isSuccess
                     ? "bg-green-50 border-green-400 text-green-800"
                     : "bg-red-50 border-red-400 text-red-800",

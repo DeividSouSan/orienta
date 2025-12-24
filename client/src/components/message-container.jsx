@@ -37,7 +37,7 @@ export function MessageContainer() {
     };
 
     return (
-        <>
+        <div className="absolute flex flex-col gap-5 top-20 right-5">
             {displayedMessages.map((message) => (
                 <ToastMessage
                     key={message.id}
@@ -46,6 +46,6 @@ export function MessageContainer() {
                     onClose={() => handleClose(message.id)}
                 />
             ))}
-        </>
+        </div>
     );
 }
