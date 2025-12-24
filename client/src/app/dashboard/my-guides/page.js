@@ -110,10 +110,12 @@ export default function MyGuidesPage() {
                             </span>
                         </div>
 
-                        <button className="bg-gray-800 text-white font-bold py-3 px-6 rounded-sm hover:bg-gray-900 transition-colors flex items-center gap-2">
-                            <Plus className="w-5 h-5" />
-                            Novo Guia
-                        </button>
+                        <Link href="/dashboard/generate">
+                            <button className="bg-gray-800 text-white font-bold py-3 px-6 rounded-sm hover:bg-gray-900 transition-colors flex items-center gap-2">
+                                <Plus className="w-5 h-5" />
+                                Novo Guia
+                            </button>
+                        </Link>
                     </div>
 
                     {inProgressGuides.length === 0 ? (
@@ -275,11 +277,10 @@ export default function MyGuidesPage() {
                                                 onClick={() =>
                                                     setCurrentPage(page)
                                                 }
-                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${
-                                                    currentPage === page
+                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${currentPage === page
                                                         ? "bg-blue-800 text-white"
                                                         : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
-                                                }`}
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
