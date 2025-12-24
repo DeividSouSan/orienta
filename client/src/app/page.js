@@ -1,3 +1,5 @@
+"use client";
+
 import GuestGuard from "@/components/guest-guard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
