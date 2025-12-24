@@ -210,34 +210,43 @@ export default function MyGuidesPage() {
                         <>
                             <div className="grid gap-4 mb-6">
                                 {paginatedCompletedGuides.map((guide) => (
-                                    <div
+                                    <Link
+                                        href={`/dashboard/my-guides/guide?id=${guide.id}`}
                                         key={guide.id}
-                                        className="bg-white rounded-sm shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer opacity-90 hover:opacity-100"
                                     >
-                                        <div className="flex items-start justify-between mb-3">
-                                            <div className="flex-1">
-                                                <h3 className="font-serif text-lg text-gray-800 mb-1">
-                                                    {guide.title}
-                                                </h3>
-                                                <p className="font-sans text-sm text-gray-500">
-                                                    <strong>Prompt: </strong>
-                                                    {guide.topic}
-                                                </p>
+                                        <div
+                                            key={guide.id}
+                                            className="bg-white rounded-sm shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer opacity-90 hover:opacity-100"
+                                        >
+                                            <div className="flex items-start justify-between mb-3">
+                                                <div className="flex-1">
+                                                    <h3 className="font-serif text-lg text-gray-800 mb-1">
+                                                        {guide.title}
+                                                    </h3>
+                                                    <p className="font-sans text-sm text-gray-500">
+                                                        <strong>
+                                                            Prompt:{" "}
+                                                        </strong>
+                                                        {guide.topic}
+                                                    </p>
+                                                </div>
+                                                <CheckCircle2 className="w-5 h-5 text-green-700 flex-shrink-0" />
                                             </div>
-                                            <CheckCircle2 className="w-5 h-5 text-green-700 flex-shrink-0" />
-                                        </div>
 
-                                        <div className="flex items-center justify-between font-sans text-sm">
-                                            <span className="text-gray-600">
-                                                Todos os {guide.days} dias foram
-                                                concluídos
-                                            </span>
-                                            <span className="text-gray-500 text-xs">
-                                                Concluído em{" "}
-                                                {formatDate(guide.completed_at)}
-                                            </span>
+                                            <div className="flex items-center justify-between font-sans text-sm">
+                                                <span className="text-gray-600">
+                                                    Todos os {guide.days} dias
+                                                    foram concluídos
+                                                </span>
+                                                <span className="text-gray-500 text-xs">
+                                                    Concluído em{" "}
+                                                    {formatDate(
+                                                        guide.completed_at,
+                                                    )}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
 
