@@ -3,19 +3,23 @@
 import { useSearchParams } from "next/navigation";
 import { useStudyGuide } from "@/hooks/useStudyGuide";
 import { Suspense, useState, useEffect } from "react";
-import Link from "next/link"
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Check, Lightbulb, AlertCircle } from "lucide-react";
 import { ErrorAlert } from "@/components/error-alert";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent,
+} from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner";
 import AuthGuard from "@/components/auth-guard";
 
 function GuideDetailsView() {
     const searchParams = useSearchParams();
-    const guideId = searchParams.get("id")
-
+    const guideId = searchParams.get("id");
 
     const { guide, isLoading, updateDayCompletion, isSavingBatch } =
         useStudyGuide(guideId);
@@ -127,16 +131,17 @@ function GuideDetailsView() {
                             className="flex flex-col w-full space-y-3"
                         >
                             {Array.isArray(guide.daily_study) &&
-                                guide.daily_study.length ? (
+                            guide.daily_study.length ? (
                                 guide.daily_study.map((study, index) => {
                                     return (
                                         <AccordionItem
                                             key={study.day}
                                             value={"dia" + study.day}
-                                            className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${study.completed
-                                                ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
-                                                : "bg-white border-gray-200"
-                                                }`}
+                                            className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${
+                                                study.completed
+                                                    ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
+                                                    : "bg-white border-gray-200"
+                                            }`}
                                         >
                                             <AccordionTrigger className="hover:no-underline py-4">
                                                 <div className="flex items-start sm:items-center gap-3 text-left w-full">
@@ -167,10 +172,11 @@ function GuideDetailsView() {
                                                         )}
                                                     </div>
                                                     <span
-                                                        className={`text-sm sm:text-base flex-1 ${study.completed
-                                                            ? "font-bold text-gray-900 line-through opacity-75"
-                                                            : "font-medium text-gray-700"
-                                                            }`}
+                                                        className={`text-sm sm:text-base flex-1 ${
+                                                            study.completed
+                                                                ? "font-bold text-gray-900 line-through opacity-75"
+                                                                : "font-medium text-gray-700"
+                                                        }`}
                                                     >
                                                         Dia {study.day} -{" "}
                                                         {study.title}
@@ -268,7 +274,7 @@ function GuideDetailsView() {
                 )}
             </div>
         </main>
-    )
+    );
 }
 
 export default function GuideDetailsPage() {
@@ -278,5 +284,5 @@ export default function GuideDetailsPage() {
                 <GuideDetailsView />
             </Suspense>
         </AuthGuard>
-    )
+    );
 }

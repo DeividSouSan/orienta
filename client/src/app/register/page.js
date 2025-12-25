@@ -105,7 +105,10 @@ export default function SignupPage() {
                                 {errorMessage ? (
                                     <p> {errorMessage} </p>
                                 ) : (
-                                    <p>Crie sua conta para começar a gerar guias.</p>
+                                    <p>
+                                        Crie sua conta para começar a gerar
+                                        guias.
+                                    </p>
                                 )}
                             </CardDescription>
                         </CardHeader>
@@ -121,35 +124,46 @@ export default function SignupPage() {
                                             type="text"
                                             placeholder="username"
                                             required
-                                            onChange={(e) => setUsername(e.target.value)}
+                                            onChange={(e) =>
+                                                setUsername(e.target.value)
+                                            }
                                         />
                                         <FieldDescription>
                                             *Deve conter de 3 a 20 caracteres.
                                         </FieldDescription>
                                     </Field>
                                     <Field className="animate-fade-in animation-delay-400">
-                                        <FieldLabel htmlFor="email">E-mail</FieldLabel>
+                                        <FieldLabel htmlFor="email">
+                                            E-mail
+                                        </FieldLabel>
                                         <Input
                                             id="email"
                                             type="email"
                                             placeholder="email@orienta.com"
                                             required
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) =>
+                                                setEmail(e.target.value)
+                                            }
                                         />
                                         <FieldDescription>
                                             Insira um e-mail válido.
                                         </FieldDescription>
                                     </Field>
                                     <Field className="animate-fade-in animation-delay-400">
-                                        <FieldLabel htmlFor="password">Senha</FieldLabel>
+                                        <FieldLabel htmlFor="password">
+                                            Senha
+                                        </FieldLabel>
                                         <Input
                                             id="password"
                                             type="password"
                                             required
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            onChange={(e) =>
+                                                setPassword(e.target.value)
+                                            }
                                         />
                                         <FieldDescription>
-                                            Insira uma senha maior que 6 caracteres.
+                                            Insira uma senha maior que 6
+                                            caracteres.
                                         </FieldDescription>
                                     </Field>
                                     <Field className="animate-fade-in animation-delay-400">
@@ -161,7 +175,9 @@ export default function SignupPage() {
                                             type="password"
                                             required
                                             onChange={(e) =>
-                                                setConfirmPassword(e.target.value)
+                                                setConfirmPassword(
+                                                    e.target.value,
+                                                )
                                             }
                                         />
                                         <FieldDescription>
@@ -178,11 +194,15 @@ export default function SignupPage() {
                                                     Criando conta...
                                                 </SpinnerButton>
                                             ) : (
-                                                <Button type="submit">Criar Conta</Button>
+                                                <Button type="submit">
+                                                    Criar Conta
+                                                </Button>
                                             )}
                                             <FieldDescription className="px-6 text-center">
                                                 Já tem uma conta?{" "}
-                                                <Link href="/login">Faça login.</Link>
+                                                <Link href="/login">
+                                                    Faça login.
+                                                </Link>
                                             </FieldDescription>
                                         </Field>
                                     </FieldGroup>
@@ -194,6 +214,4 @@ export default function SignupPage() {
             </div>
         </GuestGuard>
     );
-
 }
-

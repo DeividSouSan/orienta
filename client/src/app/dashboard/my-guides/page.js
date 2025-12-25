@@ -172,7 +172,8 @@ export default function MyGuidesPage() {
                                         <div className="flex items-center justify-between font-sans text-sm">
                                             <span className="text-gray-600">
                                                 {daysInfo(guide).completed} de{" "}
-                                                {daysInfo(guide).total} dias concluídos
+                                                {daysInfo(guide).total} dias
+                                                concluídos
                                             </span>
                                             <span className="text-gray-500 text-xs">
                                                 Criado em:{" "}
@@ -276,10 +277,11 @@ export default function MyGuidesPage() {
                                                 onClick={() =>
                                                     setCurrentPage(page)
                                                 }
-                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${currentPage === page
-                                                    ? "bg-blue-800 text-white"
-                                                    : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
-                                                    }`}
+                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${
+                                                    currentPage === page
+                                                        ? "bg-blue-800 text-white"
+                                                        : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
+                                                }`}
                                             >
                                                 {page}
                                             </button>

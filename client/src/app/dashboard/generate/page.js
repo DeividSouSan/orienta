@@ -213,271 +213,274 @@ export default function GeneratePage() {
         }
     }
 
-    return (<AuthGuard>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
-            <div className="w-full max-w-2xl">
-                <div className="bg-white rounded-sm shadow-md border border-gray-200 p-8 md:p-12">
-                    <div className="mb-8">
-                        <p className="font-sans text-sm text-gray-600 text-center mb-3">
-                            Etapa {currentStep} de 3
-                        </p>
-                        <div className="w-full bg-gray-200 rounded-sm h-2 mb-6">
-                            <div
-                                className="bg-gray-900 h-2 rounded-sm transition-all duration-500 ease-out"
-                                style={{ width: `${progressPercentage}%` }}
-                            />
+    return (
+        <AuthGuard>
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+                <div className="w-full max-w-2xl">
+                    <div className="bg-white rounded-sm shadow-md border border-gray-200 p-8 md:p-12">
+                        <div className="mb-8">
+                            <p className="font-sans text-sm text-gray-600 text-center mb-3">
+                                Etapa {currentStep} de 3
+                            </p>
+                            <div className="w-full bg-gray-200 rounded-sm h-2 mb-6">
+                                <div
+                                    className="bg-gray-900 h-2 rounded-sm transition-all duration-500 ease-out"
+                                    style={{ width: `${progressPercentage}%` }}
+                                />
+                            </div>
+
+                            <h1 className="font-serif text-3xl md:text-4xl text-gray-900 text-center mb-3 text-balance">
+                                O que vamos dominar hoje?
+                            </h1>
+                            <p className="font-sans text-gray-600 text-center text-pretty">
+                                {currentStep === 1 &&
+                                    "Defina um tema e vamos criar um guia personalizado"}
+                                {currentStep === 2 &&
+                                    "Ajuste o guia ao seu nível atual de conhecimento"}
+                                {currentStep === 3 &&
+                                    "Configure a duração e ritmo dos seus estudos"}
+                            </p>
+
+                            <button
+                                onClick={handleRestart}
+                                className="flex items-center gap-2 mx-auto mt-6 font-sans text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                            >
+                                <RotateCcw className="w-4 h-4" />
+                                Recomeçar
+                            </button>
                         </div>
 
-                        <h1 className="font-serif text-3xl md:text-4xl text-gray-900 text-center mb-3 text-balance">
-                            O que vamos dominar hoje?
-                        </h1>
-                        <p className="font-sans text-gray-600 text-center text-pretty">
-                            {currentStep === 1 &&
-                                "Defina um tema e vamos criar um guia personalizado"}
-                            {currentStep === 2 &&
-                                "Ajuste o guia ao seu nível atual de conhecimento"}
-                            {currentStep === 3 &&
-                                "Configure a duração e ritmo dos seus estudos"}
-                        </p>
-
-                        <button
-                            onClick={handleRestart}
-                            className="flex items-center gap-2 mx-auto mt-6 font-sans text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                        >
-                            <RotateCcw className="w-4 h-4" />
-                            Recomeçar
-                        </button>
-                    </div>
-
-                    <div className="mb-8">
-                        {currentStep === 1 && (
-                            <div className="space-y-6 animate-fade-in">
-                                <div>
-                                    <label
-                                        htmlFor="title"
-                                        className="block font-sans text-sm font-bold text-gray-900 mb-2"
-                                    >
-                                        Dê um nome para esse seu novo estudo
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="title"
-                                        value={formData.title}
-                                        onChange={(e) =>
-                                            setFormData({
-                                                ...formData,
-                                                title: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Ex: Observabilidade (Intro)"
-                                        maxLength={40}
-                                        className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                                    />
-                                    <p className="font-sans text-xs text-gray-500 mt-1 text-right">
-                                        {formData.title.length}/40
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label
-                                        htmlFor="topic"
-                                        className="block font-sans text-sm font-bold text-gray-900 mb-2"
-                                    >
-                                        O que você gostaria de estudar?
-                                    </label>
-                                    <textarea
-                                        id="topic"
-                                        value={formData.topic}
-                                        onChange={(e) =>
-                                            setFormData({
-                                                ...formData,
-                                                topic: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Descreva em detalhes o que você quer aprender..."
-                                        rows={4}
-                                        maxLength={150}
-                                        className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all resize-none"
-                                    />
-                                    <p className="font-sans text-xs text-gray-500 mt-1 text-right">
-                                        {formData.topic.length}/150
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-
-                        {currentStep === 2 && (
-                            <div className="space-y-4 animate-fade-in">
-                                <label className="block font-sans text-sm font-bold text-gray-900 mb-4">
-                                    Qual seu nível de conhecimento em relação a:
-                                </label>
-                                <div className="bg-gray-50 border border-gray-200 rounded-sm p-4 mb-6">
-                                    <p className="font-sans text-gray-700 italic text-sm leading-relaxed">
-                                        {formData.topic}
-                                    </p>
-                                </div>
-
-                                <div className="space-y-3">
-                                    {[
-                                        {
-                                            value: "zero",
-                                            label: "Nenhum conhecimento",
-                                            topic: "Estou começando do zero",
-                                        },
-                                        {
-                                            value: "iniciante",
-                                            label: "Iniciante",
-                                            topic: "Tenho conhecimentos básicos",
-                                        },
-                                        {
-                                            value: "intermediario",
-                                            label: "Intermediário/Avançado",
-                                            topic: "Quero me aprofundar",
-                                        },
-                                    ].map((option) => (
+                        <div className="mb-8">
+                            {currentStep === 1 && (
+                                <div className="space-y-6 animate-fade-in">
+                                    <div>
                                         <label
-                                            key={option.value}
-                                            className={`flex items-start gap-4 p-4 border-2 rounded-sm cursor-pointer transition-all ${formData.knowledgeLevel ===
-                                                option.value
-                                                ? "border-gray-900 bg-gray-50"
-                                                : "border-gray-200 bg-white hover:border-gray-300"
-                                                }`}
+                                            htmlFor="title"
+                                            className="block font-sans text-sm font-bold text-gray-900 mb-2"
                                         >
-                                            <input
-                                                type="radio"
-                                                name="knowledgeLevel"
-                                                value={option.value}
-                                                checked={
+                                            Dê um nome para esse seu novo estudo
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="title"
+                                            value={formData.title}
+                                            onChange={(e) =>
+                                                setFormData({
+                                                    ...formData,
+                                                    title: e.target.value,
+                                                })
+                                            }
+                                            placeholder="Ex: Observabilidade (Intro)"
+                                            maxLength={40}
+                                            className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
+                                        />
+                                        <p className="font-sans text-xs text-gray-500 mt-1 text-right">
+                                            {formData.title.length}/40
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            htmlFor="topic"
+                                            className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                        >
+                                            O que você gostaria de estudar?
+                                        </label>
+                                        <textarea
+                                            id="topic"
+                                            value={formData.topic}
+                                            onChange={(e) =>
+                                                setFormData({
+                                                    ...formData,
+                                                    topic: e.target.value,
+                                                })
+                                            }
+                                            placeholder="Descreva em detalhes o que você quer aprender..."
+                                            rows={4}
+                                            maxLength={150}
+                                            className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all resize-none"
+                                        />
+                                        <p className="font-sans text-xs text-gray-500 mt-1 text-right">
+                                            {formData.topic.length}/150
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {currentStep === 2 && (
+                                <div className="space-y-4 animate-fade-in">
+                                    <label className="block font-sans text-sm font-bold text-gray-900 mb-4">
+                                        Qual seu nível de conhecimento em
+                                        relação a:
+                                    </label>
+                                    <div className="bg-gray-50 border border-gray-200 rounded-sm p-4 mb-6">
+                                        <p className="font-sans text-gray-700 italic text-sm leading-relaxed">
+                                            {formData.topic}
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {[
+                                            {
+                                                value: "zero",
+                                                label: "Nenhum conhecimento",
+                                                topic: "Estou começando do zero",
+                                            },
+                                            {
+                                                value: "iniciante",
+                                                label: "Iniciante",
+                                                topic: "Tenho conhecimentos básicos",
+                                            },
+                                            {
+                                                value: "intermediario",
+                                                label: "Intermediário/Avançado",
+                                                topic: "Quero me aprofundar",
+                                            },
+                                        ].map((option) => (
+                                            <label
+                                                key={option.value}
+                                                className={`flex items-start gap-4 p-4 border-2 rounded-sm cursor-pointer transition-all ${
                                                     formData.knowledgeLevel ===
                                                     option.value
-                                                }
-                                                onChange={(e) =>
-                                                    setFormData({
-                                                        ...formData,
-                                                        knowledgeLevel:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="mt-1 w-5 h-5 text-gray-900 cursor-pointer"
-                                            />
-                                            <div className="flex-1">
-                                                <p className="font-sans font-bold text-gray-900">
-                                                    {option.label}
-                                                </p>
-                                                <p className="font-sans text-sm text-gray-600">
-                                                    {option.topic}
+                                                        ? "border-gray-900 bg-gray-50"
+                                                        : "border-gray-200 bg-white hover:border-gray-300"
+                                                }`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    name="knowledgeLevel"
+                                                    value={option.value}
+                                                    checked={
+                                                        formData.knowledgeLevel ===
+                                                        option.value
+                                                    }
+                                                    onChange={(e) =>
+                                                        setFormData({
+                                                            ...formData,
+                                                            knowledgeLevel:
+                                                                e.target.value,
+                                                        })
+                                                    }
+                                                    className="mt-1 w-5 h-5 text-gray-900 cursor-pointer"
+                                                />
+                                                <div className="flex-1">
+                                                    <p className="font-sans font-bold text-gray-900">
+                                                        {option.label}
+                                                    </p>
+                                                    <p className="font-sans text-sm text-gray-600">
+                                                        {option.topic}
+                                                    </p>
+                                                </div>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {currentStep === 3 && (
+                                <div className="space-y-6 animate-fade-in">
+                                    <div className="mb-8">
+                                        <h3 className="font-serif text-xl text-gray-900 mb-6">
+                                            Informações temporais:
+                                        </h3>
+
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label
+                                                    htmlFor="dailyMinutes"
+                                                    className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                                >
+                                                    Quanto tempo você pode se
+                                                    dedicar por dia (em
+                                                    minutos)?
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    id="dailyMinutes"
+                                                    value={formData.focusTime}
+                                                    onChange={(e) =>
+                                                        setFormData({
+                                                            ...formData,
+                                                            focusTime: parseInt(
+                                                                e.target.value,
+                                                            ),
+                                                        })
+                                                    }
+                                                    min={30}
+                                                    max={480}
+                                                    className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
+                                                />
+                                                <p className="font-sans text-xs text-gray-500 mt-1">
+                                                    30 a 480 minutos
                                                 </p>
                                             </div>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
 
-                        {currentStep === 3 && (
-                            <div className="space-y-6 animate-fade-in">
-                                <div className="mb-8">
-                                    <h3 className="font-serif text-xl text-gray-900 mb-6">
-                                        Informações temporais:
-                                    </h3>
-
-                                    <div className="space-y-6">
-                                        <div>
-                                            <label
-                                                htmlFor="dailyMinutes"
-                                                className="block font-sans text-sm font-bold text-gray-900 mb-2"
-                                            >
-                                                Quanto tempo você pode se
-                                                dedicar por dia (em minutos)?
-                                            </label>
-                                            <input
-                                                type="number"
-                                                id="dailyMinutes"
-                                                value={formData.focusTime}
-                                                onChange={(e) =>
-                                                    setFormData({
-                                                        ...formData,
-                                                        focusTime: parseInt(
-                                                            e.target.value,
-                                                        ),
-                                                    })
-                                                }
-                                                min={30}
-                                                max={480}
-                                                className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                                            />
-                                            <p className="font-sans text-xs text-gray-500 mt-1">
-                                                30 a 480 minutos
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                htmlFor="totalDays"
-                                                className="block font-sans text-sm font-bold text-gray-900 mb-2"
-                                            >
-                                                Qual será a duração total do
-                                                estudo (em dias)?
-                                            </label>
-                                            <input
-                                                type="number"
-                                                id="totalDays"
-                                                value={formData.days}
-                                                onChange={(e) =>
-                                                    setFormData({
-                                                        ...formData,
-                                                        days: parseInt(
-                                                            e.target.value,
-                                                        ),
-                                                    })
-                                                }
-                                                min={3}
-                                                max={30}
-                                                className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                                            />
-                                            <p className="font-sans text-xs text-gray-500 mt-1">
-                                                3 a 30 dias
-                                            </p>
+                                            <div>
+                                                <label
+                                                    htmlFor="totalDays"
+                                                    className="block font-sans text-sm font-bold text-gray-900 mb-2"
+                                                >
+                                                    Qual será a duração total do
+                                                    estudo (em dias)?
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    id="totalDays"
+                                                    value={formData.days}
+                                                    onChange={(e) =>
+                                                        setFormData({
+                                                            ...formData,
+                                                            days: parseInt(
+                                                                e.target.value,
+                                                            ),
+                                                        })
+                                                    }
+                                                    min={3}
+                                                    max={30}
+                                                    className="w-full bg-gray-50 border border-gray-300 rounded-sm px-4 py-3 font-sans text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
+                                                />
+                                                <p className="font-sans text-xs text-gray-500 mt-1">
+                                                    3 a 30 dias
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="flex gap-3">
-                        <button
-                            onClick={handleBack}
-                            className="flex-1 bg-gray-200 text-gray-900 font-bold py-3 px-6 rounded-sm hover:bg-gray-300 transition-colors flex items-center justify-center gap-2"
-                        >
-                            <ArrowLeft className="w-5 h-5" />
-                            Voltar
-                        </button>
-
-                        <button
-                            onClick={handleNext}
-                            disabled={isGenerating}
-                            className="flex-1 bg-gray-900 text-white font-bold py-3 px-6 rounded-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:not-allowed flex items-center justify-center gap-2"
-                        >
-                            {isGenerating ? (
-                                <>
-                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                    Gerando...
-                                </>
-                            ) : currentStep === 3 ? (
-                                <>
-                                    <Sparkles className="w-5 h-5" />
-                                    Gerar o guia
-                                </>
-                            ) : (
-                                "Avançar"
                             )}
-                        </button>
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={handleBack}
+                                className="flex-1 bg-gray-200 text-gray-900 font-bold py-3 px-6 rounded-sm hover:bg-gray-300 transition-colors flex items-center justify-center gap-2"
+                            >
+                                <ArrowLeft className="w-5 h-5" />
+                                Voltar
+                            </button>
+
+                            <button
+                                onClick={handleNext}
+                                disabled={isGenerating}
+                                className="flex-1 bg-gray-900 text-white font-bold py-3 px-6 rounded-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:not-allowed flex items-center justify-center gap-2"
+                            >
+                                {isGenerating ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                        Gerando...
+                                    </>
+                                ) : currentStep === 3 ? (
+                                    <>
+                                        <Sparkles className="w-5 h-5" />
+                                        Gerar o guia
+                                    </>
+                                ) : (
+                                    "Avançar"
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </AuthGuard>
+        </AuthGuard>
     );
 }
-

@@ -10,6 +10,4 @@ function SpinnerButton({ className, size, ...props }) {
     );
 }
 
-export {
-    SpinnerButton
-}
+export { SpinnerButton };

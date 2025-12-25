@@ -82,7 +82,9 @@ export function LoginForm({ className, ...props }) {
                         <form onSubmit={onSubmit}>
                             <FieldGroup>
                                 <Field className="animate-fade-in animation-delay-400">
-                                    <FieldLabel htmlFor="email">E-mail</FieldLabel>
+                                    <FieldLabel htmlFor="email">
+                                        E-mail
+                                    </FieldLabel>
                                     <Input
                                         id="email"
                                         type="email"
@@ -97,20 +99,29 @@ export function LoginForm({ className, ...props }) {
                                     <FieldLabel htmlFor="password">
                                         Password
                                     </FieldLabel>
-                                    <Input id="password" type="password" required />
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        required
+                                    />
                                     <FieldDescription>
                                         Insira sua senha.
                                     </FieldDescription>
                                 </Field>
                                 <Field className="animate-fade-in animation-delay-600">
                                     {loading ? (
-                                        <SpinnerButton>Entrando...</SpinnerButton>
+                                        <SpinnerButton>
+                                            Entrando...
+                                        </SpinnerButton>
                                     ) : (
                                         <Button type="submit">Entrar</Button>
                                     )}
                                     <FieldDescription className="text-center">
                                         Não tem uma conta?{" "}
-                                        <Link href="/register">Cadastre-se</Link>.
+                                        <Link href="/register">
+                                            Cadastre-se
+                                        </Link>
+                                        .
                                     </FieldDescription>
                                 </Field>
                             </FieldGroup>
