@@ -126,7 +126,7 @@ def initialize_app():
             )
 
         print("🔥 Firebase INICIALIZADO com sucesso!")
-    except Exception as error:
+    except Exception:
         raise Exception("❌ NÃO FOI POSSÍVEL inicializar o Firebase nesta aplicação!")
 
 

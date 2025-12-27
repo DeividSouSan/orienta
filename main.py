@@ -1,6 +1,6 @@
 import os
 import sys
-from flask import Flask, g, redirect, url_for
+from flask import Flask, redirect
 
 from api.v1.user import user_bp
 from api.v1.sessions import session_bp
@@ -10,7 +10,6 @@ from api.v1.validate import validations_bp
 from api.v1.status import status_bp
 from utils import initialize_app
 
-import traceback
 from flask import Response, jsonify, make_response, send_from_directory, request
 
 from errors import (
@@ -27,7 +26,7 @@ from errors import (
 # Check environment variables and initialize firebase
 try:
     initialize_app()
-except EnvironmentError as e:
+except EnvironmentError:
     sys.exit(1)
 
 # App configuration

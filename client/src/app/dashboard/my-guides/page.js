@@ -279,10 +279,11 @@ export default function MyGuidesPage() {
                                                 onClick={() =>
                                                     setCurrentPage(page)
                                                 }
-                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${currentPage === page
+                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${
+                                                    currentPage === page
                                                         ? "bg-blue-800 text-white"
                                                         : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
-                                                    }`}
+                                                }`}
                                             >
                                                 {page}
                                             </button>
