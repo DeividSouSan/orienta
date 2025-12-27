@@ -21,7 +21,7 @@ def me() -> Response:
         jsonify(
             {
                 "message": "Usuário atual recuperado com sucesso.",
-                "data": {"user": current_user},
+                "data": current_user,
             }
         ),
         200,

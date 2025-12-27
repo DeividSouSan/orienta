@@ -1,28 +1,25 @@
 import requests
-from dotenv import load_dotenv
-import os
-
-from models import auth, session, user
-
-load_dotenv()
-
-API_URL = os.getenv("API_URL") or "http://localhost:5000/api/v1"
+from tests import orchestrator
 
 
 def test_get_current_user():
-    user_data = user.find_by_username("mock")
+    orchestrator.create_user(username="mock", email="mock@orienta.com")
+    session_cookie = orchestrator.authenticate("mock@orienta.com", "validpassword")
 
-    auth_user = auth.authenticate("mock@orienta.com", "123456")
-
-    s = requests.Session()
-    s.cookies.set("session_id", session.create(token=auth_user["idToken"]))
-
-    response = s.get(API_URL + "/user")
+    response = requests.get(
+        "http://localhost:5000/api/v1/user", cookies={"session_id": session_cookie}
+    )
 
     assert response.status_code == 200
-    assert response.json() == {
-        "uid": user_data["uid"],
-        "email": user_data["email"],
-        "username": user_data["username"],
-        "created_at": user_data["created_at"],
+
+    response_body = response.json()
+    print(response_body)
+    assert response_body == {
+        "message": "Usuário atual recuperado com sucesso.",
+        "data": {
+            "uid": response_body["data"]["uid"],
+            "username": "mock",
+            "email": "mock@orienta.com",
+            "created_at": response_body["data"]["created_at"],
+        },
     }

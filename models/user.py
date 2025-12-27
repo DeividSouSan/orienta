@@ -36,7 +36,7 @@ def find_by_username(username: str):
         return {
             "username": user.get("username"),
             "uid": user.get("uid"),
-            "email": user.get("username"),
+            "email": user.get("email"),
             "created_at": user.get("created_at"),
         }
     else:
