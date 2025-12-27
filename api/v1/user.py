@@ -9,7 +9,7 @@ user_bp = Blueprint("user", __name__)
 
 @user_bp.route("/user", methods=["GET"])
 @protected
-def get_user() -> Response:
+def me() -> Response:
     if not g.get("username"):
         raise UnauthorizedError(
             message="Usuário não autenticado.", action="Faça login para continuar."

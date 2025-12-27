@@ -12,9 +12,9 @@ def get_status() -> Response:
     return make_response(
         jsonify(
             {
-                "message": "API está online"
+                "message": "API está online."
                 if api_status == "Online"
-                else "API está offline",
+                else "API está offline.",
                 "data": {"status": api_status},
             }
         ),
