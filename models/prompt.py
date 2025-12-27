@@ -1,11 +1,16 @@
+import os
 from dotenv import load_dotenv
-from errors import ServiceError, ValidationError
+from errors import InternalServerError, ServiceError, ValidationError
 from google import genai
 from pydantic import BaseModel, Field
 import google.genai.errors as genai_errors
 from utils import load_prompt
 
 load_dotenv()
+try:
+    VALIDATION_MODELS = os.environ.get("VALIDATION_MODELS").split("|")
+except AttributeError as error:
+    raise InternalServerError() from error
 
 
 def process(user_input: dict) -> dict:
@@ -78,11 +83,6 @@ def validate_relevance(topic):
         motive: str = Field(
             description="Uma justificativa clara caso a entrada seja inválida. Se for válida, retorna 'N/A'."
         )
-
-    VALIDATION_MODELS = [
-        "gemini-2.5-flash",
-        "gemini-2.5-flash-lite",
-    ]
 
     client = genai.Client()
     system_instruction = load_prompt("topic_validation.md")

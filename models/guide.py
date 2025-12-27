@@ -1,11 +1,19 @@
 from datetime import datetime, timezone
+import os
 from typing import Any
+import dotenv
 from google import genai
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
 from schemas import DailyStudySchema
 
-from errors import NotFoundError, ServiceError, UnauthorizedError, ValidationError
+from errors import (
+    InternalServerError,
+    NotFoundError,
+    ServiceError,
+    UnauthorizedError,
+    ValidationError,
+)
 from models import prompt
 import google.genai.errors as genai_errors
 
@@ -13,6 +21,13 @@ from utils import load_prompt
 from pydantic import TypeAdapter
 from pydantic import ValidationError as PydValidationError
 from typing import List
+
+dotenv.load_dotenv()
+
+try:
+    GEN_MODELS = os.environ.get("GEN_MODELS").split("|")
+except AttributeError as error:
+    raise InternalServerError() from error
 
 
 def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
@@ -259,11 +274,10 @@ def generate_with_fallback(
         Tuple[DailyStudySchema, str, Literal(2)]: Tupla com a lista com os guias de estudos diários, nome do modelo e temperatura.
 
     """
-    FALLBACK_MODELS_LIST = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash"]
 
     client = genai.Client()
 
-    for model_name in FALLBACK_MODELS_LIST:
+    for model_name in GEN_MODELS:
         try:
             system_instruction = load_prompt("generate_guide.md")
             response = client.models.generate_content(
