@@ -1,5 +1,6 @@
 import os
 import sys
+import traceback
 from flask import Flask, redirect
 
 from api.v1.user import user_bp
@@ -73,6 +74,7 @@ def handle_not_found_error(error):
 
 @app.errorhandler(Exception)
 def handle_api_error(error: Exception) -> Response:
+    traceback.print_exc()
     if (
         isinstance(error, ValidationError)
         or isinstance(error, ServiceError)

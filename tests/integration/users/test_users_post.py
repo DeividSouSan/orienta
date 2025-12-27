@@ -1,32 +1,35 @@
 import requests
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-API_URL = os.getenv("API_URL") or "http://localhost:5000/api/v1"
+import time
 
 
 def test_create_user_with_valid_data():
     response = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
-            "username": "valid.data",
-            "email": "valid.data@example.com",
-            "password": "testpassword",
+            "username": "valid.user",
+            "email": "valid.user@orienta.com",
+            "password": "validuser",
         },
     )
+    assert response.status_code == 201
 
-    assert response.status_code == 200
+    response_body = response.json()
+    assert response_body == {
+        "message": "Usuário criado com sucesso.",
+        "data": {
+            "username": "valid.user",
+            "email": "valid.user@orienta.com",
+            "uid": response_body["data"]["uid"],
+            "created_at": response_body["data"]["created_at"],
+        },
+    }
 
-    response_json = response.json()
-    assert response_json.get("username") == "valid.data"
-    assert response_json.get("email") == "valid.data@example.com"
+    assert int(response_body["data"]["created_at"]) < int(time.time() * 1000)
 
 
 def test_create_user_without_username():
     response = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "email": "without.username@example.com",
             "password": "testpassword",
@@ -45,7 +48,7 @@ def test_create_user_without_username():
 
 def test_create_user_without_email():
     response = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "without.email",
             "password": "testpassword",
@@ -64,7 +67,7 @@ def test_create_user_without_email():
 
 def test_create_user_without_password():
     response = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "without.password",
             "email": "without.password@example.com",
@@ -83,7 +86,7 @@ def test_create_user_without_password():
 
 def test_create_user_with_short_password():
     response = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "short.password",
             "email": "short.password@example.com",
@@ -103,7 +106,7 @@ def test_create_user_with_short_password():
 
 def test_create_user_with_duplicated_email():
     response_1 = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "duplicated.email.1",
             "email": "duplicated.email@example.com",
@@ -111,10 +114,10 @@ def test_create_user_with_duplicated_email():
         },
     )
 
-    assert response_1.status_code == 200
+    assert response_1.status_code == 201
 
     response_2 = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "duplicated.email.2",
             "email": "duplicated.email@example.com",  # Using the same email
@@ -134,7 +137,7 @@ def test_create_user_with_duplicated_email():
 
 def test_create_user_with_duplicated_username():
     response_1 = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "duplicated.user",
             "email": "duplicated.user.1@example.com",
@@ -142,10 +145,10 @@ def test_create_user_with_duplicated_username():
         },
     )
 
-    assert response_1.status_code == 200
+    assert response_1.status_code == 201
 
     response_2 = requests.post(
-        API_URL + "/users",
+        "http://localhost:5000/api/v1/users",
         json={
             "username": "duplicated.user",  # using the same username
             "email": "duplicated.user.2@example.com",
