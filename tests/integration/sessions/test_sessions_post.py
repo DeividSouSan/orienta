@@ -1,21 +1,20 @@
-from dotenv import load_dotenv
-import os
 import requests
 
-load_dotenv()
-API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
+from models import session
+from tests import orchestrator
 
 
 def test_create_session_with_valid_data():
+    new_user = orchestrator.create_user()
+
     response = requests.post(
-        f"{API_URL}/sessions",
-        json={"email": "mock@orienta.com", "password": "123456"},
+        "http://localhost:5000/api/v1/sessions",
+        json={"email": new_user["email"], "password": "validpassword"},
     )
 
     assert response.status_code == 201
 
-    assert response.headers.get("Set-Cookie")
-    assert "session_id" in response.cookies
+    assert "session_id" in response.headers.get("Set-Cookie")
 
     body = response.json()
 
@@ -23,17 +22,17 @@ def test_create_session_with_valid_data():
         "message": "Sessão criada com sucesso.",
         "data": {
             "userId": body["data"]["userId"],
-            "username": "mock",
-            "email": "mock@orienta.com",
+            "username": new_user["username"],
+            "email": new_user["email"],
             "sessionCookie": body["data"]["sessionCookie"],
-            "sessionExpiresIn": 1209600,
+            "sessionExpiresIn": session.DURATION_IN_SECONDS,
         },
     }
 
 
 def test_create_session_with_wrong_email():
     response = requests.post(
-        f"{API_URL}/sessions",
+        "http://localhost:5000/api/v1/sessions",
         json={"email": "wrong.email@orienta.com", "password": "123456"},
     )
 
@@ -49,7 +48,7 @@ def test_create_session_with_wrong_email():
 
 def test_create_session_with_wrong_password():
     response = requests.post(
-        f"{API_URL}/sessions",
+        "http://localhost:5000/api/v1/sessions",
         json={"email": "mock@orienta.com", "password": "wrong.password"},
     )
 
@@ -65,7 +64,7 @@ def test_create_session_with_wrong_password():
 
 def test_create_session_without_email():
     response = requests.post(
-        f"{API_URL}/sessions",
+        "http://localhost:5000/api/v1/sessions",
         json={"passowrd": "123456"},
     )
 
@@ -81,7 +80,7 @@ def test_create_session_without_email():
 
 def test_create_session_without_password():
     response = requests.post(
-        f"{API_URL}/sessions",
+        "http://localhost:5000/api/v1/sessions",
         json={"email": "mock@orienta.com"},
     )
 
@@ -97,7 +96,7 @@ def test_create_session_without_password():
 
 def test_create_session_without_data():
     response = requests.post(
-        f"{API_URL}/sessions",
+        "http://localhost:5000/api/v1/sessions",
         json={},
     )
 

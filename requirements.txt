@@ -15,6 +15,7 @@ commitizen==4.8.3
 cryptography==45.0.5
 decli==0.6.3
 distlib==0.4.0
+Faker==39.0.0
 filelock==3.18.0
 firebase_admin==7.0.0
 Flask==3.1.1
@@ -75,6 +76,7 @@ termcolor==3.1.0
 tomlkit==0.13.3
 typing-inspection==0.4.1
 typing_extensions==4.14.1
+tzdata==2025.3
 urllib3==2.5.0
 uvicorn==0.35.0
 virtualenv==20.32.0

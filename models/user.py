@@ -71,10 +71,10 @@ def validate_username(username: str) -> None:
     Raises:
         ValidationError: se o nome de usuário não é válido.
     """
-    if not (3 <= len(username) <= 20):
+    if not (3 <= len(username)):
         raise ValidationError(
             "O nome de usuário inserido não é válido.",
-            "Insira um nome de usuário maior que 3 caracteres e menor que 20 caracteres.",
+            "Insira um nome de usuário maior que 3 caracteres",
         )
 
 
