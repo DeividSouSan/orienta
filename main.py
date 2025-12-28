@@ -7,7 +7,7 @@ from api.v1.user import user_bp
 from api.v1.sessions import session_bp
 from api.v1.guides import guides_bp
 from api.v1.users import users_bp
-from api.v1.validate import validations_bp
+from api.v1.validations import validations_bp
 from api.v1.status import status_bp
 from utils import initialize_app
 

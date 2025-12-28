@@ -6,22 +6,21 @@ from utils import protected
 validations_bp = Blueprint("validate", __name__)
 
 
-@validations_bp.route("/validate/topic", methods=["POST"])
+@validations_bp.route("/validations/topic", methods=["POST"])
 @protected
-def validate():
-    data = request.get_json()
-    topic = data.get("topic", "")
+def validate_topic():
+    data: dict = request.get_json()
+
+    topic = data.get("topic", "").strip()
 
     prompt.validate_topic(topic)
-    prompt.validate_relevance(topic)
+    result = prompt.validate_relevance(topic)
 
     return make_response(
         jsonify(
             {
                 "message": "O tópico é válido.",
-                "data": {
-                    "topic": topic,
-                },
+                "data": {"topic": topic, "info": result.model_dump()},
             }
         ),
         200,
