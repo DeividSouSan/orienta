@@ -4,3 +4,7 @@ __pycache__
 service-account.json
 .env
 *.http
+client/.env.local
+client/.next
+client/node_modules
+client/out

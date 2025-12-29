@@ -15,6 +15,7 @@ commitizen==4.8.3
 cryptography==45.0.5
 decli==0.6.3
 distlib==0.4.0
+Faker==39.0.0
 filelock==3.18.0
 firebase_admin==7.0.0
 Flask==3.1.1
@@ -63,6 +64,7 @@ pydantic_core==2.33.2
 Pygments==2.19.2
 PyJWT==2.10.1
 pytest==8.4.1
+pytest-recording==0.13.4
 python-dotenv==1.1.1
 PyYAML==6.0.2
 questionary==2.1.0
@@ -75,10 +77,13 @@ termcolor==3.1.0
 tomlkit==0.13.3
 typing-inspection==0.4.1
 typing_extensions==4.14.1
-urllib3==2.5.0
+tzdata==2025.3
+urllib3==1.26.20
 uvicorn==0.35.0
+vcrpy==8.1.0
 virtualenv==20.32.0
 wcwidth==0.2.13
 websockets==15.0.1
 Werkzeug==3.1.3
+wrapt==2.0.1
 zipp==3.23.0

@@ -1,40 +1,29 @@
-import os
-
-from dotenv import load_dotenv
-
-from src.models import guide
-
-load_dotenv()
-API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
+import pytest
+from tests import orchestrator
 
 
-def test_get_my_guides(mock_session):
-    new_guide = guide.generate_with_metadata(
-        title="Test GET My Guides",
-        owner="mock",
-        inputs={
-            "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
-            "knowledge": "zero",
-            "focus_time": 45,
-            "days": 3,
-        },
-    )
+@pytest.mark.vcr
+def test_get_my_guides(auth_client, new_user):
+    new_guide = orchestrator.create_guide(owner=new_user["username"])
 
-    new_guide_id = guide.save(new_guide)
-
-    response = mock_session.get(f"{API_URL}/guides")
+    response = auth_client.get("/api/v1/guides")
 
     assert response.status_code == 200
 
-    response_body: dict = response.json()
-    assert response_body["message"] == "Guias recuperados com sucesso."
+    response_body = response.get_json()
+
     assert len(response_body["data"]) == 1
-    assert response_body["data"][0] == {
-        "created_at": response_body["data"][0]["created_at"],
-        "daily_studies": response_body["data"][0]["daily_studies"],
-        "days": 3,
-        "id": new_guide_id,
-        "status": "studying",
-        "title": "Test GET My Guides",
-        "topic": response_body["data"][0]["topic"],
+    assert response_body == {
+        "message": "Guias recuperados com sucesso.",
+        "data": [
+            {
+                "id": new_guide["id"],
+                "title": new_guide["title"],
+                "topic": new_guide["inputs"]["topic"],
+                "days": new_guide["inputs"]["days"],
+                "daily_studies": new_guide["daily_study"],
+                "created_at": response_body["data"][0]["created_at"],
+                "status": "studying",
+            }
+        ],
     }

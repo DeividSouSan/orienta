@@ -1,0 +1,419 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n    <INPUTS>\n        <TOPIC>Eu quero
+      estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>30
+      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>27 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5535'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
+        \\\"Introdu\xE7\xE3o \xE0 Contentoriza\xE7\xE3o\\\",\\n    \\\"Meta do Dia\\\":
+        \\\"Entender o conceito geral de contentoriza\xE7\xE3o e seus benef\xEDcios
+        em rela\xE7\xE3o \xE0s m\xE1quinas virtuais.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"O que \xE9 contentoriza\xE7\xE3o?\\\",\\n      \\\"Qual
+        a diferen\xE7a entre containers e m\xE1quinas virtuais?\\\",\\n      \\\"Por
+        que a contentoriza\xE7\xE3o se tornou popular?\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Pesquisar exemplos de cen\xE1rios onde containers
+        seriam mais vantajosos que VMs e vice-versa, para internalizar a distin\xE7\xE3o.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o principal problema
+        que a contentoriza\xE7\xE3o se prop\xF5e a resolver para os desenvolvedores
+        e operadores?\\\"\\n  },\\n  {\\n    \\\"day\\\": 2,\\n    \\\"title\\\":
+        \\\"Fundamentos do Docker\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
+        o que \xE9 Docker e seu papel no ecossistema de contentoriza\xE7\xE3o.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 Docker?\\\",\\n
+        \     \\\"Quais os componentes principais do Docker (daemon, cliente, registries)?\\\",\\n
+        \     \\\"Qual a proposta de valor do Docker?\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Assista a um v\xEDdeo introdut\xF3rio (5-10
+        minutos) que explica o Docker em alto n\xEDvel.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Em termos simples, o que o Docker permite que os desenvolvedores
+        fa\xE7am?\\\"\\n  },\\n  {\\n    \\\"day\\\": 3,\\n    \\\"title\\\": \\\"Instala\xE7\xE3o
+        e Primeiros Comandos B\xE1sicos\\\",\\n    \\\"Meta do Dia\\\": \\\"Instalar
+        o Docker Desktop ou Engine e executar o primeiro container simples.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Como instalar o Docker
+        Desktop/Engine no meu sistema operacional?\\\",\\n      \\\"Comandos b\xE1sicos
+        do Docker: 'docker version', 'docker info', 'docker run --help'.\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Instalar o Docker no seu computador.
+        Ap\xF3s a instala\xE7\xE3o, execute 'docker run hello-world'.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"O que significa a mensagem 'Hello from Docker!' que
+        voc\xEA visualizou?\\\"\\n  },\\n  {\\n    \\\"day\\\": 4,\\n    \\\"title\\\":
+        \\\"Imagens e Containers: Entendendo a Rela\xE7\xE3o\\\",\\n    \\\"Meta do
+        Dia\\\": \\\"Distinguir claramente o conceito de uma imagem Docker do conceito
+        de um container Docker.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \     \\\"O que \xE9 uma imagem Docker?\\\",\\n      \\\"O que \xE9 um container
+        Docker?\\\",\\n      \\\"Como imagens e containers se relacionam?\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie uma analogia curta ou um
+        esquema visual que represente a rela\xE7\xE3o entre uma imagem e um container
+        (ex: molde vs bolo).\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Voc\xEA pode ter m\xFAltiplos containers de uma \xFAnica imagem? Explique.\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 5,\\n    \\\"title\\\": \\\"Gerenciando Imagens
+        (Parte 1)\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender a buscar imagens no
+        Docker Hub e listar imagens localmente.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"O que \xE9 Docker Hub?\\\",\\n      \\\"Comando
+        'docker search' e 'docker pull'\\\",\\n      \\\"Comando 'docker images'\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Busque por 'nginx'
+        no Docker Hub. Em seguida, utilize 'docker pull nginx' para baixar a imagem.
+        Verifique se a imagem est\xE1 listada localmente com 'docker images'.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o prop\xF3sito do Docker
+        Hub no ecossistema Docker?\\\"\\n  },\\n  {\\n    \\\"day\\\": 6,\\n    \\\"title\\\":
+        \\\"Gerenciando Imagens (Parte 2)\\\",\\n    \\\"Meta do Dia\\\": \\\"Entender
+        como remover imagens n\xE3o utilizadas e os perigos de tags 'latest'.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando 'docker rmi'\\\",\\n
+        \     \\\"O que s\xE3o tags de imagens?\\\",\\n      \\\"Melhores pr\xE1ticas
+        para o uso de tags (evitar 'latest').\\\"\\n    ],\\n    \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Baixe duas vers\xF5es da imagem 'ubuntu' (ex: 'ubuntu:20.04'
+        e 'ubuntu:22.04'). Depois, remova uma delas usando 'docker rmi'.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Por que \xE9 desaconselh\xE1vel usar a tag 'latest'
+        em ambientes de produ\xE7\xE3o?\\\"\\n  },\\n  {\\n    \\\"day\\\": 7,\\n
+        \   \\\"title\\\": \\\"Ciclo de Vida de Containers: In\xEDcio e Execu\xE7\xE3o\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Aprender a iniciar e executar containers, bem
+        como mapear portas para acess\xE1-los.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Comando 'docker run' com suas principais flags (ex: -p, -d,
+        --name)\\\",\\n      \\\"Mapeamento de portas (port forwarding)\\\",\\n      \\\"Modo
+        detached (-d)\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Execute
+        um container Nginx em modo detached, mapeando a porta 8080 do host para a
+        porta 80 do container. Verifique o acesso via navegador ('localhost:8080').\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a diferen\xE7a pr\xE1tica
+        de executar um container em modo 'foreground' versus 'detached'?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 8,\\n    \\\"title\\\": \\\"Ciclo de Vida de Containers:
+        Controle e Visualiza\xE7\xE3o\\\",\\n    \\\"Meta do Dia\\\": \\\"Monitorar
+        containers em execu\xE7\xE3o e control\xE1-los (iniciar, parar, pausar, reiniciar).\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comandos 'docker ps',
+        'docker stop', 'docker start', 'docker restart', 'docker pause', 'docker unpause'\\\",\\n
+        \     \\\"Status de containers\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Inicie o container Nginx novamente se n\xE3o estiver rodando. Use 'docker
+        ps' para v\xEA-lo. Experimente 'docker stop', 'docker start' e 'docker restart'.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual comando voc\xEA usaria
+        para ver todos os containers que foram executados, mesmo os que n\xE3o est\xE3o
+        ativos no momento?\\\"\\n  },\\n  {\\n    \\\"day\\\": 9,\\n    \\\"title\\\":
+        \\\"Interagindo com Containers\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender
+        a acessar o shell de um container e visualizar seus logs.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando 'docker exec' (para executar
+        comandos dentro do container)\\\",\\n      \\\"Comando 'docker logs' (para
+        visualizar a sa\xEDda do container)\\\"\\n    ],\\n    \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Inicie um container Ubuntu. Use 'docker exec -it \\u003cnome_ou_id_do_container\\u003e
+        bash' para acess\xE1-lo. Explore o sistema de arquivos. Depois, inicie um
+        container Nginx e visualize seus logs em tempo real com 'docker logs -f'.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Por que o 'docker exec'
+        \xE9 mais recomendado para depura\xE7\xE3o interativa do que 'docker attach'?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 10,\\n    \\\"title\\\": \\\"Limpando o Ambiente
+        Docker\\\",\\n    \\\"Meta do Dia\\\": \\\"Remover containers e imagens n\xE3o
+        mais necess\xE1rios.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \     \\\"Comandos 'docker rm' e 'docker rmi' com as flags -f e --force\\\",\\n
+        \     \\\"Removendo m\xFAltiplos containers e imagens\\\",\\n      \\\"Comando
+        'docker system prune'\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Pare e remova todos os containers que voc\xEA iniciou at\xE9 agora. Remova
+        as imagens 'ubuntu' e 'nginx' que voc\xEA baixou. Limpe o ambiente Docker
+        com 'docker system prune -a'.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a principal vantagem de usar 'docker system prune -a' comparado a
+        remover manualmente cada recurso?\\\"\\n  },\\n  {\\n    \\\"day\\\": 11,\\n
+        \   \\\"title\\\": \\\"Armazenamento de Dados (Volumes)\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Compreender como persistir dados em containers usando volumes
+        nomeados e bind mounts.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \     \\\"O que s\xE3o volumes Docker?\\\",\\n      \\\"Tipos de volumes:
+        Volumes Nomeados (Named Volumes) e Bind Mounts\\\",\\n      \\\"Por que os
+        dados do container s\xE3o ef\xEAmeros por padr\xE3o?\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Crie e use um volume nomeado com um container.
+        Por exemplo, execute um container 'alpine' e salve um arquivo em um volume.
+        Depois, remova e recrie o container, mas mantendo o volume para verificar
+        se o arquivo persiste.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a principal vantagem de usar um Volume Nomeado em rela\xE7\xE3o a
+        um Bind Mount quando se trata de portabilidade do container?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 12,\\n    \\\"title\\\": \\\"Construindo Suas Pr\xF3prias
+        Imagens: Introdu\xE7\xE3o ao Dockerfile\\\",\\n    \\\"Meta do Dia\\\": \\\"Escrever
+        um Dockerfile simples para criar uma imagem personalizada.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 um Dockerfile?\\\",\\n
+        \     \\\"Instru\xE7\xF5es b\xE1sicas do Dockerfile: FROM, RUN, CMD\\\",\\n
+        \     \\\"Comando 'docker build'\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Crie um Dockerfile que use a imagem base 'alpine' e adicione o pacote
+        'curl'. Construa a imagem e execute-a para verificar a instala\xE7\xE3o do
+        curl. (Ex: 'apk add curl').\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a import\xE2ncia da ordem das instru\xE7\xF5es em um Dockerfile para
+        o processo de build e caching?\\\"\\n  },\\n  {\\n    \\\"day\\\": 13,\\n
+        \   \\\"title\\\": \\\"Aprofundando em Instru\xE7\xF5es do Dockerfile (Parte
+        1)\\\",\\n    \\\"Meta do Dia\\\": \\\"Dominar mais instru\xE7\xF5es essenciais
+        do Dockerfile para construir imagens mais complexas.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"Instru\xE7\xF5es COPY e ADD: diferen\xE7as
+        e uso\\\",\\n      \\\"Instru\xE7\xE3o WORKDIR\\\",\\n      \\\"Instru\xE7\xE3o
+        EXPOSE\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Modifique
+        seu Dockerfile para: 1) Criar um diret\xF3rio de trabalho usando WORKDIR.
+        2) Copiar um arquivo simples (ex: index.html) para dentro do container usando
+        COPY. 3) Expor uma porta com EXPOSE.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Quando seria mais apropriado usar COPY em vez de ADD em um Dockerfile?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 14,\\n    \\\"title\\\": \\\"Aprofundando em
+        Instru\xE7\xF5es do Dockerfile (Parte 2)\\\",\\n    \\\"Meta do Dia\\\": \\\"Entender
+        as nuances entre CMD e ENTRYPOINT e otimizar layers de imagem.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Diferen\xE7a entre CMD e ENTRYPOINT
+        e seus formatos (shell vs exec)\\\",\\n      \\\"O que s\xE3o layers de imagem
+        Docker e como otimiz\xE1-las\\\",\\n      \\\"Instru\xE7\xF5es ENV e ARG\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie um Dockerfile
+        que use tanto CMD quanto ENTRYPOINT, experimentando os formatos. Adicione
+        uma vari\xE1vel de ambiente (ENV). Analise a sa\xEDda do 'docker history'
+        da sua imagem para ver os layers.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a principal situa\xE7\xE3o em que a instru\xE7\xE3o ENTRYPOINT \xE9
+        prefer\xEDvel a CMD?\\\"\\n  },\\n  {\\n    \\\"day\\\": 15,\\n    \\\"title\\\":
+        \\\"Redes Docker: Bridge Network (Padr\xE3o)\\\",\\n    \\\"Meta do Dia\\\":
+        \\\"Entender como os containers se comunicam uns com os outros e com o host
+        na rede padr\xE3o 'bridge'.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Tipos de rede Docker (bridge, host, none, overlay)\\\",\\n      \\\"Como
+        funciona a rede 'bridge' padr\xE3o\\\",\\n      \\\"Resolu\xE7\xE3o de nomes
+        entre containers na mesma rede bridge padr\xE3o (desvantagens)\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Execute dois containers simples
+        (ex: 'alpine' ou 'busybox') na rede bridge padr\xE3o e tente faz\xEA-los se
+        comunicar entre si via endere\xE7o IP. Observe a dificuldade.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual a principal limita\xE7\xE3o da rede bridge padr\xE3o
+        ao tentar conectar dois containers pelo nome de servi\xE7o?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 16,\\n    \\\"title\\\": \\\"Redes Docker: Custom Bridge
+        Networks\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender a criar redes personalizadas
+        para isolamento e resolu\xE7\xE3o de nomes entre containers.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando 'docker network create'\\\",\\n
+        \     \\\"Anexando containers a redes personalizadas\\\",\\n      \\\"Resolu\xE7\xE3o
+        de nomes por nome de servi\xE7o em redes customizadas\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Crie uma rede customizada ('docker network
+        create myapp-network'). Inicie dois containers na mesma rede ('docker run
+        --network myapp-network --name web ...', 'docker run --network myapp-network
+        --name db ...') e fa\xE7a-os se comunicar pelo nome.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual o benef\xEDcio fundamental das redes personalizadas
+        Docker em compara\xE7\xE3o com a rede bridge padr\xE3o para aplica\xE7\xF5es
+        multi-servi\xE7o?\\\"\\n  },\\n  {\\n    \\\"day\\\": 17,\\n    \\\"title\\\":
+        \\\"Pr\xE1ticas de Otimiza\xE7\xE3o de Imagens\\\",\\n    \\\"Meta do Dia\\\":
+        \\\"Aplicar t\xE9cnicas para criar imagens Docker menores, mais seguras e
+        mais eficientes.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Multi-stage
+        builds (constru\xE7\xF5es em m\xFAltiplos est\xE1gios)\\\",\\n      \\\"Uso
+        de imagens base pequenas (alpine, distroless)\\\",\\n      \\\".dockerignore\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Reescreva um Dockerfile
+        existente (ou crie um novo simples para uma aplica\xE7\xE3o 'hello world'
+        em Node.js ou Python) para usar multi-stage builds e reduzir o tamanho final
+        da imagem.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o
+        principal objetivo de um multi-stage build em um Dockerfile?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 18,\\n    \\\"title\\\": \\\"Docker Stats e Resource
+        Limits\\\",\\n    \\\"Meta do Dia\\\": \\\"Monitorar o uso de recursos de
+        containers e aplicar limites para evitar que consumam excessivamente.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando 'docker stats'\\\",\\n
+        \     \\\"Limites de CPU (CPU shares, --cpus)\\\",\\n      \\\"Limites de
+        Mem\xF3ria (--memory)\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Inicie um container intensivo em CPU ou mem\xF3ria (ex: um loop infinito
+        no bash) e monitore seu uso com 'docker stats'. Depois, inicie-o novamente
+        aplicando limites de CPU e mem\xF3ria.\\\",\\n    \\\"Verifica\xE7\xE3o de
+        Aprendizado\\\": \\\"Por que \xE9 importante definir limites de recursos para
+        containers em um ambiente de produ\xE7\xE3o?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        19,\\n    \\\"title\\\": \\\"Introdu\xE7\xE3o ao Docker Compose\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Automatizar a orquestra\xE7\xE3o de m\xFAltiplos containers
+        utilizando Docker Compose.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"O que \xE9 Docker Compose e para que serve?\\\",\\n      \\\"Estrutura
+        b\xE1sica de um arquivo 'docker-compose.yml'\\\",\\n      \\\"Comandos 'docker-compose
+        up' e 'docker-compose down'\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Crie um 'docker-compose.yml' simples que inicie um container web (Nginx)
+        e um container de banco de dados (PostgreSQL ou MySQL). Inicie-os com 'docker-compose
+        up -d'.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o principal
+        benef\xEDcio de usar Docker Compose em vez de comandos 'docker run' individuais
+        para aplica\xE7\xF5es multi-servi\xE7o?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        20,\\n    \\\"title\\\": \\\"Docker Compose: Redes e Volumes\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Configurar redes personalizadas e volumes persistentes usando
+        Docker Compose.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Configura\xE7\xE3o
+        de redes customizadas em 'docker-compose.yml'\\\",\\n      \\\"Defini\xE7\xE3o
+        e uso de volumes nomeados e bind mounts no Compose\\\",\\n      \\\"Ambientes
+        de desenvolvimento com Compose\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Modifique o seu 'docker-compose.yml' do dia anterior para definir uma
+        rede customizada para os servi\xE7os e para usar volumes nomeados para o banco
+        de dados e um bind mount para arquivos est\xE1ticos do Nginx.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Como o Docker Compose simplifica a configura\xE7\xE3o
+        de volumes para m\xFAltiplos servi\xE7os comparado \xE0 abordagem manual com
+        'docker run'?\\\"\\n  },\\n  {\\n    \\\"day\\\": 21,\\n    \\\"title\\\":
+        \\\"Compartilhamento de Imagens: Docker Hub (Push/Pull)\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Autenticar-se no Docker Hub e compartilhar imagens customizadas.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando 'docker login'\\\",\\n
+        \     \\\"Como dar 'tag' em uma imagem com o nome do reposit\xF3rio\\\",\\n
+        \     \\\"Comando 'docker push'\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Crie uma conta gratuita no Docker Hub (se ainda n\xE3o tiver). Autentique-se
+        com 'docker login'. Crie uma imagem simples, d\xEA um 'tag' apropriado para
+        seu reposit\xF3rio do Docker Hub e envie-a ('docker push').\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Por que \xE9 essencial usar tags apropriadas (e n\xE3o
+        apenas 'latest') ao publicar imagens no Docker Hub?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        22,\\n    \\\"title\\\": \\\"Pr\xE1ticas de Seguran\xE7a Docker (Basics)\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Identificar e aplicar pr\xE1ticas b\xE1sicas
+        de seguran\xE7a para containers Docker.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"Princ\xEDpio do menor privil\xE9gio em Docker
+        (USER instruction)\\\",\\n      \\\"Imagens base pequenas (alpine, distroless)
+        e suas vantagens de seguran\xE7a\\\",\\n      \\\"N\xE3o rodar containers
+        como root\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie
+        um Dockerfile que especifique um usu\xE1rio n\xE3o-root usando a instru\xE7\xE3o
+        USER. Experimente remover permiss\xF5es de root e observe se a aplica\xE7\xE3o
+        ainda funciona.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual
+        o maior risco de seguran\xE7a ao executar containers como usu\xE1rio 'root'?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 23,\\n    \\\"title\\\": \\\"Entendendo Como
+        o Docker Funciona por Baixo (Camadas)\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprofundar
+        a compreens\xE3o sobre como as imagens e containers s\xE3o estruturados em
+        camadas no sistema de arquivos.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Union file systems (aufs, overlay2)\\\",\\n      \\\"Sistema
+        de camadas do Docker (image layers)\\\",\\n      \\\"Como as altera\xE7\xF5es
+        em um container s\xE3o gerenciadas\\\"\\n    ],\\n    \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Inicie um container. Fa\xE7a uma pequena altera\xE7\xE3o
+        (ex: criar um arquivo). Saia do container. Fa\xE7a 'docker diff' para ver
+        as altera\xE7\xF5es. Observe como as camadas s\xE3o adicionadas.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Por que o sistema de arquivos em camadas do Docker
+        \xE9 eficiente em termos de armazenamento e download?\\\"\\n  },\\n  {\\n
+        \   \\\"day\\\": 24,\\n    \\\"title\\\": \\\"Docker Ignore e Build Context\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Controlar quais arquivos s\xE3o enviados para
+        o daemon Docker durante o build da imagem.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"O que \xE9 '.dockerignore' e sua sintaxe\\\",\\n
+        \     \\\"O que \xE9 'build context' e por que \xE9 importante\\\",\\n      \\\"Comando
+        'docker build' com contexto\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Crie um projeto com alguns arquivos grandes ou desnecess\xE1rios. Crie
+        um Dockerfile e um '.dockerignore' para excluir esses arquivos do build context.
+        Verifique o tamanho do contexto de build.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual o benef\xEDcio principal de usar um arquivo '.dockerignore'
+        na pr\xE1tica?\\\"\\n  },\\n  {\\n    \\\"day\\\": 25,\\n    \\\"title\\\":
+        \\\"Docker Portainer (Interface Gr\xE1fica Opcional)\\\",\\n    \\\"Meta do
+        Dia\\\": \\\"Explorar o Portainer como uma ferramenta de gerenciamento visual
+        para o Docker.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O
+        que \xE9 Portainer?\\\",\\n      \\\"Como instalar o Portainer no Docker\\\",\\n
+        \     \\\"Funcionalidades principais do Portainer (gerenciar containers, imagens,
+        volumes, redes)\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Siga
+        os passos para instalar o Portainer em um container Docker e acesse sua interface
+        web. Explore as diferentes se\xE7\xF5es para visualizar seus containers, imagens
+        e outros recursos Docker.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Quais as vantagens de usar uma ferramenta como Portainer em vez da CLI
+        pura para algumas opera\xE7\xF5es Docker?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        26,\\n    \\\"title\\\": \\\"Introdu\xE7\xE3o \xE0 Orquestra\xE7\xE3o (Swarm
+        / Kubernetes Conceitos)\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender a
+        necessidade e os conceitos b\xE1sicos de orquestra\xE7\xE3o de containers,
+        com foco superficial em Docker Swarm.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Por que precisamos de orquestra\xE7\xE3o de containers?\\\",\\n
+        \     \\\"O que \xE9 Docker Swarm e para que serve?\\\",\\n      \\\"Conceitos
+        b\xE1sicos de servi\xE7os, n\xF3s, replica\xE7\xE3o\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Assista a um v\xEDdeo ou leia um artigo introdut\xF3rio
+        sobre Docker Swarm ou Kubernetes para entender a ideia de rodar containers
+        em clusters, sem necessariamente configurar um.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual a principal limita\xE7\xE3o que uma \xFAnica
+        m\xE1quina Docker tem para um ambiente de produ\xE7\xE3o em escala, que a
+        orquestra\xE7\xE3o tenta resolver?\\\"\\n  },\\n  {\\n    \\\"day\\\": 27,\\n
+        \   \\\"title\\\": \\\"Comandos Utilit\xE1rios e Boas Pr\xE1ticas Finais\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Revisar comandos importantes e consolidar o conhecimento
+        sobre as boas pr\xE1ticas no uso do Docker.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"Comando 'docker cp'\\\",\\n      \\\"Comando 'docker
+        commit' (e por que \xE9 desaconselhado para builds)\\\",\\n      \\\"Boas
+        pr\xE1ticas ao criar Dockerfiles e gerenciar containers.\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Utilize o comando 'docker cp' para copiar um
+        arquivo do seu host para um container em execu\xE7\xE3o e vice-versa. Fa\xE7a
+        uma autoavalia\xE7\xE3o geral dos conhecimentos adquiridos.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual o comando mais recomendado para empacotar uma
+        aplica\xE7\xE3o Dockerizada em um arquivo para transporte (hint: n\xE3o \xE9
+        'docker commit')?\\\"\\n  }\\n]\"\n          }\n        ],\n        \"role\":
+        \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n
+        \   }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 776,\n    \"candidatesTokenCount\":
+        5343,\n    \"totalTokenCount\": 6835,\n    \"promptTokensDetails\": [\n      {\n
+        \       \"modality\": \"TEXT\",\n        \"tokenCount\": 776\n      }\n    ],\n
+        \   \"thoughtsTokenCount\": 716\n  },\n  \"modelVersion\": \"gemini-2.5-flash\",\n
+        \ \"responseId\": \"9ulSafz6MISEz7IP173igAs\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 29 Dec 2025 20:52:06 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=30183
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '21203'
+    status:
+      code: 200
+      message: OK
+version: 1

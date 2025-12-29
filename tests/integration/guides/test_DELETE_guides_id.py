@@ -1,39 +1,28 @@
-from dotenv import load_dotenv
-import os
-
-from src.models import guide
-
-load_dotenv()
-API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
+import pytest
+from tests import orchestrator
 
 
-def test_delete_guide_with_valid_id(mock_session):
-    guide_data = guide.generate_with_metadata(
-        title="Test DELETE Method",
-        owner="mock",
-        inputs={
-            "topic": "Eu gostaria de estudar sobe o Brasil colônia. Gostaria de entender o básico do que aconteceu.",
-            "knowledge": "zero",
-            "focus_time": 60,
-            "days": 5,
-        },
-    )
+@pytest.mark.vcr
+def test_delete_guide_with_valid_id(auth_client, new_user):
+    new_guide = orchestrator.create_guide(owner=new_user["username"])
 
-    guide_id = guide.save(guide_data)
-
-    response = mock_session.delete(f"{API_URL}/guides/{guide_id}")
+    response = auth_client.delete(f"/api/v1/guides/{new_guide['id']}")
 
     assert response.status_code == 200
 
-    assert response.json() == {"message": "Guia de estudo deletado com sucesso."}
+    response_body = response.get_json()
+
+    assert response_body == {"message": "Guia de estudo deletado com sucesso."}
 
 
-def test_delete_guide_with_invalid_id(mock_session):
-    response = mock_session.delete(f"{API_URL}/guides/123456")
+def test_delete_guide_with_invalid_id(auth_client):
+    response = auth_client.delete("/api/v1/guides/123456")
 
     assert response.status_code == 404
 
-    assert response.json() == {
+    response_body = response.get_json()
+
+    assert response_body == {
         "name": "NotFoundError",
         "message": "Guia não encontrado.",
         "action": "Verifique o ID e tente novamente.",
