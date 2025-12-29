@@ -1,0 +1,251 @@
+interactions:
+- request:
+    body: '{"displayName": "Joel Diaz", "email": "storres@example.com", "password":
+      "validpassword"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '89'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.32.4
+      X-Client-Version:
+      - Python/Admin/7.0.0
+      authorization:
+      - Bearer ya29.c.c0AYnqXlhb55fH1qEw_AJE22Xc4bLMrHuRQMiaTsD8UxL6LICEQYh1HSksaI_TAAV9a3RvvH2Sfbzxjp7Wk8rgo2x-C_VMI01aBisoHPKsuPk5C5LYZ7DOcn_rZcil8q0CGqT9-pQNOwFo3dYU257maNfZcHfv5OKG_Dn4sF1yy0HNY9_wECpr9pPooFNByr7nb6mRH5mnh2X_vbRF18csxsWwHjwu5pw3or51pZi98cTp-HWqrJwkl24S5rg6GONVdr_YInvzg5Mc1LDV_3MOMmQlhG9aRHpyUZVoR8mtcNRz1XYJCU6j_Y_MmuwIgUq6RXB7O-9c2xjZiSNobkEIRbE858vAZ8dSQS0LAn0wBTiYbMc7j1WEJ7wVwLWfRxmTmrD-SwE399A8MfQnOo043s0S0s65s2ndYowxlU1Qj4Zt526k3fnnqxgvSiwvRFo94luVi1l9R5Jvwuw6F1b3UaXc1zm0ss885FzYett0VbqqrZeBtgr0ft_kdtUQ67gc_gB7vrcpmuva_vfhRe5V69B12h8msnpsjyRWj5RFlriR2X7Mytm36JhcIxt-qxSv4cUoI7ljnFt24da2JbFVolvO72RmegwX0JX8v27qV534YdSXg1UwVeYOp6e2sgY1XFqfSlmpvaa5vrYryWU49rm2XXmkdifISB7F4-uUvakaffmgZwOFqfqpfB6oBaiBrXw5jvv0mwVFYRyBlpV3BjOsZch-os77FFoWM9nbg6qzmuY3wOBjyVStXrvimt6briekfctWRorf2t973QJMR7i6crnOSgmUkYyzQ3Q1hV8Xa7qhmbVmXefVg9gp9J9_mal6gqhsI1ypfiuOvzrJMt34SZ5Xst0vuvhn3I_yRrdk-Rpve3iWeBhh-XbUfsrIRMqOyZWVtZkgVZpidut-0f9Um2UUY1liIbnhgq4Fpw4h1JtWXb_2jmr37RfZfqv7d795WebQxWma9gyMBW6osush4nuRhp98V4-wYmMxYMuqRR6Y7zUWZhw
+      x-allowed-locations:
+      - '0x0'
+      x-goog-api-client:
+      - gl-python/3.12.3 fire-admin/7.0.0 cred-type/sa
+    method: POST
+    uri: https://identitytoolkit.googleapis.com/v1/projects/orienta-deivid/accounts
+  response:
+    body:
+      string: "{\n  \"kind\": \"identitytoolkit#SignupNewUserResponse\",\n  \"email\":
+        \"storres@example.com\",\n  \"localId\": \"q9jh3jiGDgNDliyiJ0nB84ywJ4X2\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 29 Dec 2025 20:34:41 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - ESF
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '133'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"localId": ["q9jh3jiGDgNDliyiJ0nB84ywJ4X2"]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.32.4
+      X-Client-Version:
+      - Python/Admin/7.0.0
+      authorization:
+      - Bearer ya29.c.c0AYnqXlhb55fH1qEw_AJE22Xc4bLMrHuRQMiaTsD8UxL6LICEQYh1HSksaI_TAAV9a3RvvH2Sfbzxjp7Wk8rgo2x-C_VMI01aBisoHPKsuPk5C5LYZ7DOcn_rZcil8q0CGqT9-pQNOwFo3dYU257maNfZcHfv5OKG_Dn4sF1yy0HNY9_wECpr9pPooFNByr7nb6mRH5mnh2X_vbRF18csxsWwHjwu5pw3or51pZi98cTp-HWqrJwkl24S5rg6GONVdr_YInvzg5Mc1LDV_3MOMmQlhG9aRHpyUZVoR8mtcNRz1XYJCU6j_Y_MmuwIgUq6RXB7O-9c2xjZiSNobkEIRbE858vAZ8dSQS0LAn0wBTiYbMc7j1WEJ7wVwLWfRxmTmrD-SwE399A8MfQnOo043s0S0s65s2ndYowxlU1Qj4Zt526k3fnnqxgvSiwvRFo94luVi1l9R5Jvwuw6F1b3UaXc1zm0ss885FzYett0VbqqrZeBtgr0ft_kdtUQ67gc_gB7vrcpmuva_vfhRe5V69B12h8msnpsjyRWj5RFlriR2X7Mytm36JhcIxt-qxSv4cUoI7ljnFt24da2JbFVolvO72RmegwX0JX8v27qV534YdSXg1UwVeYOp6e2sgY1XFqfSlmpvaa5vrYryWU49rm2XXmkdifISB7F4-uUvakaffmgZwOFqfqpfB6oBaiBrXw5jvv0mwVFYRyBlpV3BjOsZch-os77FFoWM9nbg6qzmuY3wOBjyVStXrvimt6briekfctWRorf2t973QJMR7i6crnOSgmUkYyzQ3Q1hV8Xa7qhmbVmXefVg9gp9J9_mal6gqhsI1ypfiuOvzrJMt34SZ5Xst0vuvhn3I_yRrdk-Rpve3iWeBhh-XbUfsrIRMqOyZWVtZkgVZpidut-0f9Um2UUY1liIbnhgq4Fpw4h1JtWXb_2jmr37RfZfqv7d795WebQxWma9gyMBW6osush4nuRhp98V4-wYmMxYMuqRR6Y7zUWZhw
+      x-allowed-locations:
+      - '0x0'
+      x-goog-api-client:
+      - gl-python/3.12.3 fire-admin/7.0.0 cred-type/sa
+    method: POST
+    uri: https://identitytoolkit.googleapis.com/v1/projects/orienta-deivid/accounts:lookup
+  response:
+    body:
+      string: "{\n  \"kind\": \"identitytoolkit#GetAccountInfoResponse\",\n  \"users\":
+        [\n    {\n      \"localId\": \"q9jh3jiGDgNDliyiJ0nB84ywJ4X2\",\n      \"email\":
+        \"storres@example.com\",\n      \"displayName\": \"Joel Diaz\",\n      \"passwordHash\":
+        \"UkVEQUNURUQ=\",\n      \"emailVerified\": false,\n      \"passwordUpdatedAt\":
+        1767040481551,\n      \"providerUserInfo\": [\n        {\n          \"providerId\":
+        \"password\",\n          \"displayName\": \"Joel Diaz\",\n          \"federatedId\":
+        \"storres@example.com\",\n          \"email\": \"storres@example.com\",\n
+        \         \"rawId\": \"storres@example.com\"\n        }\n      ],\n      \"validSince\":
+        \"1767040481\",\n      \"disabled\": false,\n      \"createdAt\": \"1767040481551\"\n
+        \   }\n  ]\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 29 Dec 2025 20:34:41 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - ESF
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '672'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"email": "storres@example.com", "password": "validpassword", "returnSecureToken":
+      true}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '88'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.32.4
+    method: POST
+    uri: https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword
+  response:
+    body:
+      string: "{\n  \"kind\": \"identitytoolkit#VerifyPasswordResponse\",\n  \"localId\":
+        \"q9jh3jiGDgNDliyiJ0nB84ywJ4X2\",\n  \"email\": \"storres@example.com\",\n
+        \ \"displayName\": \"Joel Diaz\",\n  \"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImEzOGVhNmEwNDA4YjBjYzVkYTE4OWRmYzg4ODgyZDBmMWI3ZmJmMGUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSm9lbCBEaWF6IiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL29yaWVudGEtZGVpdmlkIiwiYXVkIjoib3JpZW50YS1kZWl2aWQiLCJhdXRoX3RpbWUiOjE3NjcwNDA0ODIsInVzZXJfaWQiOiJxOWpoM2ppR0RnTkRsaXlpSjBuQjg0eXdKNFgyIiwic3ViIjoicTlqaDNqaUdEZ05EbGl5aUowbkI4NHl3SjRYMiIsImlhdCI6MTc2NzA0MDQ4MiwiZXhwIjoxNzY3MDQ0MDgyLCJlbWFpbCI6InN0b3JyZXNAZXhhbXBsZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3RvcnJlc0BleGFtcGxlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.MAf_sKgDX3G6lj7A-e57NBXNsi9dcNFcI2fTeK1RfGm63FpRrlUx4pC_vcvYNqUj5xAOG8fYbalwTulTPncqEbZ1XMJ0I6RpAfoV5wyzSUVEFsUkMtJAfaJhMygqK2HI9AupXg0wb_Rcpta0rqXGHWYiy6pTYPonWKiNc0Pvvdc6IpNDP6cOEs6nIOJSGpDSx9rFHU2gi0GqDzcV_reDo0VT-pESxwR98Hl4TWZopimZAWHOugwD306cxJODkpDohpyztvyvO2OEzDSuZPR-2U7xIRPy6cKfuSBxjtsDVomSE_juDRGg3ipsEHRGOWF08OZ2acfX89ItuHv5fJpiJg\",\n
+        \ \"registered\": true,\n  \"refreshToken\": \"AMf-vBzzD1Rv76xjQOfgRSixTkCkz_0BG5ZLeCPKPCjbI1ao8YKvV6nszztB8lWLv4II4kXQQeTPh3x2vz6BnfeBit9Txen8Tb-sZjRsFHBdRpvmF5LbEksg0t79SBqQJJo5axfrXCG4HgWNUeKK98n2wOaxZM70h_IquR5wtKgsYdw-GIireVnJymg-qi5q86DPRS7IDukTWav9fFwWlSIl5aACRKCvDhVSetcKvl1o1L0d-xRzICM\",\n
+        \ \"expiresIn\": \"3600\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 29 Dec 2025 20:34:42 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - ESF
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1441'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImEzOGVhNmEwNDA4YjBjYzVkYTE4OWRmYzg4ODgyZDBmMWI3ZmJmMGUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSm9lbCBEaWF6IiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL29yaWVudGEtZGVpdmlkIiwiYXVkIjoib3JpZW50YS1kZWl2aWQiLCJhdXRoX3RpbWUiOjE3NjcwNDA0ODIsInVzZXJfaWQiOiJxOWpoM2ppR0RnTkRsaXlpSjBuQjg0eXdKNFgyIiwic3ViIjoicTlqaDNqaUdEZ05EbGl5aUowbkI4NHl3SjRYMiIsImlhdCI6MTc2NzA0MDQ4MiwiZXhwIjoxNzY3MDQ0MDgyLCJlbWFpbCI6InN0b3JyZXNAZXhhbXBsZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3RvcnJlc0BleGFtcGxlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.MAf_sKgDX3G6lj7A-e57NBXNsi9dcNFcI2fTeK1RfGm63FpRrlUx4pC_vcvYNqUj5xAOG8fYbalwTulTPncqEbZ1XMJ0I6RpAfoV5wyzSUVEFsUkMtJAfaJhMygqK2HI9AupXg0wb_Rcpta0rqXGHWYiy6pTYPonWKiNc0Pvvdc6IpNDP6cOEs6nIOJSGpDSx9rFHU2gi0GqDzcV_reDo0VT-pESxwR98Hl4TWZopimZAWHOugwD306cxJODkpDohpyztvyvO2OEzDSuZPR-2U7xIRPy6cKfuSBxjtsDVomSE_juDRGg3ipsEHRGOWF08OZ2acfX89ItuHv5fJpiJg",
+      "validDuration": 1209600}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '987'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.32.4
+      X-Client-Version:
+      - Python/Admin/7.0.0
+      authorization:
+      - Bearer ya29.c.c0AYnqXlhb55fH1qEw_AJE22Xc4bLMrHuRQMiaTsD8UxL6LICEQYh1HSksaI_TAAV9a3RvvH2Sfbzxjp7Wk8rgo2x-C_VMI01aBisoHPKsuPk5C5LYZ7DOcn_rZcil8q0CGqT9-pQNOwFo3dYU257maNfZcHfv5OKG_Dn4sF1yy0HNY9_wECpr9pPooFNByr7nb6mRH5mnh2X_vbRF18csxsWwHjwu5pw3or51pZi98cTp-HWqrJwkl24S5rg6GONVdr_YInvzg5Mc1LDV_3MOMmQlhG9aRHpyUZVoR8mtcNRz1XYJCU6j_Y_MmuwIgUq6RXB7O-9c2xjZiSNobkEIRbE858vAZ8dSQS0LAn0wBTiYbMc7j1WEJ7wVwLWfRxmTmrD-SwE399A8MfQnOo043s0S0s65s2ndYowxlU1Qj4Zt526k3fnnqxgvSiwvRFo94luVi1l9R5Jvwuw6F1b3UaXc1zm0ss885FzYett0VbqqrZeBtgr0ft_kdtUQ67gc_gB7vrcpmuva_vfhRe5V69B12h8msnpsjyRWj5RFlriR2X7Mytm36JhcIxt-qxSv4cUoI7ljnFt24da2JbFVolvO72RmegwX0JX8v27qV534YdSXg1UwVeYOp6e2sgY1XFqfSlmpvaa5vrYryWU49rm2XXmkdifISB7F4-uUvakaffmgZwOFqfqpfB6oBaiBrXw5jvv0mwVFYRyBlpV3BjOsZch-os77FFoWM9nbg6qzmuY3wOBjyVStXrvimt6briekfctWRorf2t973QJMR7i6crnOSgmUkYyzQ3Q1hV8Xa7qhmbVmXefVg9gp9J9_mal6gqhsI1ypfiuOvzrJMt34SZ5Xst0vuvhn3I_yRrdk-Rpve3iWeBhh-XbUfsrIRMqOyZWVtZkgVZpidut-0f9Um2UUY1liIbnhgq4Fpw4h1JtWXb_2jmr37RfZfqv7d795WebQxWma9gyMBW6osush4nuRhp98V4-wYmMxYMuqRR6Y7zUWZhw
+      x-allowed-locations:
+      - '0x0'
+      x-goog-api-client:
+      - gl-python/3.12.3 fire-admin/7.0.0 cred-type/sa
+    method: POST
+    uri: https://identitytoolkit.googleapis.com/v1/projects/orienta-deivid:createSessionCookie
+  response:
+    body:
+      string: "{\n  \"sessionCookie\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImM0MTZJUSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS9vcmllbnRhLWRlaXZpZCIsIm5hbWUiOiJKb2VsIERpYXoiLCJhdWQiOiJvcmllbnRhLWRlaXZpZCIsImF1dGhfdGltZSI6MTc2NzA0MDQ4MiwidXNlcl9pZCI6InE5amgzamlHRGdORGxpeWlKMG5CODR5d0o0WDIiLCJzdWIiOiJxOWpoM2ppR0RnTkRsaXlpSjBuQjg0eXdKNFgyIiwiaWF0IjoxNzY3MDQwNDgyLCJleHAiOjE3NjgyNTAwODIsImVtYWlsIjoic3RvcnJlc0BleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJzdG9ycmVzQGV4YW1wbGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.RK9_oNLbvQp7rvl9qpmR8KeuDGWVZgOhh_CQhmAZvWGIMYDHUpKq_Sldf93tJ_IDxX6wwpqN84DO34oFlhHrH0LmxRGMw6UlgGzv2Q_sbSOr51GSOq0KYhFjnnEpkmNauskevakZiIgxTzTgmHvcaoELDXymJdhj7VQm89bHLb_7sVPDWfV78tfSktN45DFn69LxrBx0DhA0SXR7kl6Wy0LgIZ9QY3croq5G0knArgezpj7drfBC3tOU9TvrQr9CctU7JqfNp1YbmREvwYqIV8USB6QEjSeGKKjKbyrPOY7wUK6VELlI9VkzlPPgZQ5tBYDTEAgk2mxXSF_e85eHfQ\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 29 Dec 2025 20:34:42 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - ESF
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '917'
+    status:
+      code: 200
+      message: OK
+version: 1

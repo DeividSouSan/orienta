@@ -3,62 +3,56 @@ name: Run Automated Tests
 on: pull_request
 
 jobs:
-  build:
-    name: Python Ubuntu
-    runs-on: ubuntu-latest
+    build:
+        name: Run Pytest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Check if Secret is present
-        run: |
-          if [ -z "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
-            echo "::error file=workflow,line=18,col=11::O secret GOOGLE_SERVICES_JSON está vazio ou não foi passado para o job."
-            exit 1
-          else
-            echo "Secret GOOGLE_SERVICES_JSON foi recebido com sucesso."
-          fi
+            - name: Check if Secret is present
+              run: |
+                  if [ -z "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
+                    echo "::error file=workflow,line=18,col=11::O secret GOOGLE_SERVICES_JSON está vazio ou não foi passado para o job."
+                    exit 1
+                  else
+                    echo "Secret GOOGLE_SERVICES_JSON foi recebido com sucesso."
+                  fi
 
-      - name: Create Google Services JSON File
-        env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: |
-          echo "Criando o arquivo service-account.json..."
-          echo $GOOGLE_SERVICES_JSON | base64 -di > ./service-account.json
-          # Verifica se o arquivo foi criado e não está vazio
-          if [ ! -s ./service-account.json ]; then
-            echo "Falha ao criar o service-account.json. O arquivo está vazio."
-            exit 1
-          fi
-          echo "Arquivo criado com sucesso."
+            - name: Create Google Services JSON File
+              env:
+                  GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+              run: |
+                  echo "Criando o arquivo service-account.json..."
+                  echo $GOOGLE_SERVICES_JSON | base64 -di > ./service-account.json
+                  # Verifica se o arquivo foi criado e não está vazio
+                  if [ ! -s ./service-account.json ]; then
+                    echo "Falha ao criar o service-account.json. O arquivo está vazio."
+                    exit 1
+                  fi
+                  echo "Arquivo criado com sucesso."
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12.3"
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.12.3"
 
-      - name: Instala dependências
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            - name: Instala dependências
+              run: |
+                  python -m pip install --upgrade pip
+                  if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Subindo o servidor e rodando o Pytest...
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ./service-account.json
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          ENVIRONMENT: Actions
-          FLASK_APP: main
-        run: |
-          flask run &
+            - name: Subindo o servidor e rodando o Pytest...
+              env:
+                  GOOGLE_APPLICATION_CREDENTIALS: ./service-account.json
+                  GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+                  FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+                  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+                  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+                  ENVIRONMENT: Actions
+                  FLASK_APP: main
+                  GEN_MODELS: "gemini-2.5-flash|gemini-2.5-flash-lite"
+                  VALIDATION_MODELS: "gemini-2.5-flash-lite|gemini-2.5-flash"
 
-          echo "Espeando o servidor iniciar..."
-          sleep 5
-
-          pytest -v -s
-
-          echo "Encerrando o servidor..."
-          pkill -f flask || true
+              run: pytest

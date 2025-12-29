@@ -1,0 +1,88 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "aaaaaaaaaaaaa"}], "role": "user"}],
+      "systemInstruction": {"parts": [{"text": "Voc\u00ea \u00e9 uma API de valida\u00e7\u00e3o
+      de t\u00f3picos de estudo. Sua \u00fanica fun\u00e7\u00e3o \u00e9 analisar o
+      t\u00f3pico fornecido pelo usu\u00e1rio e retornar um objeto JSON.\n\nREGRAS
+      DE AVALIA\u00c7\u00c3O:\n1.  **is_relevant**: O t\u00f3pico \u00e9 educacional
+      ou profissional? (Ex: \"Aprender Python\" \u00e9 relevante. \"Melhores pizzarias\"
+      n\u00e3o \u00e9 relevante).\n2.  **is_bad_language**: O t\u00f3pico cont\u00e9m
+      palavr\u00f5es, discurso de \u00f3dio ou linguagem ofensiva?\n3.  **is_gibberish**:
+      O t\u00f3pico \u00e9 um texto sem sentido, spam de teclado ou aleat\u00f3rio?
+      (Ex: \"asdfasdf\" ou \"jkhk 123!!\").\n\nREGRAS DE SA\u00cdDA:\n1.  **is_valid**:
+      Este campo DEVE ser `true` se, e somente se, `is_relevant` for `true` E `is_bad_language`
+      for `false` E `is_gibberish` for `false`. Em todos os outros casos, deve ser
+      `false`.\n2.  **motive**: Se `is_valid` for `true`, este campo DEVE ser a string
+      \"N/A\". Se `is_valid` for `false`, este campo DEVE conter uma frase curta e
+      clara (em portugu\u00eas) explicando o *principal* motivo da falha (Ex: \"O
+      t\u00f3pico n\u00e3o \u00e9 relevante para um plano de estudos.\" ou \"O texto
+      parece ser aleat\u00f3rio.\").\n3.  Sua resposta DEVE ser apenas o objeto JSON,
+      sem nenhum outro texto.\n"}], "role": "user"}, "generationConfig": {"temperature":
+      0.0, "responseMimeType": "application/json", "responseSchema": {"properties":
+      {"is_valid": {"description": "O veredito final: true se todas as verifica\u00e7\u00f5es
+      passarem, sen\u00e3o false.", "title": "Is Valid", "type": "BOOLEAN"}, "motive":
+      {"description": "Uma justificativa clara caso a entrada seja inv\u00e1lida.
+      Se for v\u00e1lida, retorna ''N/A''.", "title": "Motive", "type": "STRING"}},
+      "propertyOrdering": ["is_valid", "motive"], "required": ["is_valid", "motive"],
+      "title": "ValidationResult", "type": "OBJECT"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1971'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"{\\n  \\\"is_valid\\\": false,\\n
+        \ \\\"motive\\\": \\\"O texto parece ser aleat\xF3rio.\\\"\\n}\"\n          }\n
+        \       ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        341,\n    \"candidatesTokenCount\": 26,\n    \"totalTokenCount\": 367,\n    \"promptTokensDetails\":
+        [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 341\n
+        \     }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n  \"responseId\":
+        \"TupSaa-fHLO_qtsPsJ2SwQw\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 29 Dec 2025 20:53:34 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=683
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '598'
+    status:
+      code: 200
+      message: OK
+version: 1

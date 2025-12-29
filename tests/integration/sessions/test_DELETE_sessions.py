@@ -1,10 +1,9 @@
 from datetime import datetime, timezone
 from http.cookies import SimpleCookie
-import requests
 
 
-def test_delete_session():
-    response = requests.delete("http://localhost:5000/api/v1/sessions")
+def test_delete_session(client):
+    response = client.delete("/api/v1/sessions")
 
     assert response.status_code == 200
 

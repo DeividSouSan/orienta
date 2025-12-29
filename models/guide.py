@@ -205,7 +205,7 @@ def find_guide_by_id(guide_id: str) -> dict[str, Any]:
         ) from error
 
 
-def save(guide_info: dict) -> str:
+def save(guide_info: dict) -> dict[str, Any]:
     """Persiste o guia gerado no banco de dados.
 
     Args:
@@ -225,7 +225,7 @@ def save(guide_info: dict) -> str:
             }
         )
 
-        return guide_doc_ref.id
+        return {"id": guide_doc_ref.id, **guide_doc_ref.get().to_dict()}
 
     except FirebaseError as error:
         raise ServiceError(

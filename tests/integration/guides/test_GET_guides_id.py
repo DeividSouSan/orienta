@@ -1,67 +1,49 @@
-from dotenv import load_dotenv
-import os
-from models import user
-from models import guide
-
-load_dotenv()
-API_URL = os.getenv("API_URL", "http://localhost:5000/api/v1")
+import pytest
+from tests import orchestrator
 
 
-def test_get_guide(mock_session):
-    user.create(username="ava", email="ava@orienta.com", password="123456")
-    new_guide = guide.generate_with_metadata(
-        title="Guide from Ava",
-        owner="ava",
-        inputs={
-            "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
-            "knowledge": "zero",
-            "focus_time": 45,
-            "days": 3,
-        },
-    )
+@pytest.mark.vcr
+def test_get_guide(auth_client):
+    new_guide = orchestrator.create_guide()
 
-    guide.save(new_guide)
+    response = auth_client.get(f"/api/v1/guides/{new_guide['id']}")
 
-    guide_from_db = guide.find_by_username("ava")
-    assert len(guide_from_db) == 1
-
-    new_guide_id = guide_from_db[0].get("id", None)
-    assert new_guide_id is not None
-
-    response = mock_session.get(f"{API_URL}/guides/{new_guide_id}")
     assert response.status_code == 200
 
-    response_body: dict[str, str] = response.json()
+    response_body = response.get_json()
+
     assert response_body == {
         "message": "Guia recuperado com sucesso.",
         "data": {
-            "title": "Guide from Ava",
-            "model": response_body["data"].get("model", ""),
+            "title": new_guide["title"],
+            "model": new_guide["model"],
             "is_public": False,
-            "owner": "ava",
+            "owner": response_body["data"]["owner"],
             "status": "studying",
             "temperature": 2.0,
-            "created_at": response_body["data"].get("created_at", ""),
-            "generation_time_seconds": response_body["data"].get(
-                "generation_time_seconds", ""
-            ),
+            "created_at": response_body["data"][
+                "created_at"
+            ],  # ? Seria melhor usar `new_guide["created_at"]` ?
+            "generation_time_seconds": new_guide["generation_time_seconds"],
             "inputs": {
-                "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
-                "knowledge": "zero",
-                "focus_time": 45,
-                "days": 3,
+                "topic": new_guide["inputs"]["topic"],
+                "knowledge": new_guide["inputs"]["knowledge"],
+                "focus_time": new_guide["inputs"]["focus_time"],
+                "days": new_guide["inputs"]["days"],
             },
-            "daily_study": response_body["data"].get("daily_study", ""),
+            "daily_study": new_guide["daily_study"],
         },
     }
 
 
-def test_get_nonexistent_guide(mock_session):
-    response = mock_session.get(f"{API_URL}/guides/123")
+def test_get_nonexistent_guide(auth_client):
+    response = auth_client.get("/api/v1/guides/a32fdsa5")
 
     assert response.status_code == 404
 
-    assert response.json() == {
+    response_body = response.get_json()
+
+    assert response_body == {
         "name": "NotFoundError",
         "message": "O guia não foi encontrado.",
         "action": "Verifique que o guia existe e tente novamente.",

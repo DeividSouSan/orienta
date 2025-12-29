@@ -6,5 +6,5 @@ service-account.json
 *.http
 client/.env.local
 client/.next
-node_modules
+client/node_modules
 client/out

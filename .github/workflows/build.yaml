@@ -1,0 +1,25 @@
+name: Build Next.js /out folder
+
+on: pull_request
+
+jobs:
+    next-build:
+        name: Run npm build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: client/.nvmrc
+
+            - name: Install Dependencies
+              working-directory: client
+              run: npm ci
+
+            - name: Build
+              working-directory: client
+              run: npm run build
