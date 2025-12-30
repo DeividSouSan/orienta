@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useMessage } from "./useMessage";
 
 export function useStudyGuide(guideId) {
     const [guide, setGuide] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSavingBatch, setIsSavingBatch] = useState(false);
+
+    const { errorMessage } = useMessage();
 
     const lastSavedBatch = useRef("");
 
@@ -18,7 +21,7 @@ export function useStudyGuide(guideId) {
 
                 if (response.ok) {
                     const responseBody = await response.json();
-                    console.log(responseBody);
+
                     setGuide(responseBody.data);
                     lastSavedBatch.current = JSON.stringify(
                         responseBody.data.daily_study,
@@ -67,9 +70,8 @@ export function useStudyGuide(guideId) {
                     }),
                 });
                 lastSavedBatch.current = currentBatchString;
-                console.log("Lote de estudos salvo com sucesso.");
             } catch (error) {
-                console.log("Erro ao salvar lote de estudos: ", error);
+                errorMessage("Erro ao salvar os estudos.");
             } finally {
                 setIsSavingBatch(false);
             }

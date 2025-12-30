@@ -37,7 +37,6 @@ export default function GeneratePage() {
     });
 
     const handleNext = async () => {
-        console.log("O passo atual é: ", currentStep);
         if (currentStep === 1) {
             if (!stepOneValidation()) return;
 
@@ -115,10 +114,8 @@ export default function GeneratePage() {
             }
         }
 
-        console.log("Agora aumentando o currentStep");
         if (currentStep < 3) {
             setCurrentStep((prev) => prev + 1);
-            console.log("O currentStep é agora: ", currentStep);
         } else {
             handleGenerate();
         }

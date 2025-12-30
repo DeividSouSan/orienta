@@ -25,7 +25,9 @@ import { useMessage } from "@/hooks/useMessage";
 
 export default function LoginPage() {
     const router = useRouter();
+
     const [loading, setLoading] = useState(false);
+
     const { login } = useAuth();
     const { addMessage } = useMessage();
 
@@ -47,7 +49,6 @@ export default function LoginPage() {
         });
 
         if (response.ok) {
-            console.log("O usuário foi logado com sucesso.");
             const responseBody = await response.json();
             login(responseBody.data);
             addMessage({

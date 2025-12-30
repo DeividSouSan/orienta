@@ -20,77 +20,79 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMessage } from "@/hooks/useMessage";
+import { success } from "zod";
 
 export default function SignupPage() {
-    const [loading, setLoading] = useState(false);
-
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-
-    const [errorMessage, setErrorMessage] = useState("");
-
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
-    async function handleSubmit() {
-        const response = await fetch("/api/v1/users", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: username,
-                email: email,
-                password: password,
-                confirmPassword: confirmPassword,
-            }),
-        });
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
 
-        if (response.ok) {
-            console.log("User registered successfully");
-            router.push("/login");
-        } else {
-            // Handle error
-            console.error("Error registering user");
-            const error = await response.json();
-            setErrorMessage(error.action);
-        }
-    }
+    const { successMessage, errorMessage } = useMessage();
 
-    async function validateForm(event) {
-        event.preventDefault();
+    const handleSubmit = async () => {
+        setIsLoading(true);
 
-        let valid = true;
-        setLoading(true);
-        setErrorMessage("");
+        try {
+            const response = await fetch("/api/v1/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
 
-        // validar username
-        if (username.length < 3 || username.length > 20) {
-            setErrorMessage(
-                "O nome de usuário deve conter entre 3 e 20 caracteres.",
+            const responseBody = await response.json();
+
+            if (response.ok) {
+                successMessage(responseBody.message);
+                return router.push("/login");
+            } else {
+                errorMessage(responseBody.message);
+                return;
+            }
+        } catch (error) {
+            errorMessage(
+                "Um erro interno aconteceu. Tente novamente mais tarde.",
             );
-            valid = false;
+            return;
+        } finally {
+            setIsLoading(false);
+            return;
         }
-        // validar senha
-        if (password.length < 6) {
-            setErrorMessage("A senha deve conter mais de 6 caracteres.");
+    };
+
+    const validateForm = async () => {
+        let valid = true;
+
+        setIsLoading(true);
+
+        if (formData.username.length < 3) {
+            errorMessage("O nome de usuário deve conter no mínimo 3.");
             valid = false;
         }
 
-        // validar confirmação de senha
-        if (confirmPassword !== password) {
-            setErrorMessage("A confirmação de senha não coincide.");
+        if (formData.password.length < 6) {
+            errorMessage("A senha deve conter mais de 6 caracteres.");
             valid = false;
         }
 
-        // tudo ok
-        if (valid) {
-            await handleSubmit();
-        } else {
-            setLoading(false);
+        if (formData.confirmPassword !== formData.password) {
+            errorMessage("A confirmação de senha não coincide.");
+            valid = false;
         }
-    }
+
+        if (valid) await handleSubmit();
+        else {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <GuestGuard>
@@ -102,18 +104,13 @@ export default function SignupPage() {
                                 Cadastre-se
                             </CardTitle>
                             <CardDescription className="animate-fade-in animation-delay-400">
-                                {errorMessage ? (
-                                    <p> {errorMessage} </p>
-                                ) : (
-                                    <p>
-                                        Crie sua conta para começar a gerar
-                                        guias.
-                                    </p>
-                                )}
+                                <p>
+                                    Crie sua conta para começar a gerar guias.
+                                </p>
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={validateForm}>
+                            <form>
                                 <FieldGroup>
                                     <Field className="animate-fade-in animation-delay-400">
                                         <FieldLabel htmlFor="username">
@@ -122,15 +119,15 @@ export default function SignupPage() {
                                         <Input
                                             id="username"
                                             type="text"
-                                            placeholder="username"
+                                            placeholder="Deve conter no mínimo 3 caracteres."
                                             required
                                             onChange={(e) =>
-                                                setUsername(e.target.value)
+                                                setFormData({
+                                                    ...formData,
+                                                    username: e.target.value,
+                                                })
                                             }
                                         />
-                                        <FieldDescription>
-                                            *Deve conter de 3 a 20 caracteres.
-                                        </FieldDescription>
                                     </Field>
                                     <Field className="animate-fade-in animation-delay-400">
                                         <FieldLabel htmlFor="email">
@@ -139,15 +136,15 @@ export default function SignupPage() {
                                         <Input
                                             id="email"
                                             type="email"
-                                            placeholder="email@orienta.com"
+                                            placeholder="Insira seu melhor e-mail."
                                             required
                                             onChange={(e) =>
-                                                setEmail(e.target.value)
+                                                setFormData({
+                                                    ...formData,
+                                                    email: e.target.value,
+                                                })
                                             }
                                         />
-                                        <FieldDescription>
-                                            Insira um e-mail válido.
-                                        </FieldDescription>
                                     </Field>
                                     <Field className="animate-fade-in animation-delay-400">
                                         <FieldLabel htmlFor="password">
@@ -156,15 +153,15 @@ export default function SignupPage() {
                                         <Input
                                             id="password"
                                             type="password"
+                                            placeholder="Insira uma senha maior que 6 caracteres."
                                             required
                                             onChange={(e) =>
-                                                setPassword(e.target.value)
+                                                setFormData({
+                                                    ...formData,
+                                                    password: e.target.value,
+                                                })
                                             }
                                         />
-                                        <FieldDescription>
-                                            Insira uma senha maior que 6
-                                            caracteres.
-                                        </FieldDescription>
                                     </Field>
                                     <Field className="animate-fade-in animation-delay-400">
                                         <FieldLabel htmlFor="confirm-password">
@@ -173,28 +170,31 @@ export default function SignupPage() {
                                         <Input
                                             id="confirm-password"
                                             type="password"
+                                            placeholder="Insira sua senha novamente."
                                             required
                                             onChange={(e) =>
-                                                setConfirmPassword(
-                                                    e.target.value,
-                                                )
+                                                setFormData({
+                                                    ...formData,
+                                                    confirmPassword:
+                                                        e.target.value,
+                                                })
                                             }
                                         />
-                                        <FieldDescription>
-                                            Confirme sua senha.
-                                        </FieldDescription>
                                     </Field>
                                     <FieldGroup>
                                         <Field className="animate-fade-in animation-delay-600">
-                                            {loading ? (
+                                            {isLoading ? (
                                                 <SpinnerButton
                                                     type="submit"
-                                                    disabled={loading}
+                                                    disabled={isLoading}
                                                 >
                                                     Criando conta...
                                                 </SpinnerButton>
                                             ) : (
-                                                <Button type="submit">
+                                                <Button
+                                                    type="submit"
+                                                    onClick={validateForm}
+                                                >
                                                     Criar Conta
                                                 </Button>
                                             )}
