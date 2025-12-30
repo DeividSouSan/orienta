@@ -65,7 +65,7 @@ export default function GeneratePage() {
             }
 
             async function callValidateTopicAPI() {
-                const response = await fetch("/api/v1/validate/topic", {
+                const response = await fetch("/api/v1/validations/topic", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
