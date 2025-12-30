@@ -25,10 +25,6 @@ export function MessageContainer() {
         }
     }, [messages, clear]);
 
-    useEffect(() => {
-        console.log("Displayed Messages:", displayedMessages);
-    }, [displayedMessages]);
-
     const handleClose = (id) => {
         setDisplayedMessages((prev) =>
             prev.filter((message) => message.id !== id),

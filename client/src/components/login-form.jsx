@@ -47,7 +47,6 @@ export function LoginForm({ className, ...props }) {
         });
 
         if (response.ok) {
-            console.log("O usuário foi logado com sucesso.");
             const responseBody = await response.json();
             login(responseBody.data);
             addMessage({
