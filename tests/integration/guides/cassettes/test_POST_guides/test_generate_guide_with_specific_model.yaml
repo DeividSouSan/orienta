@@ -90,58 +90,54 @@ interactions:
   response:
     body:
       string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
-        [\n          {\n            \"text\": \"[\\n    {\\n        \\\"day\\\": 1,\\n
-        \       \\\"title\\\": \\\"Introdu\xE7\xE3o aos Workers em Aplica\xE7\xF5es
-        Web\\\",\\n        \\\"Meta do Dia\\\": \\\"Compreender o conceito fundamental
-        de workers e sua import\xE2ncia em aplica\xE7\xF5es web.\\\",\\n        \\\"O
-        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o workers em
-        arquitetura de software?\\\",\\n            \\\"Por que aplica\xE7\xF5es web
-        precisam de m\xFAltiplos processos?\\\",\\n            \\\"Qual o papel de
-        um servidor WSGI/ASGI como Gunicorn?\\\"\\n        ],\\n        \\\"M\xE3o
-        na Massa (Pr\xE1tica)\\\": \\\"Pesquisar e anotar os tipos de workers que
-        o Gunicorn suporta (sync, gevent, etc.).\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Explique com suas pr\xF3prias palavras o que \xE9
-        um 'worker' no contexto de um servidor web.\\\"\\n    },\\n    {\\n        \\\"day\\\":
-        2,\\n        \\\"title\\\": \\\"Configura\xE7\xE3o e Ajuste de Workers no
-        Gunicorn\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender como configurar
-        o n\xFAmero de workers e entender como isso afeta a performance.\\\",\\n        \\\"O
-        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Como definir o n\xFAmero
-        de workers no Gunicorn (--workers)?\\\",\\n            \\\"Qual a rela\xE7\xE3o
-        entre n\xFAmero de workers e CPU/mem\xF3ria?\\\",\\n            \\\"O que
-        \xE9 'worker_connections' (para workers baseados em eventos)?\\\"\\n        ],\\n
-        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Simular a configura\xE7\xE3o
-        do Gunicorn com 2, 4 e 8 workers e anotar as diferen\xE7as observadas (hipoteticamente
-        ou em um ambiente de teste simples).\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Como o n\xFAmero de workers pode impactar o desempenho
-        da sua aplica\xE7\xE3o web?\\\"\\n    },\\n    {\\n        \\\"day\\\": 3,\\n
-        \       \\\"title\\\": \\\"Aprofundamento: Tipos de Workers e Casos de Uso\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Diferenciar os tipos de workers do Gunicorn
-        e escolher o mais adequado para diferentes cen\xE1rios.\\\",\\n        \\\"O
-        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Diferen\xE7as entre Sync
-        Workers e Async Workers (Gevent, Eventlet, Uvicorn workers).\\\",\\n            \\\"Quando
-        usar Sync Workers vs. Async Workers?\\\",\\n            \\\"Como monitorar
-        o uso dos workers em produ\xE7\xE3o?\\\"\\n        ],\\n        \\\"M\xE3o
-        na Massa (Pr\xE1tica)\\\": \\\"Pesquisar um cen\xE1rio comum (ex: aplica\xE7\xE3o
-        com muitas requisi\xE7\xF5es I/O-bound) e determinar qual tipo de worker seria
-        mais apropriado e por qu\xEA.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
-        \\\"Em que situa\xE7\xF5es um worker ass\xEDncrono seria prefer\xEDvel a um
-        worker s\xEDncrono?\\\"\\n    }\\n]\"\n          }\n        ],\n        \"role\":
-        \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n
-        \   }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 783,\n    \"candidatesTokenCount\":
-        594,\n    \"totalTokenCount\": 1377,\n    \"promptTokensDetails\": [\n      {\n
-        \       \"modality\": \"TEXT\",\n        \"tokenCount\": 783\n      }\n    ]\n
-        \ },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n  \"responseId\": \"iutSaenoK8GsqtsP762AyAw\"\n}\n"
+        [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
+        \\\"Introdu\xE7\xE3o aos Workers\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
+        o conceito fundamental de workers em aplica\xE7\xF5es web e sua finalidade.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que s\xE3o workers
+        em aplica\xE7\xF5es web?\\\",\\n      \\\"Por que s\xE3o necess\xE1rios os
+        workers?\\\",\\n      \\\"Qual a diferen\xE7a entre um processo e um worker?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Pesquisar e anotar
+        as defini\xE7\xF5es de worker, processo e thread no contexto de servidores
+        web.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Explique em
+        uma frase qual o papel principal de um worker em um servidor web.\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 2,\\n    \\\"title\\\": \\\"Workers no Gunicorn: Conceitos\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Entender como o Gunicorn gerencia workers e os
+        tipos b\xE1sicos dispon\xEDveis.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Como o Gunicorn utiliza workers?\\\",\\n      \\\"Tipos de workers
+        no Gunicorn (sync, async, etc.)\\\",\\n      \\\"O que significa 'sync worker'
+        no Gunicorn?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Ler
+        a documenta\xE7\xE3o do Gunicorn sobre seus tipos de workers e anotar as caracter\xEDsticas
+        principais do 'sync worker'.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Quais s\xE3o os tipos b\xE1sicos de workers que o Gunicorn oferece e qual
+        a principal diferen\xE7a entre eles?\\\"\\n  },\\n  {\\n    \\\"day\\\": 3,\\n
+        \   \\\"title\\\": \\\"Configura\xE7\xE3o e Casos de Uso de Workers\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Aprender a configurar o n\xFAmero de workers
+        no Gunicorn e quando usar diferentes configura\xE7\xF5es.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Como configurar o n\xFAmero de
+        workers no Gunicorn?\\\",\\n      \\\"Qual a rela\xE7\xE3o entre o n\xFAmero
+        de workers e os n\xFAcleos da CPU?\\\",\\n      \\\"Quando usar mais ou menos
+        workers?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Simular
+        a configura\xE7\xE3o de um Gunicorn para uma aplica\xE7\xE3o com 4 n\xFAcleos
+        de CPU, definindo um n\xFAmero razo\xE1vel de workers.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual a recomenda\xE7\xE3o geral para definir o n\xFAmero
+        de workers do Gunicorn com base nos n\xFAcleos da CPU?\\\"\\n  }\\n]\"\n          }\n
+        \       ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        783,\n    \"candidatesTokenCount\": 528,\n    \"totalTokenCount\": 1311,\n
+        \   \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 783\n      }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n
+        \ \"responseId\": \"sP5caayNB92fqtsP5o_j6Ao\"\n}\n"
     headers:
       Alt-Svc:
       - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Mon, 29 Dec 2025 20:58:50 GMT
+      - Tue, 06 Jan 2026 12:23:12 GMT
       Server:
       - scaffolding on HTTPServer2
       Server-Timing:
-      - gfet4t7; dur=4020
+      - gfet4t7; dur=3613
       Transfer-Encoding:
       - chunked
       Vary:
@@ -155,7 +151,7 @@ interactions:
       X-XSS-Protection:
       - '0'
       content-length:
-      - '2953'
+      - '2630'
     status:
       code: 200
       message: OK

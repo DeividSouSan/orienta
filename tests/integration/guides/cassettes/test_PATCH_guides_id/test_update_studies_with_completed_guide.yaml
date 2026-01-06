@@ -1,8 +1,8 @@
 interactions:
 - request:
     body: '{"contents": [{"parts": [{"text": "\n    <INPUTS>\n        <TOPIC>Eu quero
-      estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>60
-      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>14 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
+      estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>30
+      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>16 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
       "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
       \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
       acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
@@ -88,312 +88,216 @@ interactions:
     uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
   response:
     body:
-      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
-        your current quota, please check your plan and billing details. For more information
-        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
-        To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.
-        \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
-        limit: 20, model: gemini-2.5-flash\\nPlease retry in 57.760677584s.\",\n    \"status\":
-        \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n
-        \       \"links\": [\n          {\n            \"description\": \"Learn more
-        about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n
-        \         }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
-        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
-        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
-        \           \"quotaDimensions\": {\n              \"location\": \"global\",\n
-        \             \"model\": \"gemini-2.5-flash\"\n            },\n            \"quotaValue\":
-        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
-        \       \"retryDelay\": \"57s\"\n      }\n    ]\n  }\n}\n"
-    headers:
-      Alt-Svc:
-      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      Content-Type:
-      - application/json; charset=UTF-8
-      Date:
-      - Mon, 29 Dec 2025 20:53:02 GMT
-      Server:
-      - scaffolding on HTTPServer2
-      Server-Timing:
-      - gfet4t7; dur=243
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Origin
-      - X-Origin
-      - Referer
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - '0'
-      content-length:
-      - '1373'
-    status:
-      code: 429
-      message: Too Many Requests
-- request:
-    body: '{"contents": [{"parts": [{"text": "\n    <INPUTS>\n        <TOPIC>Eu quero
-      estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>60
-      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>14 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
-      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
-      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
-      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
-      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
-      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
-      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
-      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
-      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
-      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
-      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
-      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
-      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
-      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
-      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
-      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
-      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
-      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
-      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
-      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
-      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
-      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
-      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
-      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
-      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
-      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
-      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
-      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
-      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
-      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
-      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
-      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
-      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
-      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
-      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
-      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
-      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
-      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
-      {"items": {"description": "Represents the study plan for a given day,\nwith
-      goals, research topics, practical activities, and\nlearning verification methods.",
-      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
-      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
-      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
-      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
-      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
-      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
-      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
-      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
-      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
-      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
-      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
-      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
-      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
-      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
-      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
-      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
-      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
-      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
-      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
-      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
-      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
-      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
-      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '5535'
-      Content-Type:
-      - application/json
-      Host:
-      - generativelanguage.googleapis.com
-      user-agent:
-      - google-genai-sdk/1.31.0 gl-python/3.12.3
-      x-goog-api-client:
-      - google-genai-sdk/1.31.0 gl-python/3.12.3
-      x-goog-api-key:
-      - XD
-    method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
-  response:
-    body:
       string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
-        [\n          {\n            \"text\": \"[\\n    {\\n        \\\"day\\\": 1,\\n
-        \       \\\"title\\\": \\\"Introdu\xE7\xE3o ao Docker e Conceitos Fundamentais\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Compreender o que \xE9 o Docker, sua finalidade
-        e os conceitos b\xE1sicos de cont\xEAineres.\\\",\\n        \\\"O Qu\xEA Pesquisar
-        (Teoria)\\\": [\\n            \\\"O que \xE9 Docker?\\\",\\n            \\\"Para
-        que servem os cont\xEAineres?\\\",\\n            \\\"Diferen\xE7a entre cont\xEAineres
-        e m\xE1quinas virtuais\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
-        \\\"Instalar o Docker Desktop no seu sistema operacional e verificar a instala\xE7\xE3o
-        com o comando 'docker version'.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
-        \\\"Explique com suas pr\xF3prias palavras por que o Docker \xE9 \xFAtil.\\\"\\n
-        \   },\\n    {\\n        \\\"day\\\": 2,\\n        \\\"title\\\": \\\"Instalando
-        e Configurando o Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Realizar a
-        instala\xE7\xE3o completa do Docker e familiarizar-se com a linha de comando.\\\",\\n
-        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Como instalar
-        o Docker em diferentes sistemas operacionais (Windows, macOS, Linux)?\\\",\\n
-        \           \\\"O que \xE9 o Docker CLI?\\\",\\n            \\\"Comandos b\xE1sicos
-        de gerenciamento do Docker (start, stop, restart)\\\"\\n        ],\\n        \\\"M\xE3o
-        na Massa (Pr\xE1tica)\\\": \\\"Baixar uma imagem oficial do Ubuntu (ex: 'docker
-        pull ubuntu') e rodar um cont\xEAiner interativo que imprima 'Hello Docker!'\\\",\\n
-        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Quais s\xE3o os passos
-        b\xE1sicos para instalar o Docker?\\\"\\n    },\\n    {\\n        \\\"day\\\":
-        3,\\n        \\\"title\\\": \\\"Gerenciamento de Imagens Docker\\\",\\n        \\\"Meta
-        do Dia\\\": \\\"Entender como funcionam as imagens Docker e como gerenci\xE1-las.\\\",\\n
-        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o
-        Imagens Docker?\\\",\\n            \\\"Como buscar imagens no Docker Hub?\\\",\\n
-        \           \\\"Comandos para listar, remover e inspecionar imagens ('docker
-        images', 'docker rmi', 'docker inspect')\\\"\\n        ],\\n        \\\"M\xE3o
-        na Massa (Pr\xE1tica)\\\": \\\"Busque uma imagem do Nginx ('docker pull nginx'),
-        liste suas imagens e inspecione a imagem do Nginx para ver seus detalhes.\\\",\\n
-        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a diferen\xE7a
-        entre uma imagem e um cont\xEAiner?\\\"\\n    },\\n    {\\n        \\\"day\\\":
-        4,\\n        \\\"title\\\": \\\"Trabalhando com Cont\xEAineres Docker\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Aprender a criar, gerenciar e interagir com
-        cont\xEAineres em diferentes modos.\\\",\\n        \\\"O Qu\xEA Pesquisar
-        (Teoria)\\\": [\\n            \\\"Comandos essenciais para cont\xEAineres:
-        'docker run', 'docker ps', 'docker stop', 'docker start', 'docker rm'\\\",\\n
-        \           \\\"Modo interativo vs. modo detached\\\",\\n            \\\"Como
-        nomear cont\xEAineres\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
-        \\\"Crie um cont\xEAiner Nginx em modo detached com um nome espec\xEDfico,
-        verifique se ele est\xE1 rodando e depois pare-o e remova-o.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Descreva a diferen\xE7a entre rodar um cont\xEAiner
-        em modo interativo e em modo detached.\\\"\\n    },\\n    {\\n        \\\"day\\\":
-        5,\\n        \\\"title\\\": \\\"Entendendo Dockerfiles\\\",\\n        \\\"Meta
-        do Dia\\\": \\\"Introdu\xE7\xE3o aos Dockerfiles e como us\xE1-los para criar
-        imagens personalizadas.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
-        [\\n            \\\"O que \xE9 um Dockerfile?\\\",\\n            \\\"Instru\xE7\xF5es
-        comuns em Dockerfiles: FROM, RUN, COPY, CMD, EXPOSE\\\",\\n            \\\"Como
-        construir uma imagem a partir de um Dockerfile ('docker build')\\\"\\n        ],\\n
-        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie um Dockerfile simples
-        que instale o `htop` em uma imagem base do Ubuntu e construa a imagem.\\\",\\n
-        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o prop\xF3sito
-        principal de um Dockerfile?\\\"\\n    },\\n    {\\n        \\\"day\\\": 6,\\n
-        \       \\\"title\\\": \\\"Criando Imagens Personalizadas com Dockerfiles\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Aprofundar na escrita de Dockerfiles e construir
-        imagens com mais complexidade.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
-        [\\n            \\\"Otimizando Dockerfiles (layers, cache)\\\",\\n            \\\"Instru\xE7\xF5es
-        WORKDIR, ENV, ARG\\\",\\n            \\\"Boas pr\xE1ticas ao escrever Dockerfiles\\\"\\n
-        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie um Dockerfile
-        para uma aplica\xE7\xE3o Node.js simples (ex: um servidor web b\xE1sico),
-        construa a imagem e rode o cont\xEAiner.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Cite duas instru\xE7\xF5es que voc\xEA usaria em um
-        Dockerfile para configurar um ambiente de aplica\xE7\xE3o.\\\"\\n    },\\n
-        \   {\\n        \\\"day\\\": 7,\\n        \\\"title\\\": \\\"Gerenciamento
-        de Redes no Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Compreender como
-        cont\xEAineres se comunicam atrav\xE9s de redes Docker.\\\",\\n        \\\"O
-        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o Redes Docker?\\\",\\n
-        \           \\\"Tipos de redes (bridge, host, none)\\\",\\n            \\\"Comandos:
-        'docker network create', 'docker network ls', 'docker network inspect', 'docker
-        network connect', 'docker network disconnect'\\\"\\n        ],\\n        \\\"M\xE3o
-        na Massa (Pr\xE1tica)\\\": \\\"Crie duas redes bridge separadas, inicie um
-        cont\xEAiner em cada rede e tente fazer com que eles se comuniquem (ou n\xE3o)
-        conforme a configura\xE7\xE3o da rede.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Como os cont\xEAineres se comunicam com outros cont\xEAineres
-        e com o host utilizando redes Docker?\\\"\\n    },\\n    {\\n        \\\"day\\\":
-        8,\\n        \\\"title\\\": \\\"Volumes no Docker\\\",\\n        \\\"Meta
-        do Dia\\\": \\\"Aprender a persistir dados usando volumes no Docker.\\\",\\n
-        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o
-        Volumes Docker?\\\",\\n            \\\"Diferen\xE7a entre Volumes e Bind Mounts\\\",\\n
-        \           \\\"Comandos: 'docker volume create', 'docker volume ls', 'docker
-        volume inspect', 'docker volume rm'\\\"\\n        ],\\n        \\\"M\xE3o
-        na Massa (Pr\xE1tica)\\\": \\\"Crie um volume, inicie um cont\xEAiner de banco
-        de dados (ex: PostgreSQL) usando este volume e adicione alguns dados. Reinicie
-        o cont\xEAiner e verifique se os dados persistem.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Por que \xE9 importante usar volumes para dados persistentes
-        em aplica\xE7\xF5es Docker?\\\"\\n    },\\n    {\\n        \\\"day\\\": 9,\\n
-        \       \\\"title\\\": \\\"Docker Compose: M\xFAltiplos Cont\xEAineres\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Introdu\xE7\xE3o ao Docker Compose para orquestrar
-        m\xFAltiplos cont\xEAineres.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
-        [\\n            \\\"O que \xE9 Docker Compose?\\\",\\n            \\\"Estrutura
-        de um arquivo `docker-compose.yml`\\\",\\n            \\\"Comandos b\xE1sicos:
-        'docker-compose up', 'docker-compose down', 'docker-compose ps'\\\"\\n        ],\\n
-        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie um arquivo `docker-compose.yml`
-        para rodar um aplicativo web simples (frontend) e um banco de dados (backend),
-        e inicie-os usando 'docker-compose up'.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Qual problema o Docker Compose resolve na orquestra\xE7\xE3o
-        de aplica\xE7\xF5es com m\xFAltiplos cont\xEAineres?\\\"\\n    },\\n    {\\n
-        \       \\\"day\\\": 10,\\n        \\\"title\\\": \\\"Avan\xE7ando com Docker
-        Compose\\\",\\n        \\\"Meta do Dia\\\": \\\"Utilizar Docker Compose para
-        gerenciar configura\xE7\xF5es de rede, volumes e construir imagens.\\\",\\n
-        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Definindo
-        redes e volumes no `docker-compose.yml`\\\",\\n            \\\"Servi\xE7os
-        que constroem imagens (build context)\\\",\\n            \\\"Gerenciando depend\xEAncias
-        entre servi\xE7os\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
-        \\\"Refatore o `docker-compose.yml` do dia anterior para que os servi\xE7os
-        usem redes nomeadas e volumes. Adicione um servi\xE7o que precise construir
-        sua imagem a partir de um Dockerfile.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Como voc\xEA define a ordem de inicializa\xE7\xE3o
-        dos servi\xE7os em um arquivo `docker-compose.yml`?\\\"\\n    },\\n    {\\n
-        \       \\\"day\\\": 11,\\n        \\\"title\\\": \\\"Docker Hub e Registro
-        de Imagens\\\",\\n        \\\"Meta do Dia\\\": \\\"Entender como usar o Docker
-        Hub e outros registros para compartilhar e gerenciar imagens.\\\",\\n        \\\"O
-        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9 o Docker Hub?\\\",\\n
-        \           \\\"Como fazer login ('docker login') e logout ('docker logout')?\\\",\\n
-        \           \\\"Como marcar (tag) imagens ('docker tag') e envi\xE1-las para
-        o registry ('docker push')?\\\"\\n        ],\\n        \\\"M\xE3o na Massa
-        (Pr\xE1tica)\\\": \\\"Crie uma conta no Docker Hub, marque uma imagem que
-        voc\xEA construiu anteriormente com seu nome de usu\xE1rio e envie-a para
-        o Docker Hub.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual
-        o comando utilizado para enviar uma imagem Docker local para um registro remoto
-        como o Docker Hub?\\\"\\n    },\\n    {\\n        \\\"day\\\": 12,\\n        \\\"title\\\":
-        \\\"Introdu\xE7\xE3o \xE0 Orquestra\xE7\xE3o de Cont\xEAineres: Docker Swarm\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Ter uma vis\xE3o geral do Docker Swarm e
-        como ele facilita o gerenciamento de clusters.\\\",\\n        \\\"O Qu\xEA
-        Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9 orquestra\xE7\xE3o
-        de cont\xEAineres?\\\",\\n            \\\"Conceitos de Docker Swarm: manager,
-        worker, services, stack\\\",\\n            \\\"Comandos para inicializar e
-        gerenciar um Swarm ('docker swarm init', 'docker node ls')\\\"\\n        ],\\n
-        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Inicie um cluster Docker
-        Swarm com um n\xF3 manager e adicione um n\xF3 worker (pode ser no mesmo host,
-        em VMs separadas ou em containers como \\\"\\n        , \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Qual a diferen\xE7a principal entre um n\xF3 manager
-        e um n\xF3 worker em um cluster Docker Swarm?\\\"\\n    },\\n    {\\n        \\\"day\\\":
-        13,\\n        \\\"title\\\": \\\"Implementando um Servi\xE7o no Docker Swarm\\\",\\n
-        \       \\\"Meta do Dia\\\": \\\"Descrever e escalar um servi\xE7o utilizando
-        o Docker Swarm.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Como
-        criar e gerenciar services com 'docker service create'?\\\",\\n            \\\"Comandos:
-        'docker service ls', 'docker service scale', 'docker service ps', 'docker
-        service logs'\\\",\\n            \\\"Rolling updates (atualiza\xE7\xF5es cont\xEDnuas)\\\"\\n
-        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Implante um
-        servi\xE7o web (ex: Nginx) no seu Swarm, escale-o para 3 r\xE9plicas e depois
-        verifique se os logs de acesso est\xE3o sendo gerados.\\\",\\n        \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Como voc\xEA faria para aumentar o n\xFAmero de inst\xE2ncias
-        (r\xE9plicas) de um servi\xE7o que j\xE1 est\xE1 rodando no Docker Swarm?\\\"\\n
-        \   },\\n    {\\n        \\\"day\\\": 14,\\n        \\\"title\\\": \\\"Revis\xE3o
-        Geral e Aplica\xE7\xF5es Pr\xE1ticas\\\",\\n        \\\"Meta do Dia\\\": \\\"Consolidar
-        o aprendizado revisitando os comandos e conceitos chave e pensando em aplica\xE7\xF5es
-        reais.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Resumo
-        dos comandos Docker mais usados\\\",\\n            \\\"Casos de uso comuns
-        de Docker (desenvolvimento, CI/CD, produ\xE7\xE3o)\\\",\\n            \\\"Pr\xF3ximos
-        passos (Kubernetes, etc.)\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
-        \\\"Escolha uma pequena aplica\xE7\xE3o de seu interesse, crie um Dockerfile
-        para ela, defina um docker-compose.yml para orquestrar a aplica\xE7\xE3o com
-        um banco de dados e, opcionalmente, envie a imagem para o Docker Hub.\\\",\\n
-        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Cite tr\xEAs comandos
-        essenciais do Docker e descreva brevemente a fun\xE7\xE3o de cada um.\\\"\\n
-        \   }\\n]\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n
-        \     \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\":
-        {\n    \"promptTokenCount\": 776,\n    \"candidatesTokenCount\": 2759,\n    \"totalTokenCount\":
-        3535,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
-        \       \"tokenCount\": 776\n      }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n
-        \ \"responseId\": \"O-pSad6lI-WVmtkPlM3ayQs\"\n}\n"
+        [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
+        \\\"Introdu\xE7\xE3o ao Docker e Cont\xEAineres\\\",\\n    \\\"Meta do Dia\\\":
+        \\\"Entender o que s\xE3o cont\xEAineres, qual problema o Docker resolve e
+        suas diferen\xE7as em rela\xE7\xE3o \xE0s M\xE1quinas Virtuais (VMs).\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 virtualiza\xE7\xE3o
+        e por que \xE9 importante?\\\",\\n      \\\"O que \xE9 um cont\xEAiner?\\\",\\n
+        \     \\\"Qual a diferen\xE7a entre Docker e uma m\xE1quina virtual?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Pesquisar exemplos
+        de aplica\xE7\xF5es do Docker em cen\xE1rios reais para entender o contexto
+        de uso.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o principal
+        benef\xEDcio de usar Docker em vez de VMs para isolamento de aplica\xE7\xF5es?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 2,\\n    \\\"title\\\": \\\"Instala\xE7\xE3o
+        e Primeiros Contatos\\\",\\n    \\\"Meta do Dia\\\": \\\"Realizar a instala\xE7\xE3o
+        do Docker Desktop (ou equivalente) e executar o primeiro cont\xEAiner b\xE1sico
+        para verificar o ambiente.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Como instalar o Docker Desktop em meu sistema operacional?\\\",\\n
+        \     \\\"Requisitos de sistema para o Docker Desktop.\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Instalar o Docker Desktop. Abrir o terminal
+        e executar o comando `docker run hello-world` e observar a sa\xEDda.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"O que significa a mensagem
+        'Hello from Docker!'?\\\"\\n  },\\n  {\\n    \\\"day\\\": 3,\\n    \\\"title\\\":
+        \\\"Imagens Docker: Pull e Execu\xE7\xE3o B\xE1sica\\\",\\n    \\\"Meta do
+        Dia\\\": \\\"Compreender o conceito de imagem Docker e como pux\xE1-las (pull)
+        do Docker Hub e executar cont\xEAineres a partir delas.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 uma imagem Docker?\\\",\\n
+        \     \\\"O que \xE9 o Docker Hub?\\\",\\n      \\\"Qual a estrutura b\xE1sica
+        de um comando 'docker run'?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Executar o comando `docker pull ubuntu:latest` e, em seguida, `docker
+        run -it ubuntu /bin/bash`. Explorar o ambiente dentro do cont\xEAiner e sair.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a diferen\xE7a conceitual
+        entre uma imagem e um cont\xEAiner?\\\"\\n  },\\n  {\\n    \\\"day\\\": 4,\\n
+        \   \\\"title\\\": \\\"Gerenciamento do Ciclo de Vida dos Cont\xEAineres\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Aprender os comandos b\xE1sicos para gerenciar
+        cont\xEAineres: listar, iniciar, parar e remover.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"Para que serve 'docker ps'?\\\",\\n
+        \     \\\"Como parar e iniciar um cont\xEAiner j\xE1 existente?\\\",\\n      \\\"Como
+        remover cont\xEAineres n\xE3o mais necess\xE1rios?\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Rodar v\xE1rios cont\xEAineres usando `docker
+        run -d`, listar cont\xEAineres ativos e parados com `docker ps -a`, parar
+        um cont\xEAiner com `docker stop`, e remover com `docker rm`.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual comando voc\xEA usaria para ver todos os cont\xEAineres
+        que foram criados, mesmo os que est\xE3o parados?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        5,\\n    \\\"title\\\": \\\"Intera\xE7\xE3o com Cont\xEAineres em Execu\xE7\xE3o\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Aprender a executar comandos dentro de cont\xEAineres
+        em execu\xE7\xE3o e a inspecionar seus detalhes.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"Para que serve o comando 'docker exec'?\\\",\\n
+        \     \\\"Como verificar os logs de um cont\xEAiner?\\\",\\n      \\\"Qual
+        a utilidade do comando 'docker inspect'?\\\"\\n    ],\\n    \\\"M\xE3o na
+        Massa (Pr\xE1tica)\\\": \\\"Rodar um cont\xEAiner (ex: Nginx). Usar `docker
+        exec -it \\u003cid_container\\u003e bash` para entrar no cont\xEAiner. Em
+        seguida, usar `docker logs \\u003cid_container\\u003e` para ver a sa\xEDda.
+        Inspecionar um cont\xEAiner com `docker inspect \\u003cid_container\\u003e`.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Como voc\xEA entraria em
+        um shell interativo de um cont\xEAiner Docker j\xE1 em execu\xE7\xE3o para
+        depura\xE7\xE3o?\\\"\\n  },\\n  {\\n    \\\"day\\\": 6,\\n    \\\"title\\\":
+        \\\"Apresentando o Dockerfile: Base para Imagens Personalizadas\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Entender o conceito de Dockerfile e iniciar a cria\xE7\xE3o
+        de uma imagem personalizada a partir de uma base.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 um Dockerfile e qual sua
+        finalidade?\\\",\\n      \\\"Como a instru\xE7\xE3o FROM funciona em um Dockerfile?\\\",\\n
+        \     \\\"O que \xE9 um processo de build de imagem Docker?\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um arquivo `Dockerfile`
+        com a instru\xE7\xE3o `FROM ubuntu:latest`. Fazer o build dessa imagem com
+        `docker build -t minha-ubuntu-base .`.\\\",\\n    \\\"Verifica\xE7\xE3o de
+        Aprendizado\\\": \\\"Qual a import\xE2ncia da primeira instru\xE7\xE3o em
+        qualquer Dockerfile?\\\"\\n  },\\n  {\\n    \\\"day\\\": 7,\\n    \\\"title\\\":
+        \\\"Construindo Imagens: Instru\xE7\xF5es RUN e CMD\\\",\\n    \\\"Meta do
+        Dia\\\": \\\"Aprofundar nas instru\xE7\xF5es `RUN` para executar comandos
+        durante o build e `CMD` para definir o comando padr\xE3o de um cont\xEAiner.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Qual a diferen\xE7a
+        entre RUN e CMD em um Dockerfile?\\\",\\n      \\\"Como adicionar software
+        a uma imagem usando RUN?\\\",\\n      \\\"Como um CMD \xE9 sobrescrito durante
+        'docker run'?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Editar
+        o Dockerfile para incluir um `RUN apt-get update && apt-get install -y cowsay`
+        e um `CMD [\\\\\\\"cowsay\\\\\\\", \\\\\\\"Alo, Docker!\\\\\\\"]`. Construir
+        a imagem e rod\xE1-la para ver o resultado.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual instru\xE7\xE3o voc\xEA usaria no Dockerfile
+        para garantir que o software seja instalado na imagem permanentemente?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 8,\\n    \\\"title\\\": \\\"Instru\xE7\xF5es
+        do Dockerfile: ENTRYPOINT, COPY, WORKDIR\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
+        o uso de `ENTRYPOINT` para definir um execut\xE1vel fixo, `COPY` para adicionar
+        arquivos e `WORKDIR` para definir o diret\xF3rio de trabalho.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Qual a diferen\xE7a pr\xE1tica
+        entre CMD e ENTRYPOINT?\\\",\\n      \\\"Como a instru\xE7\xE3o COPY move
+        arquivos para dentro da imagem?\\\",\\n      \\\"O que a instru\xE7\xE3o WORKDIR
+        define no cont\xEAiner?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Criar um pequeno script bash `ola.sh`. Editar o Dockerfile para usar `WORKDIR
+        /app`, `COPY ola.sh .`, e `ENTRYPOINT [\\\\\\\"/app/ola.sh\\\\\\\"]`. Construir
+        e executar a imagem.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Se voc\xEA precisa copiar um arquivo do seu diret\xF3rio local para o
+        diret\xF3rio `/app` dentro da sua imagem, qual instru\xE7\xE3o Dockerfile
+        voc\xEA usaria?\\\"\\n  },\\n  {\\n    \\\"day\\\": 9,\\n    \\\"title\\\":
+        \\\"Principais Comandos para Gerenciamento de Imagens\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Dominar os comandos para listar, remover imagens e entender
+        o sistema de tags.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Como
+        listar todas as imagens no meu sistema?\\\",\\n      \\\"Para que servem as
+        tags das imagens Docker?\\\",\\n      \\\"Como remover uma imagem espec\xEDfica?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Listar as imagens locais
+        com `docker images`. Puxar v\xE1rias vers\xF5es de uma mesma imagem (ex: `alpine:3.10`,
+        `alpine:3.11`). Taguear uma imagem existente com um novo nome/vers\xE3o. Remover
+        algumas imagens.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual
+        \xE9 a vantagem de usar tags nas imagens Docker?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        10,\\n    \\\"title\\\": \\\"Armazenamento de Dados: Volumes (parte 1)\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Entender o problema da persist\xEAncia de dados
+        em cont\xEAineres e aprender sobre Bind Mounts.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"Por que os dados dentro de um cont\xEAiner s\xE3o
+        vol\xE1teis?\\\",\\n      \\\"O que \xE9 um 'volume' em Docker?\\\",\\n      \\\"Como
+        funcionam os 'bind mounts'?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Rodar um cont\xEAiner (ex: Nginx) mapeando um diret\xF3rio local para
+        dentro do cont\xEAiner (`docker run -v /caminho/local:/caminho/no/container
+        ...`). Modificar arquivos no diret\xF3rio local e verificar se as mudan\xE7as
+        aparecem no cont\xEAiner.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual \xE9 o problema de dados que um volume Docker tenta resolver?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 11,\\n    \\\"title\\\": \\\"Armazenamento de
+        Dados: Volumes (parte 2) e Nomeados\\\",\\n    \\\"Meta do Dia\\\": \\\"Explorar
+        o uso de Named Volumes para uma persist\xEAncia mais gerenci\xE1vel e seus
+        casos de uso.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Qual
+        a diferen\xE7a entre Named Volumes e Bind Mounts?\\\",\\n      \\\"Como criar
+        e gerenciar Named Volumes?\\\",\\n      \\\"Quais os benef\xEDcios de usar
+        Named Volumes?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar
+        um volume nomeado com `docker volume create meu_volume`. Rodar um cont\xEAiner
+        de banco de dados (ex: `mysql` ou `postgres`) usando este volume para armazenar
+        dados (`docker run -v meu_volume:/var/lib/mysql ...`). Remover e recriar o
+        cont\xEAiner e verificar a persist\xEAncia dos dados.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Quando voc\xEA preferiria usar um 'Named Volume' em
+        vez de um 'Bind Mount' para persistir dados de um cont\xEAiner?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 12,\\n    \\\"title\\\": \\\"Redes Docker: Comunica\xE7\xE3o
+        entre Cont\xEAineres\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender os conceitos
+        b\xE1sicos de redes no Docker e como os cont\xEAineres se comunicam.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Como o Docker gerencia
+        a rede entre cont\xEAineres?\\\",\\n      \\\"O que \xE9 uma 'bridge network'
+        padr\xE3o?\\\",\\n      \\\"Como um cont\xEAiner pode acessar outro cont\xEAiner?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Rodar dois cont\xEAineres
+        (ex: um Nginx e um BusyBox). Tentar pingar o Nginx a partir do BusyBox. Criar
+        uma rede customizada (`docker network create minha_rede`) e rodar os dois
+        cont\xEAineres nessa rede, testando a comunica\xE7\xE3o por nome.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Para permitir que dois cont\xEAineres
+        se comuniquem usando seus nomes como hostnames, qual tipo de configura\xE7\xE3o
+        de rede voc\xEA precisaria aplicar?\\\"\\n  },\\n  {\\n    \\\"day\\\": 13,\\n
+        \   \\\"title\\\": \\\"Introdu\xE7\xE3o ao Docker Compose para M\xFAltiplos
+        Cont\xEAineres\\\",\\n    \\\"Meta do Dia\\\": \\\"Entender o problema de
+        gerenciar m\xFAltiplas aplica\xE7\xF5es Docker manualmente e como o Docker
+        Compose resolve isso.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \     \\\"Qual o objetivo principal do Docker Compose?\\\",\\n      \\\"O
+        que \xE9 um arquivo `docker-compose.yml`?\\\",\\n      \\\"Quais os componentes
+        b\xE1sicos de um arquivo `docker-compose.yml`?\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Fazer um exerc\xEDcio mental: liste as etapas
+        para rodar manualmente uma aplica\xE7\xE3o web com banco de dados em Docker.
+        Reflita sobre as dificuldades. Pesquisar um exemplo simples de `docker-compose.yml`
+        para uma aplica\xE7\xE3o de duas camadas.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual ferramenta voc\xEA usaria para orquestrar e gerenciar
+        m\xFAltiplas aplica\xE7\xF5es Docker de forma eficiente a partir de um \xFAnico
+        arquivo de configura\xE7\xE3o?\\\"\\n  },\\n  {\\n    \\\"day\\\": 14,\\n
+        \   \\\"title\\\": \\\"Construindo com Docker Compose: Seu Primeiro `docker-compose.yml`\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Criar um arquivo `docker-compose.yml` simples
+        para uma aplica\xE7\xE3o de m\xFAltiplos servi\xE7os e entender sua estrutura.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Sintaxe b\xE1sica do
+        `docker-compose.yml` (services, images, ports, volumes, depends_on).\\\",\\n
+        \     \\\"Como mapear portas com Docker Compose.\\\",\\n      \\\"Como adicionar
+        um volume a um servi\xE7o Docker Compose.\\\"\\n    ],\\n    \\\"M\xE3o na
+        Massa (Pr\xE1tica)\\\": \\\"Criar um arquivo `docker-compose.yml` que defina
+        dois servi\xE7os: um `web` (usando imagem `nginx`) e um `db` (usando imagem
+        `postgres`). Mapear a porta do Nginx e definir um volume para o PostgreSQL.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Em um arquivo `docker-compose.yml`,
+        como voc\xEA definiria que o servi\xE7o 'web' depende do servi\xE7o 'db' para
+        iniciar?\\\"\\n  },\\n  {\\n    \\\"day\\\": 15,\\n    \\\"title\\\": \\\"Gerenciamento
+        de Aplica\xE7\xF5es com Docker Compose\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender
+        os comandos b\xE1sicos do Docker Compose para subir, derrubar e inspecionar
+        a aplica\xE7\xE3o de m\xFAltiplos cont\xEAineres.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"Comandos principais do Docker Compose:
+        `up`, `down`, `ps`, `logs`.\\\",\\n      \\\"Como o Docker Compose cria uma
+        rede automaticamente?\\\",\\n      \\\"Op\xE7\xF5es para rebuild de servi\xE7os
+        com `docker-compose up`.\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Usar o `docker-compose.yml` do dia anterior: rodar `docker-compose up
+        -d`. Verificar o status dos servi\xE7os com `docker-compose ps`. Ver os logs
+        com `docker-compose logs`. Parar e remover com `docker-compose down`.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual comando Docker Compose
+        voc\xEA usaria para iniciar todos os servi\xE7os definidos em seu arquivo
+        YAML em segundo plano (detached mode)?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        16,\\n    \\\"title\\\": \\\"Revis\xE3o Geral e Comandos Avan\xE7ados (Op\xE7\xF5es)\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Revisar os principais conceitos e comandos aprendidos,
+        consolidando o conhecimento para uso pr\xE1tico, e explorar algumas op\xE7\xF5es
+        \xFAteis de comandos.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \     \\\"Quais as melhores pr\xE1ticas para otimiza\xE7\xE3o de Dockerfiles?\\\",\\n
+        \     \\\"Como usar o `docker prune` para limpeza?\\\",\\n      \\\"Recursos
+        \xFAteis para aprender Docker.\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Revisar um Dockerfile que voc\xEA criou. Refletir sobre como otimiz\xE1-lo.
+        Tentar um `docker system prune` para limpar recursos n\xE3o utilizados. Procurar
+        um pequeno projeto de exemplo no GitHub que usa Docker Compose e tentar rod\xE1-lo.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Cite os 3 principais comandos
+        Docker que voc\xEA mais usaria no dia a dia para gerenciar cont\xEAineres
+        e imagens, e para que serve cada um.\\\"\\n  }\\n]\"\n          }\n        ],\n
+        \       \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n
+        \     \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        776,\n    \"candidatesTokenCount\": 3538,\n    \"totalTokenCount\": 5407,\n
+        \   \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 776\n      }\n    ],\n    \"thoughtsTokenCount\":
+        1093\n  },\n  \"modelVersion\": \"gemini-2.5-flash\",\n  \"responseId\": \"of5caYmgCOmgz7IPp7j2qAg\"\n}\n"
     headers:
       Alt-Svc:
       - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Mon, 29 Dec 2025 20:53:15 GMT
+      - Tue, 06 Jan 2026 12:22:57 GMT
       Server:
       - scaffolding on HTTPServer2
       Server-Timing:
-      - gfet4t7; dur=13233
+      - gfet4t7; dur=24721
       Transfer-Encoding:
       - chunked
       Vary:
@@ -407,7 +311,7 @@ interactions:
       X-XSS-Protection:
       - '0'
       content-length:
-      - '11628'
+      - '14007'
     status:
       code: 200
       message: OK
