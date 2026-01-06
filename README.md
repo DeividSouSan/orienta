@@ -165,4 +165,3 @@ Os testes são de **integração HTTP** (pasta `tests/integration`), consumindo 
 - **Firestore**: reduz overhead operacional e integra bem com Firebase, mas exige atenção a consistência/consultas e índices (será substituido por tabelas futuramente).
 - **IA com schema**: melhora robustez do parse e validação; ainda exige fallback e tratamento de quotas/429.
 - **Sessão via cookie**: melhora UX e segurança;
-

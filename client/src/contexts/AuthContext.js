@@ -6,8 +6,8 @@ const AuthContext = createContext({
     isAuthenticated: false,
     currentUser: null,
     isLoading: true,
-    login: () => {},
-    logout: () => {},
+    login: () => { },
+    logout: () => { },
 });
 
 export const AuthProvider = ({ children }) => {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
                 if (response.ok) {
                     const responseBody = await response.json();
-                    login(responseBody.data.user);
+                    login(responseBody.data);
                 } else {
                     await fetch("/api/v1/sessions", {
                         method: "DELETE",

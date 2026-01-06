@@ -1,8 +1,8 @@
 interactions:
 - request:
     body: '{"contents": [{"parts": [{"text": "\n    <INPUTS>\n        <TOPIC>Eu quero
-      estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>60
-      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>3 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
+      estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>30
+      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>6 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
       "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
       \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
       acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
@@ -90,61 +90,106 @@ interactions:
     body:
       string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
         [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
-        \\\"Introdu\xE7\xE3o aos Cont\xEAineres e Docker\\\",\\n    \\\"Meta do Dia\\\":
-        \\\"Entender o conceito de cont\xEAineres, o que \xE9 Docker e por que ele
-        \xE9 utilizado.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O
-        que \xE9 virtualiza\xE7\xE3o e suas limita\xE7\xF5es?\\\",\\n      \\\"O que
-        s\xE3o cont\xEAineres e como se diferenciam das VMs?\\\",\\n      \\\"O que
-        \xE9 Docker?\\\",\\n      \\\"Vantagens do Docker no desenvolvimento e implanta\xE7\xE3o
-        de software?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Instalar
-        o Docker Desktop ou Docker Engine no seu sistema operacional e verificar a
-        instala\xE7\xE3o utilizando o comando 'docker version' e 'docker info'.\\\",\\n
-        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o principal problema
-        que o Docker resolve em compara\xE7\xE3o com a abordagem tradicional de m\xE1quinas
-        virtuais?\\\"\\n  },\\n  {\\n    \\\"day\\\": 2,\\n    \\\"title\\\": \\\"Imagens
-        Docker e o Primeiro Cont\xEAiner\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
-        o papel das imagens Docker e aprender a iniciar e interagir com um cont\xEAiner
-        b\xE1sico.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O
-        que s\xE3o imagens Docker e para que servem?\\\",\\n      \\\"O que \xE9 Docker
-        Hub e como buscar imagens?\\\",\\n      \\\"Comando 'docker run': principais
-        argumentos (-it, -d, --name)?\\\",\\n      \\\"Como acessar um shell dentro
-        de um cont\xEAiner?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
-        \\\"Baixar uma imagem simples do Docker Hub (ex: 'hello-world' ou 'ubuntu')
-        e executar um cont\xEAiner, visualizando a sa\xEDda. Depois, rodar uma imagem
-        interativamente (ex: 'ubuntu') e explorar seu terminal.\\\",\\n    \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Qual a diferen\xE7a conceitual entre uma imagem Docker
-        e um cont\xEAiner Docker?\\\"\\n  },\\n  {\\n    \\\"day\\\": 3,\\n    \\\"title\\\":
-        \\\"Gerenciamento de Cont\xEAineres com Comandos Essenciais\\\",\\n    \\\"Meta
-        do Dia\\\": \\\"Dominar os principais comandos para listar, parar, iniciar,
-        reiniciar e remover cont\xEAineres Docker.\\\",\\n    \\\"O Qu\xEA Pesquisar
-        (Teoria)\\\": [\\n      \\\"Como listar cont\xEAineres em execu\xE7\xE3o e
-        todos os cont\xEAineres (ativos e inativos)? ('docker ps')\\\",\\n      \\\"Como
-        parar, iniciar e reiniciar um cont\xEAiner? ('docker stop', 'docker start',
-        'docker restart')\\\",\\n      \\\"Como remover um cont\xEAiner parado? ('docker
-        rm')\\\",\\n      \\\"Como inspecionar detalhes de um cont\xEAiner? ('docker
-        inspect')\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Iniciar
-        um cont\xEAiner Nginx em segundo plano, verificar sua execu\xE7\xE3o. Em seguida,
-        parar o cont\xEAiner, list\xE1-lo, inici\xE1-lo novamente, e finalmente remov\xEA-lo
-        completamente. Utilize os comandos aprendidos.\\\",\\n    \\\"Verifica\xE7\xE3o
-        de Aprendizado\\\": \\\"Liste e explique a funcionalidade de tr\xEAs comandos
-        Docker que voc\xEA utilizaria para gerenciar o ciclo de vida de um cont\xEAiner.\\\"\\n
-        \ }\\n]\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n
-        \     \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\":
-        {\n    \"promptTokenCount\": 775,\n    \"candidatesTokenCount\": 705,\n    \"totalTokenCount\":
-        2203,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \\\"Introdu\xE7\xE3o ao Docker: O Que \xC9 e Por Que Usar?\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Entender o conceito fundamental de Docker, sua proposta de
+        valor e as diferen\xE7as essenciais em rela\xE7\xE3o \xE0s m\xE1quinas virtuais.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que s\xE3o cont\xEAineres
+        e como se relacionam com Docker?\\\",\\n      \\\"Diferen\xE7a entre Docker
+        e M\xE1quina Virtual (VM)?\\\",\\n      \\\"Quais problemas o Docker resolve
+        na linha de desenvolvimento?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Fazer uma leitura sobre os conceitos e assistir um v\xEDdeo introdut\xF3rio
+        (ex: 'Docker em 5 minutos'). Anotar as principais vantagens e cen\xE1rios
+        de uso do Docker.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual
+        a principal vantagem de usar cont\xEAineres Docker em compara\xE7\xE3o com
+        a execu\xE7\xE3o de aplica\xE7\xF5es diretamente em m\xE1quinas virtuais?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 2,\\n    \\\"title\\\": \\\"Os Pilares do Docker:
+        Imagens e Cont\xEAineres\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender os
+        conceitos de imagens e cont\xEAineres Docker, suas rela\xE7\xF5es e ciclo
+        de vida b\xE1sico. Preparar o ambiente de desenvolvimento.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 uma Docker Image e
+        qual sua estrutura?\\\",\\n      \\\"O que \xE9 um Docker Container e como
+        ele nasce de uma imagem?\\\",\\n      \\\"O que \xE9 Docker Hub e qual seu
+        papel no ecossistema?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Instalar o Docker Desktop (ou Engine para Linux/Server) em seu sistema
+        operacional e verificar a instala\xE7\xE3o abrindo o terminal e executando
+        'docker --version' e 'docker info'.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Explique, em suas palavras, a rela\xE7\xE3o entre uma Docker Image e um
+        Docker Container.\\\"\\n  },\\n  {\\n    \\\"day\\\": 3,\\n    \\\"title\\\":
+        \\\"Seu Primeiro Cont\xEAiner: Busca e Execu\xE7\xE3o Simples\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Aprender os comandos b\xE1sicos para interagir com o Docker:
+        buscar imagens, baix\xE1-las e rodar seu primeiro cont\xEAiner simples.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando `docker pull`:
+        como funciona para baixar imagens?\\\",\\n      \\\"Comando `docker run`:
+        quais s\xE3o suas op\xE7\xF5es essenciais para executar um cont\xEAiner?\\\",\\n
+        \     \\\"Como verificar cont\xEAineres em execu\xE7\xE3o ou que j\xE1 pararam
+        (comando `docker ps`)?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Executar 'docker run hello-world'. Em seguida, buscar uma imagem como
+        o Ubuntu (`docker pull ubuntu`), rodar um cont\xEAiner com ela (`docker run
+        ubuntu echo 'Ol\xE1 do cont\xEAiner Ubuntu!'`) e verificar se o cont\xEAiner
+        rodou (`docker ps -a`).\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Para rodar um cont\xEAiner pela primeira vez com a imagem 'alpine/git'
+        e ele imprimir 'Git funcionando!', qual comando voc\xEA usaria?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 4,\\n    \\\"title\\\": \\\"Gerenciamento B\xE1sico
+        de Cont\xEAineres e Imagens\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender a
+        controlar o ciclo de vida dos cont\xEAineres (iniciar, parar, reiniciar, remover)
+        e gerenciar imagens locais.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Comandos `docker start`, `docker stop`, `docker restart`.\\\",\\n
+        \     \\\"Comandos `docker rm` (remover cont\xEAineres) e `docker rmi` (remover
+        imagens).\\\",\\n      \\\"Como usar o `docker ps` para ver IDs de cont\xEAineres.\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Iniciar um cont\xEAiner
+        nginx com 'docker run -d --name meu-nginx -p 8080:80 nginx'. Par\xE1-lo com
+        `docker stop meu-nginx`, inici\xE1-lo novamente com `docker start meu-nginx`,
+        e depois remover o cont\xEAiner e a imagem associada.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Ap\xF3s parar um cont\xEAiner, qual comando deve ser
+        executado para exclu\xED-lo definitivamente do seu sistema Docker?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 5,\\n    \\\"title\\\": \\\"Construindo Suas
+        Pr\xF3prias Imagens: O Dockerfile\\\",\\n    \\\"Meta do Dia\\\": \\\"Entender
+        o conceito de Dockerfile, suas instru\xE7\xF5es b\xE1sicas e como utiliz\xE1-lo
+        para construir imagens personalizadas a partir do seu c\xF3digo-fonte.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 um Dockerfile
+        e por que ele \xE9 crucial para builds reproduz\xEDveis?\\\",\\n      \\\"Instru\xE7\xF5es
+        principais de um Dockerfile: FROM, RUN, COPY, EXPOSE, CMD.\\\",\\n      \\\"Como
+        usar o comando `docker build` para criar uma imagem a partir de um Dockerfile?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um diret\xF3rio,
+        adicionar um arquivo `Dockerfile` e um `app.txt` com 'Hello Docker!'. Escrever
+        um `Dockerfile` que copie `app.txt` e use um comando `cat` ao iniciar. Construir
+        a imagem com `docker build -t minha-mensagem .` e execut\xE1-la.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual instru\xE7\xE3o em um Dockerfile define a imagem
+        base a partir da qual sua nova imagem ser\xE1 constru\xEDda?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 6,\\n    \\\"title\\\": \\\"Interagindo com Cont\xEAineres
+        e Redes: Aprofundando Comandos\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender
+        a executar comandos interativos dentro de cont\xEAineres em execu\xE7\xE3o
+        e a mapear portas para acessar servi\xE7os hospedados no Docker.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Comando `docker exec`: como usar
+        para entrar em um cont\xEAiner ou rodar comandos dentro dele?\\\",\\n      \\\"Mapeamento
+        de portas (`-p`): como acessar aplica\xE7\xF5es rodando dentro do cont\xEAiner
+        de fora?\\\",\\n      \\\"Introdu\xE7\xE3o a volumes (bind mounts) para persist\xEAncia
+        de dados em cont\xEAineres (opcional, como pesquisa).\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Rodar um cont\xEAiner ubuntu em modo interativo
+        (`docker run -it --name meu-terminal ubuntu bash`). Dentro do cont\xEAiner,
+        criar um arquivo e sair. Rodar um cont\xEAiner Nginx mapeando a porta 8080
+        do host para a 80 do cont\xEAiner (`docker run -d -p 8080:80 nginx`) e acessar
+        no navegador.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Voc\xEA
+        tem um cont\xEAiner de servidor web rodando e quer ver seu conte\xFAdo acessando
+        `localhost:8000` em seu navegador. Como voc\xEA deve configurar o mapeamento
+        de portas ao rodar o cont\xEAiner?\\\"\\n  }\\n]\"\n          }\n        ],\n
+        \       \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n
+        \     \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        775,\n    \"candidatesTokenCount\": 1571,\n    \"totalTokenCount\": 3845,\n
+        \   \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
         \       \"tokenCount\": 775\n      }\n    ],\n    \"thoughtsTokenCount\":
-        723\n  },\n  \"modelVersion\": \"gemini-2.5-flash\",\n  \"responseId\": \"FOpSaZzPDbzVz7IPhOCJwAw\"\n}\n"
+        1499\n  },\n  \"modelVersion\": \"gemini-2.5-flash\",\n  \"responseId\": \"TP5cabfpMMakqtsP7uiewQ0\"\n}\n"
     headers:
       Alt-Svc:
       - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Mon, 29 Dec 2025 20:52:36 GMT
+      - Tue, 06 Jan 2026 12:21:32 GMT
       Server:
       - scaffolding on HTTPServer2
       Server-Timing:
-      - gfet4t7; dur=7748
+      - gfet4t7; dur=15788
       Transfer-Encoding:
       - chunked
       Vary:
@@ -158,7 +203,7 @@ interactions:
       X-XSS-Protection:
       - '0'
       content-length:
-      - '3293'
+      - '6476'
     status:
       code: 200
       message: OK
