@@ -159,8 +159,9 @@ def format_date(date):
 
 def load_prompt(file_name: str) -> str:
     """Carrega um arquivo de prompt da pasta /prompts."""
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    prompt_path = os.path.join(base_dir, "orienta-api", "prompts", file_name)
+
+    current = os.getcwd()
+    prompt_path = os.path.join(current, "prompts", file_name)
 
     try:
         with open(prompt_path, "r", encoding="utf-8") as f:
