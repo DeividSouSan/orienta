@@ -23,14 +23,14 @@ O backend também atua como servidor de arquivos estáticos do build/export do N
 	- validação semântica do tópico
 - Pydantic v2 (`TypeAdapter`) para validar payloads (ex.: lista de estudos diários)
 - Pytest (testes de integração via HTTP)
+- Pytest Recording para gravar as respostas da chamada à API do Gemini, contornando requisições reais, para testes mais rápidos.
 
 ### Frontend
 
 - Next.js (App Router) com `output: "export"` (build estático)
 - React 19
 - Tailwind CSS 4
-- Radix UI primitives + `class-variance-authority` (componentização + variantes)
-- Zod (validação no client)
+- Shadcn (componentização)
 
 ### Ferramentas e qualidade
 
@@ -45,7 +45,8 @@ O backend também atua como servidor de arquivos estáticos do build/export do N
 - `api/v1/*`: rotas versionadas (blueprints) por domínio.
 - `models/*`: regras de negócio e integrações externas (Firestore, Firebase Auth, GenAI).
 - `prompts/*`: prompts “source of truth” para geração/validação.
-- `tests/integration/*`: testes de integração HTTP (black-box).
+- `tests/integration/*`: testes de integração HTTP usando Client do Flask.
+- `client`: arquivos do Next.js.
 
 ## Contratos HTTP (visão geral)
 
@@ -74,7 +75,7 @@ Decisão: autenticação via **Firebase Auth** com sessão baseada em **cookie H
 	- `Secure` apenas em produção (`ENVIRONMENT == "production"`)
 	- `Path=/` e TTL de 14 dias (`DURATION_IN_SECONDS`)
 
-O client não gerencia tokens diretamente; a sessão é transparente via cookie (boa ergonomia e melhor postura de segurança). Em compensação, CORS/CSRF exigem atenção em deploy real (ver seção “Segurança”).
+O client não gerencia tokens diretamente, a sessão é transparente via cookie.
 
 ## Persistência e modelagem (Firestore)
 
@@ -96,7 +97,7 @@ Decisão: produzir saída do modelo como JSON validável.
 
 - O system prompt é carregado de `prompts/generate_guide.md`.
 - A chamada ao Gemini define `response_mime_type: application/json` e `response_schema` (lista de `DailyStudySchema`).
-- Há fallback de modelos (ex.: `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.0-flash`) com retry em 503/429.
+- Há fallback de modelos (ex.: `gemini-2.5-flash`, `gemini-2.0-flash`) com retry em 503/429 (`gemini-2.5-pro` foi removido da lista de modelos disponíveis recentemente.)
 
 Isso minimiza pós-processamento textual e reduz risco de “resposta não parseável” (quando o modelo alucina).
 
@@ -109,11 +110,7 @@ Decisão: validação em duas etapas:
 
 ## Servindo o frontend (Next export) pelo Flask
 
-O frontend é exportado (`output: "export"`) e servido de `client/out` pelo Flask (`static_folder="client/out"`). O handler de rota “catch-all” tenta:
-
-1) servir o arquivo exato (`/path`)
-2) servir `/path.html`
-3) fallback para `index.html`
+O frontend é exportado (`output: "export"`) e servido de `client/out` pelo Flask (`static_folder="client/out"`).
 
 Há também a decisão de separar o tratamento de 404:
 
@@ -132,7 +129,8 @@ O Next está configurado com `trailingSlash: true`. Isso influencia:
 O backend usa uma camada de exceções de domínio em `errors.py`:
 
 - `ValidationError` (400)
-- `UnauthorizedError` (401)
+- `UnauthorizedError` (401): Erros de autenticação.
+- `ForbiddenError` (403): Erros de permissão, por exemplo, ao apagar um guia.
 - `NotFoundError` (404)
 - `ConflictError` (409)
 - `MethodNotAllowed` (405)
@@ -154,10 +152,14 @@ Trade-off: é uma estratégia simples e consistente de contrato de erro (boa DX 
 
 ## Testes
 
-Os testes são de **integração HTTP** (pasta `tests/integration`), consumindo a API via `requests` e uma variável `API_URL`.
+Os testes são de **integração HTTP** (pasta `tests/integration`), consumindo a API via `Client` do Flask.
 
 - Cobrem status, usuários, sessão, validate topic e CRUD de guides.
 - A abordagem black-box valida contratos (status code + shape do JSON), ideal para evitar testes acoplados ao framework.
+
+Utiliza-se `pytest-recording` para gravar as respostas à API do Gemini para evitar requisições reais durante os testes.
+- Requisições reais: ~2 min
+- Pytest Recording: ~20 sec
 
 ## Decisões e trade-offs principais
 
