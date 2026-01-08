@@ -60,7 +60,7 @@ def get_by_id(guide_id: str):
     return {"message": "Guia recuperado com sucesso.", "data": study_guide}
 
 
-@guides_bp.route("/guides", methods=["GET"])
+@guides_bp.route("/my-guides", methods=["GET"])
 @protected
 def get_my_guides():
     user_guides: list[dict] = guide.find_all_by_username(g.username)
