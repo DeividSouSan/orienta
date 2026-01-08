@@ -14,6 +14,7 @@ from utils import initialize_app
 from flask import Response, jsonify, make_response, send_from_directory, request
 
 from errors import (
+    ForbiddenError,
     InternalServerError,
     MethodNotAllowed,
     NotFoundError,
@@ -81,6 +82,7 @@ def handle_api_error(error: Exception) -> Response:
         or isinstance(error, UnauthorizedError)
         or isinstance(error, NotFoundError)
         or isinstance(error, ConflictError)
+        or isinstance(error, ForbiddenError)
     ):
         return make_response(jsonify(error.toDict()), error.code)
 

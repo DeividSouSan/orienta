@@ -1,12 +1,15 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useStudyGuide } from "@/hooks/useStudyGuide";
 import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Check, Lightbulb, AlertCircle } from "lucide-react";
 import { ErrorAlert } from "@/components/error-alert";
+import { ConfirmDialog } from "@/components/confirm-dialog";
+import { useGuideAPI } from "@/hooks/useGuideApi";
+import { useMessage } from "@/hooks/useMessage";
 import {
     Accordion,
     AccordionItem,
@@ -16,14 +19,22 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner";
 import AuthGuard from "@/components/auth-guard";
+import { cn } from "@/lib/utils";
 
 function GuideDetailsView() {
     const searchParams = useSearchParams();
     const guideId = searchParams.get("id");
+    const router = useRouter();
 
     const { guide, isLoading, updateDayCompletion, isSavingBatch } =
         useStudyGuide(guideId);
+
+    const { deleteGuide, isLoading: isDeleting } = useGuideAPI();
+    const { successMessage, errorMessage } = useMessage();
+
     const [showSavingFeedback, setShowSavingFeedback] = useState(false);
+
+    const [showConfirmationDelete, setShowConfirmationDelete] = useState(false);
 
     const handleToggleDay = (index, checked) => {
         setShowSavingFeedback(true);
@@ -42,8 +53,20 @@ function GuideDetailsView() {
     const progressPercentage =
         totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
 
+    const handleConfirmDelete = async () => {
+        if (!guideId) return;
+
+        const result = await deleteGuide(guideId);
+        if (result.success) {
+            successMessage(result.message);
+            return router.push("/dashboard/my-guides")
+        } else {
+            errorMessage(result.message)
+        }
+    };
+
     return (
-        <main className="flex flex-col w-full items-center min-h-screen bg-gray-50">
+        <main className={cn("flex flex-col w-full items-center min-h-screen bg-gray-50")}>
             <div className="flex flex-col items-center w-full max-w-3xl px-3 sm:px-4 py-6 sm:py-8">
                 {isLoading ? (
                     <Spinner />
@@ -65,7 +88,6 @@ function GuideDetailsView() {
                     </section>
                 ) : (
                     <article className="flex flex-col gap-6 w-full">
-                        {/* Cabeçalho com título e navegação */}
                         <section className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 w-full">
                             <div className="flex-1">
                                 <h1 className="font-bold font-serif text-2xl sm:text-3xl lg:text-4xl break-words text-gray-900">
@@ -89,7 +111,6 @@ function GuideDetailsView() {
                             </Link>
                         </section>
 
-                        {/* Progresso */}
                         <section className="bg-white rounded-lg p-4 border border-gray-200">
                             <div className="flex items-center justify-between mb-2">
                                 <span className="text-sm font-medium text-gray-700">
@@ -123,7 +144,6 @@ function GuideDetailsView() {
                             </div>
                         </section>
 
-                        {/* Accordion de dias */}
                         <Accordion
                             type="single"
                             defaultValue="dia1"
@@ -131,17 +151,16 @@ function GuideDetailsView() {
                             className="flex flex-col w-full space-y-3"
                         >
                             {Array.isArray(guide.daily_study) &&
-                            guide.daily_study.length ? (
+                                guide.daily_study.length ? (
                                 guide.daily_study.map((study, index) => {
                                     return (
                                         <AccordionItem
                                             key={study.day}
                                             value={"dia" + study.day}
-                                            className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${
-                                                study.completed
-                                                    ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
-                                                    : "bg-white border-gray-200"
-                                            }`}
+                                            className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${study.completed
+                                                ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
+                                                : "bg-white border-gray-200"
+                                                }`}
                                         >
                                             <AccordionTrigger className="hover:no-underline py-4">
                                                 <div className="flex items-start sm:items-center gap-3 text-left w-full">
@@ -172,11 +191,10 @@ function GuideDetailsView() {
                                                         )}
                                                     </div>
                                                     <span
-                                                        className={`text-sm sm:text-base flex-1 ${
-                                                            study.completed
-                                                                ? "font-bold text-gray-900 line-through opacity-75"
-                                                                : "font-medium text-gray-700"
-                                                        }`}
+                                                        className={`text-sm sm:text-base flex-1 ${study.completed
+                                                            ? "font-bold text-gray-900 line-through opacity-75"
+                                                            : "font-medium text-gray-700"
+                                                            }`}
                                                     >
                                                         Dia {study.day} -{" "}
                                                         {study.title}
@@ -270,6 +288,24 @@ function GuideDetailsView() {
                                 </section>
                             )}
                         </Accordion>
+                        <section>
+                            <Button
+                                variant="destructive"
+                                onClick={() => setShowConfirmationDelete(true)}
+                            >
+                                Excluir Guia
+                            </Button>
+
+                            {showConfirmationDelete && (
+                                <ConfirmDialog
+                                    title="Excluir este guia?"
+                                    description="Esta ação não pode ser desfeita. O guia será removido da sua lista."
+                                    onCancel={() => setShowConfirmationDelete(false)}
+                                    onConfirm={handleConfirmDelete}
+                                    isLoading={isDeleting}
+                                />
+                            )}
+                        </section>
                     </article>
                 )}
             </div>

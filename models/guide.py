@@ -8,6 +8,7 @@ from firebase_admin.exceptions import FirebaseError
 from schemas import DailyStudySchema
 
 from errors import (
+    ForbiddenError,
     InternalServerError,
     NotFoundError,
     ServiceError,
@@ -81,14 +82,14 @@ def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
         ) from error
 
 
-def find_by_username(username: str, only_public: bool = False) -> list[dict]:
-    """Busca os guias de um usuário.
+def find_all_by_username(username: str, only_public: bool = False) -> list[dict]:
+    """Busca os guias de um usuário, ignora os guias que foram deletados.
 
     Args:
         username (str): nome do usuário proprietário dos guias
         only_public (bool):
-            True: busca APENAS os guias que o usuário marcou como 'is_public: true'.
-            False: busca TODOS os guias do usuário em questão.
+            True: busca apenas os guias que o usuário marcou como 'is_public: true'.
+            False: busca totod os guias do usuário.
 
     Returns:
         list[dict]: uma lista contendo todos os metadados dos guias encontrados.
@@ -100,17 +101,21 @@ def find_by_username(username: str, only_public: bool = False) -> list[dict]:
     try:
         db = firestore.client()
 
-        guides_snapshots = []
+        guides_snapshots = list()
         if only_public:
             guides_snapshots = (
                 db.collection("users_guides")
                 .where("owner", "==", username)
                 .where("is_public", "==", True)
+                .where("status", "!=", "deleted")
                 .get()
             )
         else:
             guides_snapshots = (
-                db.collection("users_guides").where("owner", "==", username).get()
+                db.collection("users_guides")
+                .where("owner", "==", username)
+                .where("status", "!=", "deleted")
+                .get()
             )
 
         guides_metadata = list()
@@ -143,25 +148,39 @@ def find_by_username(username: str, only_public: bool = False) -> list[dict]:
 
 
 def delete(guide_id: str, username: str) -> None:
-    """Deleta o guia do banco de dados.
+    """Realiza o SOFT DELETE do guia no banco de dados.
 
     Args:
-        guide_id (str): o ID do guia a ser deletado.
+        guide_id (str): o ID do guia que será deletado ('status=deleted').
         username (str): o o nodedo usuário que executou a ação de deletar.
 
+    Raises:
+        ForbiddenError: se o usuário tentar apagar um guia que não é de sua autoria;
+        NotFoundError: se o guia não for encontrado;
+        ServiceError: se o serviço do Firebase falhar;
+
     """
+    guide_id = guide_id.strip()
+
+    if not guide_id:
+        raise ValidationError(
+            message="ID do Guia não é válido.",
+            action="Verifique o ID e tente novamente.",
+        )
+
     try:
         db = firestore.client()
         guide_ref = db.collection("users_guides").document(guide_id)
-        guide_doc = guide_ref.get()
+        guide_snap = guide_ref.get()
 
-        if guide := guide_doc.to_dict():
+        if guide := guide_snap.to_dict():
             if guide.get("owner") != username:
-                raise UnauthorizedError(
-                    "Você não tem permissão para deletar esse guia."
+                raise ForbiddenError(
+                    "Você não tem permissão para deletar esse guia.",
+                    "Verifique se o guia é de sua autoria e tente novamente.",
                 )
 
-            guide_doc.reference.delete()
+            guide_ref.update({"status": "deleted"})
         else:
             raise NotFoundError(
                 "Guia não encontrado.", "Verifique o ID e tente novamente."
@@ -172,21 +191,19 @@ def delete(guide_id: str, username: str) -> None:
         ) from error
 
 
-def find_guideline_by_id(guide_id: str) -> list[dict]:
-    try:
-        db = firestore.client()
-        guide_snapshot = db.collection("users_guides").document(guide_id).get()
+def find_by_id(guide_id: str) -> dict[str, Any]:
+    """Busca um Guia pelo seu ID.
 
-        daily_study_list = guide_snapshot.get("daily_study")
+    Args:
+        guide_id (str): o ID do Guia que quer buscar.
 
-        return daily_study_list
-    except FirebaseError as error:
-        raise ServiceError(
-            "Não foi possível recuperar os dados desse guia. Tente novamente mais tarde."
-        ) from error
+    Return:
+        dict: dicionário com as informações do guia encontrado.
 
-
-def find_guide_by_id(guide_id: str) -> dict[str, Any]:
+    Raises:
+        NotFoundError: se o guia não for encontrado;
+        ServiceError: se o Firebase não conseguir recuperar o guia;
+    """
     try:
         db = firestore.client()
         guide_snapshot = db.collection("users_guides").document(guide_id).get()

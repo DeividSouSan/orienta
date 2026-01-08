@@ -157,6 +157,6 @@ def test_update_studies_with_completed_guide(auth_client, new_user):
         ],
     }
 
-    completed_guide = guide.find_guide_by_id(new_guide["id"])
+    completed_guide = guide.find_by_id(new_guide["id"])
     assert completed_guide["status"] == "completed"
     assert completed_guide["completed_at"]

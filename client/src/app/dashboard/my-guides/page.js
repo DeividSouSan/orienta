@@ -35,8 +35,8 @@ export default function MyGuidesPage() {
         const loadGuides = async () => {
             const result = await fetchGuides();
             if (result) {
-                setInProgressGuides(result.inProgressGuides);
-                setCompletedGuides(result.completedGuides);
+                setInProgressGuides(result.data.inProgressGuides);
+                setCompletedGuides(result.data.completedGuides);
             }
         };
 
@@ -279,11 +279,10 @@ export default function MyGuidesPage() {
                                                 onClick={() =>
                                                     setCurrentPage(page)
                                                 }
-                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${
-                                                    currentPage === page
+                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${currentPage === page
                                                         ? "bg-blue-800 text-white"
                                                         : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
-                                                }`}
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
