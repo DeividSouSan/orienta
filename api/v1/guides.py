@@ -54,28 +54,16 @@ def delete(guide_id: str):
 
 @guides_bp.route("/guides/<string:guide_id>", methods=["GET"])
 @protected
-def get_guides_by_id(guide_id: str):
-    # recuperar o guia por id
-
-    study_guide = guide.find_guide_by_id(guide_id)
+def get_by_id(guide_id: str):
+    study_guide = guide.find_by_id(guide_id)
 
     return {"message": "Guia recuperado com sucesso.", "data": study_guide}
-
-
-@guides_bp.route("/guideline/<string:guide_id>", methods=["GET"])
-@protected
-def get_guideline_by_id(guide_id: str):
-    user_guides: list[dict] = guide.find_guideline_by_id(guide_id)
-
-    return make_response(
-        {"message": "Guideline recuperada com sucesso.", "data": user_guides}, 200
-    )
 
 
 @guides_bp.route("/guides", methods=["GET"])
 @protected
 def get_my_guides():
-    user_guides: list[dict] = guide.find_by_username(g.username)
+    user_guides: list[dict] = guide.find_all_by_username(g.username)
 
     return make_response(
         {"message": "Guias recuperados com sucesso.", "data": user_guides}, 200

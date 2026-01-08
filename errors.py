@@ -42,6 +42,28 @@ class UnauthorizedError(Exception):
         }
 
 
+class ForbiddenError(Exception):
+    def __init__(
+        self,
+        message: str = "Você não possui permissão para acessar este recurso.",
+        action: str = "Verifique suas permissões e tente novamente.",
+    ):
+        self.name = "ForbiddenError"
+        self.message = message
+        self.action = action
+        self.code = 403
+
+        super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
+        }
+
+
 class InternalServerError(Exception):
     def __init__(
         self,
