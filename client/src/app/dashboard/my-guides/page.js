@@ -16,13 +16,11 @@ import AuthGuard from "@/components/auth-guard";
 const ITEMS_PER_PAGE = 4;
 
 export default function MyGuidesPage() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [completedGuides, setCompletedGuides] = useState([]);
+    const { fetchGuides } = useGuideAPI();
     const [inProgressGuides, setInProgressGuides] = useState([]);
-    const [confirmDelete, setConfirmDelete] = useState(null);
-    const [deletingGuideId, setDeletingGuideId] = useState(null);
-    const { fetchGuides, deleteGuide } = useGuideAPI();
+    const [completedGuides, setCompletedGuides] = useState([]);
 
+    const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(completedGuides.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -34,7 +32,7 @@ export default function MyGuidesPage() {
     useEffect(() => {
         const loadGuides = async () => {
             const result = await fetchGuides();
-            if (result) {
+            if (result.success) {
                 setInProgressGuides(result.data.inProgressGuides);
                 setCompletedGuides(result.data.completedGuides);
             }
@@ -43,28 +41,16 @@ export default function MyGuidesPage() {
         loadGuides();
     }, []);
 
-    const handleDeleteGuide = async (guideId) => {
-        setDeletingGuideId(guideId);
-        const result = await deleteGuide(guideId);
+    const getProgress = (guide) => {
+        const study_days = guide.daily_studies;
 
-        if (result.ok) {
-            const updatedGuides = await fetchGuides();
-            if (updatedGuides) {
-                setInProgressGuides(updatedGuides.inProgressGuides);
-                setCompletedGuides(updatedGuides.completedGuides);
-            }
-            setConfirmDelete(null);
-        }
-
-        setDeletingGuideId(null);
-    };
-
-    const daysInfo = (guide) => {
         const completed =
-            guide.daily_studies.filter((day) => day.completed === true)
-                .length || 0;
-        const total = guide.daily_studies.length || 0;
+            study_days.filter((day) => day.completed === true).length || 0;
+
+        const total = study_days.length || 0;
+
         const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+
         return { completed, total, progress };
     };
 
@@ -78,16 +64,6 @@ export default function MyGuidesPage() {
 
     return (
         <AuthGuard>
-            {confirmDelete && (
-                <ConfirmDialog
-                    title="Excluir Guia"
-                    description={`Tem certeza que deseja excluir o guia "${confirmDelete.title}"? Esta ação não pode ser desfeita.`}
-                    onConfirm={() => handleDeleteGuide(confirmDelete.guideId)}
-                    onCancel={() => setConfirmDelete(null)}
-                    isLoading={deletingGuideId === confirmDelete.guideId}
-                />
-            )}
-
             <div className="max-w-8xl mx-auto px-6 py-6">
                 <h1 className="font-serif text-3xl text-gray-900 mb-2">
                     Meus Guias de Estudo
@@ -155,17 +131,16 @@ export default function MyGuidesPage() {
                                                 </p>
                                             </div>
                                             <span className="bg-blue-50 text-blue-800 font-sans text-xs font-bold px-3 py-1 rounded-sm">
-                                                {daysInfo(guide).progress}%
+                                                {getProgress(guide).progress}%
                                             </span>
                                         </div>
 
-                                        {/* Barra de Progresso */}
                                         <div className="mb-4">
                                             <div className="w-full bg-gray-200 rounded-sm h-2">
                                                 <div
                                                     className="bg-blue-800 h-2 rounded-sm transition-all"
                                                     style={{
-                                                        width: `${daysInfo(guide).progress}%`,
+                                                        width: `${getProgress(guide).progress}%`,
                                                     }}
                                                 />
                                             </div>
@@ -173,9 +148,9 @@ export default function MyGuidesPage() {
 
                                         <div className="flex items-center justify-between font-sans text-sm">
                                             <span className="text-gray-600">
-                                                {daysInfo(guide).completed} de{" "}
-                                                {daysInfo(guide).total} dias
-                                                concluídos
+                                                {getProgress(guide).completed}{" "}
+                                                de {getProgress(guide).total}{" "}
+                                                dias concluídos
                                             </span>
                                             <span className="text-gray-500 text-xs">
                                                 Criado em:{" "}
@@ -279,10 +254,11 @@ export default function MyGuidesPage() {
                                                 onClick={() =>
                                                     setCurrentPage(page)
                                                 }
-                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${currentPage === page
+                                                className={`w-10 h-10 rounded-sm font-sans font-bold text-sm transition-colors ${
+                                                    currentPage === page
                                                         ? "bg-blue-800 text-white"
                                                         : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
-                                                    }`}
+                                                }`}
                                             >
                                                 {page}
                                             </button>

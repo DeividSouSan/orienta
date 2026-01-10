@@ -208,7 +208,7 @@ def find_by_id(guide_id: str) -> dict[str, Any]:
         db = firestore.client()
         guide_snapshot = db.collection("users_guides").document(guide_id).get()
 
-        if guide_snapshot.exists:
+        if guide_snapshot.exists and guide_snapshot.get("status") != "deleted":
             return guide_snapshot.to_dict()
         else:
             raise NotFoundError(

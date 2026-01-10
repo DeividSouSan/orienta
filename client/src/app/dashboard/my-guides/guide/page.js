@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useStudyGuide } from "@/hooks/useStudyGuide";
 import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -22,31 +21,42 @@ import AuthGuard from "@/components/auth-guard";
 import { cn } from "@/lib/utils";
 
 function GuideDetailsView() {
-    const searchParams = useSearchParams();
-    const guideId = searchParams.get("id");
     const router = useRouter();
-
-    const { guide, isLoading, updateDayCompletion, isSavingBatch } =
-        useStudyGuide(guideId);
-
-    const { deleteGuide, isLoading: isDeleting } = useGuideAPI();
+    const searchParameters = useSearchParams();
     const { successMessage, errorMessage } = useMessage();
 
-    const [showSavingFeedback, setShowSavingFeedback] = useState(false);
+    const currentGuideId = searchParameters.get("id");
+    const {
+        guide,
+        fetchGuideById,
+        updateDayStatus,
+        deleteGuide,
+        isSaving,
+        isLoading,
+        isDeleting,
+    } = useGuideAPI(currentGuideId);
 
+    const [showSavingFeedback, setShowSavingFeedback] = useState(false);
     const [showConfirmationDelete, setShowConfirmationDelete] = useState(false);
 
-    const handleToggleDay = (index, checked) => {
+    const handleDayStatusChange = (index, checked) => {
         setShowSavingFeedback(true);
-        updateDayCompletion(index, checked);
+        updateDayStatus(index, checked);
     };
 
     useEffect(() => {
-        if (!isSavingBatch) {
+        const loadGuide = async () => await fetchGuideById(currentGuideId);
+
+        loadGuide();
+    }, []);
+
+    useEffect(() => {
+        if (!isSaving) {
             setShowSavingFeedback(false);
         }
-    }, [isSavingBatch]);
+    }, [isSaving]);
 
+    // ! Dá pra melhorar v
     const completedDays =
         guide?.daily_study?.filter((d) => d.completed)?.length || 0;
     const totalDays = guide?.daily_study?.length || 0;
@@ -54,27 +64,31 @@ function GuideDetailsView() {
         totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
 
     const handleConfirmDelete = async () => {
-        if (!guideId) return;
+        if (!currentGuideId) return;
 
-        const result = await deleteGuide(guideId);
+        const result = await deleteGuide(currentGuideId);
         if (result.success) {
             successMessage(result.message);
-            return router.push("/dashboard/my-guides")
+            return router.push("/dashboard/my-guides");
         } else {
-            errorMessage(result.message)
+            errorMessage(result.message);
         }
     };
 
     return (
-        <main className={cn("flex flex-col w-full items-center min-h-screen bg-gray-50")}>
+        <main
+            className={cn(
+                "flex flex-col w-full items-center min-h-screen bg-gray-50",
+            )}
+        >
             <div className="flex flex-col items-center w-full max-w-3xl px-3 sm:px-4 py-6 sm:py-8">
                 {isLoading ? (
                     <Spinner />
                 ) : !guide ? (
                     <section className="flex flex-col items-center w-full gap-4">
                         <ErrorAlert
-                            message="Não conseguimos carregar este guia. Verifique sua conexão e tente novamente."
-                            onClose={() => window.location.reload()}
+                            message="Não conseguimos carregar este guia, ele pode ter sido excluído. Verifique sua conexão e tente novamente."
+                            onClose={() => router.push("/dashboard/my-guides")}
                         />
                         <Link
                             href="/dashboard/my-guides"
@@ -120,14 +134,14 @@ function GuideDetailsView() {
                                     <span className="text-sm font-bold text-blue-600">
                                         {progressPercentage}%
                                     </span>
-                                    {(showSavingFeedback || isSavingBatch) && (
+                                    {(showSavingFeedback || isSaving) && (
                                         <div className="flex items-center gap-1 text-xs text-amber-600 animate-pulse">
                                             <div className="w-2 h-2 bg-amber-600 rounded-full" />
                                             Salvando...
                                         </div>
                                     )}
                                     {!showSavingFeedback &&
-                                        !isSavingBatch &&
+                                        !isSaving &&
                                         guide && (
                                             <div className="flex items-center gap-1 text-xs text-green-600">
                                                 <Check size={14} />
@@ -158,8 +172,8 @@ function GuideDetailsView() {
                                             key={study.day}
                                             value={"dia" + study.day}
                                             className={`border last:border border-b-5 last:border-b-5 px-3 md:px-4 rounded-md transition-all duration-200 ${study.completed
-                                                ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
-                                                : "bg-white border-gray-200"
+                                                    ? "bg-green-50 border-black border-2 border-b-5 last:border-2 last:border-b-5 shadow-sm"
+                                                    : "bg-white border-gray-200"
                                                 }`}
                                         >
                                             <AccordionTrigger className="hover:no-underline py-4">
@@ -173,7 +187,7 @@ function GuideDetailsView() {
                                                             onCheckedChange={(
                                                                 checked,
                                                             ) =>
-                                                                handleToggleDay(
+                                                                handleDayStatusChange(
                                                                     index,
                                                                     checked,
                                                                 )
@@ -192,8 +206,8 @@ function GuideDetailsView() {
                                                     </div>
                                                     <span
                                                         className={`text-sm sm:text-base flex-1 ${study.completed
-                                                            ? "font-bold text-gray-900 line-through opacity-75"
-                                                            : "font-medium text-gray-700"
+                                                                ? "font-bold text-gray-900 line-through opacity-75"
+                                                                : "font-medium text-gray-700"
                                                             }`}
                                                     >
                                                         Dia {study.day} -{" "}
@@ -300,7 +314,9 @@ function GuideDetailsView() {
                                 <ConfirmDialog
                                     title="Excluir este guia?"
                                     description="Esta ação não pode ser desfeita. O guia será removido da sua lista."
-                                    onCancel={() => setShowConfirmationDelete(false)}
+                                    onCancel={() =>
+                                        setShowConfirmationDelete(false)
+                                    }
                                     onConfirm={handleConfirmDelete}
                                     isLoading={isDeleting}
                                 />

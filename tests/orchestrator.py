@@ -1,6 +1,8 @@
 import random
+from time import sleep
 from models import auth, guide, session, user
 from faker import Faker
+from firebase_admin import firestore
 
 fake = Faker()
 
@@ -37,3 +39,25 @@ def create_guide(owner: str | None = None, days: int | None = None):
     guide_from_db = guide.save(new_guide)
 
     return guide_from_db
+
+
+def delete_guide(guide_id: str, username: str):
+    guide.delete(guide_id, username)
+
+
+def clear_database():
+    GUIDES_BATCH_SIZE = 100
+    DELAY_SECONDS = 0.5
+
+    db = firestore.client()
+    guides_collection_ref = db.collection("users_guides")
+    batch = []
+
+    for guide_ref in guides_collection_ref.list_documents():
+        batch.append(guide_ref.id)
+        guide_ref.delete()
+
+        if len(batch) == GUIDES_BATCH_SIZE:
+            print(f"  - Removidos {len(batch)} guias.")
+            batch.clear()
+            sleep(DELAY_SECONDS)

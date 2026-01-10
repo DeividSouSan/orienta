@@ -44,18 +44,7 @@ def clear_firebase_auth():
 def clear_users_guides_collection():
     print("🧹 Limpando a coleção 'users_guides' do Firestore...")
 
-    db = firestore.client()
-    guides_collection_ref = db.collection("users_guides")
-    batch = []
-
-    for guide_ref in guides_collection_ref.list_documents():
-        batch.append(guide_ref.id)
-        guide_ref.delete()
-
-        if len(batch) == GUIDES_BATCH_SIZE:
-            print(f"  - Removidos {len(batch)} guias.")
-            batch.clear()
-            sleep(DELAY_SECONDS)
+    orchestrator.clear_database()
 
     print("✅ Limpeza concluída.")
 

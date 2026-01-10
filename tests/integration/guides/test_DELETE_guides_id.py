@@ -9,18 +9,17 @@ def test_with_valid_id(auth_client, new_user):
     response1 = auth_client.delete(f"/api/v1/guides/{new_guide['id']}")
     response1_body = response1.get_json()
 
-    assert response1.status_code == 200
     assert response1_body == {"message": "Guia de estudo deletado com sucesso."}
+    assert response1.status_code == 200
 
     response2 = auth_client.get(f"/api/v1/guides/{new_guide['id']}")
     response2_body = response2.get_json()
 
     assert response2_body == {
-        "message": response2_body["message"],
-        "data": {
-            **response2_body["data"],
-            "status": "deleted",
-        },
+        "name": "NotFoundError",
+        "message": "O guia não foi encontrado.",
+        "action": "Verifique que o guia existe e tente novamente.",
+        "code": 404,
     }
 
 
