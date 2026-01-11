@@ -10,6 +10,7 @@ dependencies = [
     "flask-cors>=6.0.1",
     "google-genai>=1.31.0",
     "gunicorn>=23.0.0",
+    "isort>=7.0.0",
     "pydantic>=2.11.7",
     "python-dotenv>=1.1.1",
     "uvicorn>=0.35.0",
