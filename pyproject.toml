@@ -1,0 +1,32 @@
+[project]
+name = "orienta"
+version = "1.0.0"
+description = "Orienta usa inteligência artificial para criar planos de estudo personalizados, transformando a maneira como você aprende qualquer tópico, no seu ritmo."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "firebase-admin>=7.0.0",
+    "flask>=3.1.1",
+    "flask-cors>=6.0.1",
+    "google-genai>=1.31.0",
+    "gunicorn>=23.0.0",
+    "pydantic>=2.11.7",
+    "python-dotenv>=1.1.1",
+    "uvicorn>=0.35.0",
+]
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.8.3",
+    "faker>=39.0.0",
+    "pre-commit>=4.2.0",
+    "pytest>=9.0.1",
+    "pytest-recording>=0.13.4",
+    "ruff>=0.12.5",
+    "vcrpy>=8.1.0",
+]
+
+[tool.pytest]
+minversion = "9.0.1"
+addopts = ["-ra", "-q"]
+pythonpath = ["."]
