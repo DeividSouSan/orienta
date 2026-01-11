@@ -1,10 +1,8 @@
-name: Run Automated Tests
-
 on: pull_request
 
 jobs:
     build:
-        name: Run Pytest
+        name: Run Automated Tests with Pytest
         runs-on: ubuntu-latest
 
         steps:
@@ -34,16 +32,19 @@ jobs:
                   echo "Arquivo criado com sucesso."
 
             - name: Setup Python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v6
               with:
-                  python-version: "3.12.3"
+                  python-version-file: ".python-version"
 
-            - name: Instala dependências
-              run: |
-                  python -m pip install --upgrade pip
-                  if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            - name: Install `uv`
+              uses: astral-sh/setup-uv@v7
+              with:
+                  version: "0.9.21"
 
-            - name: Subindo o servidor e rodando o Pytest...
+            - name: Install dependencies
+              run: uv sync --locked --all-extras --dev
+
+            - name: Running pytest
               env:
                   GOOGLE_APPLICATION_CREDENTIALS: ./service-account.json
                   GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -55,4 +56,4 @@ jobs:
                   GEN_MODELS: "gemini-2.5-flash|gemini-2.5-flash-lite"
                   VALIDATION_MODELS: "gemini-2.5-flash-lite|gemini-2.5-flash"
 
-              run: pytest
+              run: uv run pytest
