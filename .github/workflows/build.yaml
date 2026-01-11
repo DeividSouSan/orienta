@@ -1,10 +1,8 @@
-name: Build Next.js /out folder
-
 on: pull_request
 
 jobs:
     next-build:
-        name: Run npm build
+        name: Build Next.js /out folder with npm run build
         runs-on: ubuntu-latest
 
         steps:
