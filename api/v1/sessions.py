@@ -1,8 +1,9 @@
 import os
-from flask import Blueprint, Response, jsonify, make_response, request
+
+from dotenv import load_dotenv
+from flask import Blueprint, Response, make_response, request
 
 from models import auth, session
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -22,18 +23,16 @@ def create() -> Response:
     session_cookie = session.create(authenticated_user["idToken"])
 
     response = make_response(
-        jsonify(
-            {
-                "message": "Sessão criada com sucesso.",
-                "data": {
-                    "userId": authenticated_user["localId"],
-                    "username": authenticated_user["displayName"],
-                    "email": authenticated_user["email"],
-                    "sessionCookie": session_cookie,
-                    "sessionExpiresIn": session.DURATION_IN_SECONDS,
-                },
-            }
-        ),
+        {
+            "message": "Sessão criada com sucesso.",
+            "data": {
+                "userId": authenticated_user["localId"],
+                "username": authenticated_user["displayName"],
+                "email": authenticated_user["email"],
+                "sessionCookie": session_cookie,
+                "sessionExpiresIn": session.DURATION_IN_SECONDS,
+            },
+        },
         201,
     )
 
@@ -51,7 +50,12 @@ def create() -> Response:
 
 @session_bp.route("/sessions", methods=["DELETE"])
 def delete() -> Response:
-    response = make_response(jsonify({"message": "Sessão encerrada com sucesso."}), 200)
+    response = make_response(
+        {
+            "message": "Sessão encerrada com sucesso.",
+        },
+        200,
+    )
     response.delete_cookie("session_id", path="/")
 
     return response

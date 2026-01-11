@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, jsonify, request, make_response
+from flask import Blueprint, Response, request
 
 from models import user
 
@@ -15,6 +15,7 @@ def create() -> Response:
         password=data.get("password", ""),
     )
 
-    return make_response(
-        jsonify({"message": "Usuário criado com sucesso.", "data": new_user}), 201
-    )
+    return {
+        "message": "Usuário criado com sucesso.",
+        "data": new_user,
+    }, 201
