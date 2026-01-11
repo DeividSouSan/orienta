@@ -8,3 +8,5 @@ client/.env.local
 client/.next
 client/node_modules
 client/out
+**/.pytest_cache
+**/.ruff_cache
