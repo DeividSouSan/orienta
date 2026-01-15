@@ -1,4 +1,5 @@
 import pytest
+
 from tests import orchestrator
 
 
@@ -22,7 +23,7 @@ def test_with_direct_access(auth_client, new_user):
         "data": [
             {
                 "id": new_guide["id"],
-                "title": new_guide["title"],
+                "title": new_guide["inputs"]["title"],
                 "topic": new_guide["inputs"]["topic"],
                 "days": new_guide["inputs"]["days"],
                 "daily_studies": new_guide["daily_study"],
