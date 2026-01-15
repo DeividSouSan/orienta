@@ -19,8 +19,8 @@ O backend também atua como servidor de arquivos estáticos do build/export do N
 - Firebase Admin SDK (criação/verificação de cookies de sessão e acesso ao Firestore)
 - Google Cloud Firestore (persistência)
 - Google GenAI (Gemini) para:
-	- geração do guia em JSON com schema
-	- validação semântica do tópico
+    - geração do guia em JSON com schema
+    - validação semântica do tópico
 - Pydantic v2 (`TypeAdapter`) para validar payloads (ex.: lista de estudos diários)
 - Pytest (testes de integração via HTTP)
 - Pytest Recording para gravar as respostas da chamada à API do Gemini, contornando requisições reais, para testes mais rápidos.
@@ -71,9 +71,9 @@ Decisão: autenticação via **Firebase Auth** com sessão baseada em **cookie H
 - Login (`POST /sessions`) autentica via **Firebase Identity Toolkit REST** e recebe um `idToken`.
 - O backend converte o `idToken` em um **session cookie** (`auth.create_session_cookie`).
 - O cookie é gravado como `session_id` com:
-	- `HttpOnly` (mitiga XSS lendo token)
-	- `Secure` apenas em produção (`ENVIRONMENT == "production"`)
-	- `Path=/` e TTL de 14 dias (`DURATION_IN_SECONDS`)
+    - `HttpOnly` (mitiga XSS lendo token)
+    - `Secure` apenas em produção (`ENVIRONMENT == "production"`)
+    - `Path=/` e TTL de 14 dias (`DURATION_IN_SECONDS`)
 
 O client não gerencia tokens diretamente, a sessão é transparente via cookie.
 
@@ -105,8 +105,8 @@ Isso minimiza pós-processamento textual e reduz risco de “resposta não parse
 
 Decisão: validação em duas etapas:
 
-1) **Sintática**: tamanho/estrutura e campos (ex.: topic entre 10 e 150 chars).
-2) **Semântica**: chamada ao Gemini com schema `ValidationResult` (relevância, linguagem inadequada, gibberish) usando `temperature: 0`.
+1. **Sintática**: tamanho/estrutura e campos (ex.: topic entre 10 e 150 chars).
+2. **Semântica**: chamada ao Gemini com schema `ValidationResult` (relevância, linguagem inadequada, gibberish) usando `temperature: 0`.
 
 ## Servindo o frontend (Next export) pelo Flask
 
@@ -158,6 +158,7 @@ Os testes são de **integração HTTP** (pasta `tests/integration`), consumindo 
 - A abordagem black-box valida contratos (status code + shape do JSON), ideal para evitar testes acoplados ao framework.
 
 Utiliza-se `pytest-recording` para gravar as respostas à API do Gemini para evitar requisições reais durante os testes.
+
 - Requisições reais: ~2 min
 - Pytest Recording: ~20 sec
 

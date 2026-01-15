@@ -10,3 +10,4 @@ client/node_modules
 client/out
 **/.pytest_cache
 **/.ruff_cache
+.tasks

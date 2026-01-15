@@ -20,6 +20,29 @@ class ValidationError(Exception):
         }
 
 
+class SchemaError(Exception):
+    def __init__(
+        self,
+        *,
+        message: str = "Campo obrigatório está ausente.",
+        action: str = "Verifique os dados enviados e tente novamente.",
+    ):
+        self.name = "SchemaError"
+        self.message = message
+        self.action = action
+        self.code = 400
+
+        super().__init__(self.message)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "message": self.message,
+            "action": self.action,
+            "code": self.code,
+        }
+
+
 class UnauthorizedError(Exception):
     def __init__(
         self,

@@ -20,6 +20,7 @@ def create() -> Response:
         email=data.get("email", ""), password=data.get("password", "")
     )
 
+    # idToken é um JWT
     session_cookie = session.create(authenticated_user["idToken"])
 
     response = make_response(
@@ -29,8 +30,6 @@ def create() -> Response:
                 "userId": authenticated_user["localId"],
                 "username": authenticated_user["displayName"],
                 "email": authenticated_user["email"],
-                "sessionCookie": session_cookie,
-                "sessionExpiresIn": session.DURATION_IN_SECONDS,
             },
         },
         201,

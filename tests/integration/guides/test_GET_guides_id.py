@@ -1,4 +1,5 @@
 import pytest
+
 from tests import orchestrator
 
 
@@ -13,7 +14,6 @@ def test_with_valid_id(auth_client):
     assert response_body == {
         "message": "Guia recuperado com sucesso.",
         "data": {
-            "title": new_guide["title"],
             "model": new_guide["model"],
             "is_public": False,
             "owner": response_body["data"]["owner"],
@@ -24,6 +24,7 @@ def test_with_valid_id(auth_client):
             ],  # ? Seria melhor usar `new_guide["created_at"]` ?
             "generation_time_seconds": new_guide["generation_time_seconds"],
             "inputs": {
+                "title": new_guide["inputs"]["title"],
                 "topic": new_guide["inputs"]["topic"],
                 "knowledge": new_guide["inputs"]["knowledge"],
                 "focus_time": new_guide["inputs"]["focus_time"],

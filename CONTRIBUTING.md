@@ -116,10 +116,10 @@ O frontend estará disponível em `http://localhost:3000`.
 
 ### 💡 Entendendo os dois modos de execução
 
-| Endereço | Servidor | Descrição |
-|----------|----------|-----------|
+| Endereço                | Servidor          | Descrição                                                                                                                                            |
+| ----------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `http://localhost:3000` | Node.js (Next.js) | Servidor de desenvolvimento do Next.js. Ideal para desenvolver o frontend com hot-reload. O Next.js consome a API Flask rodando em `localhost:5000`. |
-| `http://localhost:5000` | Gunicorn (Flask) | Servidor de produção. O Flask serve os arquivos estáticos gerados em **`client/out`** pelo comando `npm run build`. Simula o ambiente de produção. |
+| `http://localhost:5000` | Gunicorn (Flask)  | Servidor de produção. O Flask serve os arquivos estáticos gerados em **`client/out`** pelo comando `npm run build`. Simula o ambiente de produção.   |
 
 > ⚠️ **Importante:** Para usar o modo de produção (`localhost:5000`), é necessário executar `npm run build` antes para gerar a pasta `client/out` com os arquivos estáticos.
 

@@ -14,9 +14,8 @@ def validate_topic() -> Response:
     topic = data.get("topic", "").strip()
 
     prompt.validate_topic(topic)
-    result = prompt.validate_relevance(topic)
+    prompt.validate_relevance(topic)
 
     return {
         "message": "O tópico é válido.",
-        "data": {"topic": topic, "info": result.model_dump()},
     }, 200

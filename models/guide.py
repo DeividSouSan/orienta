@@ -1,12 +1,17 @@
-from datetime import datetime, timezone
 import os
-from typing import Any
+from dataclasses import asdict
+from datetime import datetime, timezone
+from typing import Any, List
+
 import dotenv
-from google import genai
+import google.genai.errors as genai_errors
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
-from schemas import DailyStudySchema
+from google import genai
+from pydantic import TypeAdapter
+from pydantic import ValidationError as PydValidationError
 
+from dtos.guide_request import GuideRequest
 from errors import (
     ForbiddenError,
     InternalServerError,
@@ -15,13 +20,8 @@ from errors import (
     UnauthorizedError,
     ValidationError,
 )
-from models import prompt
-import google.genai.errors as genai_errors
-
+from schemas import DailyStudySchema
 from utils import load_prompt
-from pydantic import TypeAdapter
-from pydantic import ValidationError as PydValidationError
-from typing import List
 
 dotenv.load_dotenv()
 
@@ -29,6 +29,16 @@ try:
     GEN_MODELS = os.environ.get("GEN_MODELS").split("|")
 except AttributeError as error:
     raise InternalServerError() from error
+
+MIN_TITLE_CHARS = 10
+MAX_TITLE_CHARS = 80
+MIN_TOPIC_CHARS = 10
+MAX_TOPIC_CHARS = 150
+KNOWLEDGE_STATES = ("zero", "iniciante", "intermediario")
+MIN_FOCUS_TIME = 30
+MAX_FOCUS_TIME = 480
+MIN_DAYS = 3
+MAX_DAYS = 30
 
 
 def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
@@ -123,7 +133,7 @@ def find_all_by_username(username: str, only_public: bool = False) -> list[dict]
             guides_metadata.append(
                 {
                     "id": guide.id,
-                    "title": guide.get("title"),
+                    "title": guide.get("inputs.title"),
                     "topic": guide.get("inputs.topic"),
                     "days": guide.get("inputs.days"),
                     "daily_studies": guide.get("daily_study"),
@@ -326,37 +336,67 @@ def generate_with_fallback(
     )
 
 
+def _validate_inputs(inputs: GuideRequest):
+    chars_count = len(inputs.title)
+    if not MIN_TITLE_CHARS <= chars_count <= MAX_TITLE_CHARS:
+        raise ValidationError(
+            message=f"O título do estudo precisa ter no mínimo {MIN_TITLE_CHARS} e no máximo {MAX_TITLE_CHARS} caracteres.",
+            action="Verifique o número de caracteres do título e tente novamente.",
+        )
+
+    chars_count = len(inputs.topic)
+    if not MIN_TOPIC_CHARS <= chars_count <= MAX_TOPIC_CHARS:
+        raise ValidationError(
+            message=f"O tópico de estudo precisa ter no mínimo {MIN_TOPIC_CHARS} e no máximo {MAX_TOPIC_CHARS} caracteres.",
+            action="Verifique o número de caracteres e tente novamente.",
+        )
+
+    if not MIN_FOCUS_TIME <= inputs.focus_time <= MAX_FOCUS_TIME:
+        raise ValidationError(
+            message=f"O tempo de foco precisa estar entre {MIN_FOCUS_TIME} minutos e {MAX_FOCUS_TIME}.",
+            action="Verifique se o campo 'tempo de foco' está preenchido corretamente e tente novamente.",
+        )
+
+    if not MIN_DAYS <= inputs.days <= MAX_DAYS:
+        raise ValidationError(
+            message=f"A número de dias precisa estar entre {MIN_DAYS} e {MAX_DAYS} dias.",
+            action="Verifique se o campo 'dias' está preenchido corretamente e tente novamente.",
+        )
+
+    if inputs.knowledge not in KNOWLEDGE_STATES:
+        raise ValidationError(
+            message="O conhecimento deve ser 'zero', 'iniciante' ou 'intermediário'.",
+            action="Preencha o campo 'knowledge' corretamente e tente novamente.",
+        )
+
+
 def generate_with_metadata(
     owner: str,
-    title: str,
-    inputs: dict,
-    model: str = "",
+    inputs: GuideRequest,
     is_public: bool = False,
-    temperature: float = 2.0,
 ) -> dict:
-    if not title:
-        raise ValidationError(
-            "O título não pode ser vazio.",
-            "Preencha o título do guia e tente novamente.",
-        )
+    _validate_inputs(inputs)
 
     start_time = datetime.now()
 
-    user_prompt = prompt.make(inputs)
+    prompt = f"""
+        <INPUTS>
+            <TOPIC>{inputs.topic}</TOPIC>
+            <KNOWLEDGE>{inputs.knowledge}</KNOWLEDGE>
+            <FOCUS_TIME>{inputs.focus_time} minutes</FOCUSC_TIME>
+            <DURATION_IN_DAYS>{inputs.days} days</DURATION_IN_DAYS>
+        </INPUTS>
+        """
 
-    if model:
-        daily_study = generate_with_model(user_prompt, model, temperature)
-    else:
-        daily_study, model = generate_with_fallback(user_prompt)
+    daily_study, model = generate_with_fallback(prompt)
 
     finished_time = datetime.now()
 
     return {
         "owner": owner,
-        "title": title,
-        "inputs": inputs,
+        "inputs": asdict(inputs),
         "model": model,
-        "temperature": temperature,
+        "temperature": 2.0,
         "generation_time_seconds": int((finished_time - start_time).total_seconds()),
         "daily_study": list(map(lambda study: study.model_dump(), daily_study)),
         "created_at": datetime.now(timezone.utc),

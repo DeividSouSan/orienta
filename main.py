@@ -1,29 +1,35 @@
 import os
 import sys
 import traceback
-from flask import Flask, redirect
 
-from api.v1.user import user_bp
-from api.v1.sessions import session_bp
+from flask import (
+    Flask,
+    Response,
+    jsonify,
+    make_response,
+    redirect,
+    request,
+    send_from_directory,
+)
+
 from api.v1.guides import guides_bp
+from api.v1.sessions import session_bp
+from api.v1.status import status_bp
+from api.v1.user import user_bp
 from api.v1.users import users_bp
 from api.v1.validations import validations_bp
-from api.v1.status import status_bp
-from utils import initialize_app
-
-from flask import Response, jsonify, make_response, send_from_directory, request
-
 from errors import (
+    ConflictError,
     ForbiddenError,
     InternalServerError,
     MethodNotAllowed,
     NotFoundError,
+    SchemaError,
     ServiceError,
     UnauthorizedError,
     ValidationError,
-    ConflictError,
 )
-
+from utils import initialize_app
 
 # Check environment variables and initialize firebase
 try:
@@ -78,6 +84,7 @@ def handle_api_error(error: Exception) -> Response:
     traceback.print_exc()
     if (
         isinstance(error, ValidationError)
+        or isinstance(error, SchemaError)
         or isinstance(error, ServiceError)
         or isinstance(error, UnauthorizedError)
         or isinstance(error, NotFoundError)
