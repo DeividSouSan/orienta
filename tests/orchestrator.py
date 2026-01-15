@@ -1,8 +1,11 @@
 import random
 from time import sleep
-from models import auth, guide, session, user
+
 from faker import Faker
 from firebase_admin import firestore
+
+from dtos.guide_request import GuideRequest
+from models import auth, guide, session, user
 
 fake = Faker()
 
@@ -26,14 +29,16 @@ def authenticate(email: str, password: str):
 
 def create_guide(owner: str | None = None, days: int | None = None):
     new_guide = guide.generate_with_metadata(
-        title=fake.text(20),
         owner=owner or fake.name(),
-        inputs={
-            "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
-            "knowledge": "zero",
-            "focus_time": random.choice([30, 60, 120]),
-            "days": days or random.randint(3, 30),
-        },
+        inputs=GuideRequest.from_dict(
+            {
+                "title": fake.pystr(10, 80),
+                "topic": "Eu quero estudar sobre docker. Como funciona e quais são seus principais comandos.",
+                "knowledge": "zero",
+                "focus_time": random.choice([30, 60, 120]),
+                "days": days or random.randint(3, 30),
+            }
+        ),
     )
 
     guide_from_db = guide.save(new_guide)

@@ -1,18 +1,31 @@
-# Schemas used for LLM Output Formats
+from pydantic import BaseModel, ConfigDict, Field
 
-from pydantic import BaseModel, Field, ConfigDict
+# response schemas: https://ai.google.dev/gemini-api/docs/structured-output?example=recipe
 
 
-class DailyStudySchema(BaseModel):
-    """
-    Represents the study plan for a given day,
-    with goals, research topics, practical activities, and
-    learning verification methods.
-    """
+class ValidationResult(BaseModel):
+    class VerifyDetails(BaseModel):
+        is_relevant: bool = Field(
+            description="Indica se o texto é relevante para um plano de estudos."
+        )
+        is_bad_language: bool = Field(
+            description="Indica se o texto contém linguagem ofensiva."
+        )
+        is_gibberish: bool = Field(
+            description="Indica se o texto é aleatório e sem sentido."
+        )
 
-    model_config = ConfigDict(
-        populate_by_name=True
-    )  # permite acessar as chaves pelo nome e pelo alias
+    is_valid: bool = Field(
+        description="O veredito final: true se todas as verificações passarem, senão false."
+    )
+
+    motive: str = Field(
+        description="Uma justificativa clara caso a entrada seja inválida. Se for válida, retorna 'N/A'."
+    )
+
+
+class StudyDaySchema(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
     day: int = Field(
         ...,
         description="O número do dia no plano de estudos.",
@@ -33,7 +46,7 @@ class DailyStudySchema(BaseModel):
     )
     theoretical_research: list[str] = Field(
         ...,
-        alias="O Quê Pesquisar (Teoria)",
+        alias="O Que Pesquisar (Teoria)",
         description="Lista de 2 a 3 termos ou perguntas-chave para o aluno pesquisar.",
         json_schema_extra={
             "example": "Pesquise 'Modelagem em diferentes cenários.', 'Desafios comuns na modelagem.'"

@@ -1,13 +1,16 @@
-from datetime import datetime, timezone
 import os
-from typing import Any
+from datetime import datetime, timezone
+from typing import Any, List
+
 import dotenv
-from google import genai
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
-from schemas import DailyStudySchema
+from pydantic import TypeAdapter
+from pydantic import ValidationError as PydValidationError
 
-from errors import (
+from dtos.guide_request import GuideRequest
+from dtos.guide_response import GuideResponse
+from infra.errors import (
     ForbiddenError,
     InternalServerError,
     NotFoundError,
@@ -15,13 +18,9 @@ from errors import (
     UnauthorizedError,
     ValidationError,
 )
-from models import prompt
-import google.genai.errors as genai_errors
-
-from utils import load_prompt
-from pydantic import TypeAdapter
-from pydantic import ValidationError as PydValidationError
-from typing import List
+from infra.response_schema import StudyDaySchema
+from models import ia
+from utils import load_instruction
 
 dotenv.load_dotenv()
 
@@ -41,7 +40,7 @@ def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
         )
 
     try:
-        studies_list_adapter = TypeAdapter(List[DailyStudySchema])
+        studies_list_adapter = TypeAdapter(List[StudyDaySchema])
         studies_list_adapter.validate_python(new_studies)
 
         guide_is_complete = all(study["completed"] for study in new_studies)
@@ -123,7 +122,7 @@ def find_all_by_username(username: str, only_public: bool = False) -> list[dict]
             guides_metadata.append(
                 {
                     "id": guide.id,
-                    "title": guide.get("title"),
+                    "title": guide.get("inputs.title"),
                     "topic": guide.get("inputs.topic"),
                     "days": guide.get("inputs.days"),
                     "daily_studies": guide.get("daily_study"),
@@ -250,115 +249,41 @@ def save(guide_info: dict) -> dict[str, Any]:
         ) from error
 
 
-def generate_with_model(
-    user_prompt: str,
-    model: str = "gemini-2.0-flash-lite",
-    temperature: float = 2.0,
-) -> list[DailyStudySchema]:
-    """Gera um guia de estudos a partir de um prompt."""
+def generate(
+    *,
+    owner: str,
+    inputs: GuideRequest,
+    is_public: bool = False,
+) -> dict:
+    MODELS = []
+    TEMPERATURE = 2.0
+    RESPONSE_JSON_SCHEMA = StudyDaySchema().model_json_schema()
+    SYSTEM_INSTRUCTION = load_instruction("")
 
-    client = genai.Client()
+    prompt = f"""
+        <INPUTS>
+            <TOPIC>{inputs.topic}</TOPIC>
+            <KNOWLEDGE>{inputs.knowledge}</KNOWLEDGE>
+            <FOCUS_TIME>{inputs.focus_time} minutes</FOCUSC_TIME>
+            <DURATION_IN_DAYS>{inputs.days} days</DURATION_IN_DAYS>
+        </INPUTS>"""
 
-    try:
-        system_instruction = load_prompt("generate_guide.md")
-        response = client.models.generate_content(
-            model=model,
-            contents=user_prompt,
-            config={
-                "system_instruction": system_instruction,
-                "response_mime_type": "application/json",
-                "response_schema": list[DailyStudySchema],
-                "temperature": temperature,
-            },
-        )
-
-        return response.parsed
-    except Exception as error:
-        raise ServiceError(
-            "O modelo não consegiu gerar o conteúdo, a cota foi excedida ou seu acesso o modelo negado."
-        ) from error
-
-
-def generate_with_fallback(
-    user_prompt: str,
-) -> list[DailyStudySchema]:
-    """Gera um guia de estudos a partir de um prompt usando fallback de modelos.
-
-    Args:
-        user_prompt (str): prompt do usuário com as informações do guia.
-
-    Returns:
-        Tuple[DailyStudySchema, str, Literal(2)]: Tupla com a lista com os guias de estudos diários, nome do modelo e temperatura.
-
-    """
-
-    client = genai.Client()
-
-    for model_name in GEN_MODELS:
-        try:
-            system_instruction = load_prompt("generate_guide.md")
-            response = client.models.generate_content(
-                model=model_name,
-                contents=user_prompt,
-                config={
-                    "system_instruction": system_instruction,
-                    "response_mime_type": "application/json",
-                    "response_schema": list[DailyStudySchema],
-                    "temperature": 2,
-                },
-            )
-
-            return response.parsed, model_name  # type: ignore
-
-        except genai_errors.ServerError as error:
-            if error.code == 503:
-                continue
-
-        except genai_errors.ClientError as error:
-            if error.code == 429:
-                continue
-
-        except Exception as error:
-            raise error
-
-    raise ServiceError(
-        "O modelo não consegiu gerar o conteúdo, a cota foi excedida ou seu acesso o modelo negado."
+    study_days = ia.call(
+        user_prompt=prompt,
+        config={
+            "model": MODELS,
+            "temperature": TEMPERATURE,
+            "system_instruction": SYSTEM_INSTRUCTION,
+            "response_json_schema": RESPONSE_JSON_SCHEMA,
+        },
     )
 
-
-def generate_with_metadata(
-    owner: str,
-    title: str,
-    inputs: dict,
-    model: str = "",
-    is_public: bool = False,
-    temperature: float = 2.0,
-) -> dict:
-    if not title:
-        raise ValidationError(
-            "O título não pode ser vazio.",
-            "Preencha o título do guia e tente novamente.",
-        )
-
-    start_time = datetime.now()
-
-    user_prompt = prompt.make(inputs)
-
-    if model:
-        daily_study = generate_with_model(user_prompt, model, temperature)
-    else:
-        daily_study, model = generate_with_fallback(user_prompt)
-
-    finished_time = datetime.now()
-
-    return {
-        "owner": owner,
-        "title": title,
-        "inputs": inputs,
-        "model": model,
-        "temperature": temperature,
-        "generation_time_seconds": int((finished_time - start_time).total_seconds()),
-        "daily_study": list(map(lambda study: study.model_dump(), daily_study)),
-        "created_at": datetime.now(timezone.utc),
-        "is_public": is_public,
-    }
+    return GuideResponse(
+        owner=owner,
+        inputs=inputs,
+        model=MODELS,
+        temperature=TEMPERATURE,
+        study_days=study_days,
+        create_at=datetime.now(),
+        is_public=is_public,
+    )

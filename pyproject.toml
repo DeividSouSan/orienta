@@ -39,3 +39,6 @@ version_scheme = "semver"
 version = "0.0.1"
 update_changelog_on_bump = true
 major_version_zero = true
+
+[tool.isort]
+profile = "black"

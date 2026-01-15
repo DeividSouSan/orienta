@@ -1,9 +1,10 @@
 import pytest
+
 from tests import orchestrator
 
 
 @pytest.mark.vcr
-def test_with_valid_id(auth_client):
+def test_with_valid_id(auth_client, new_user):
     new_guide = orchestrator.create_guide()
 
     response = auth_client.get(f"/api/v1/guides/{new_guide['id']}")
@@ -13,23 +14,21 @@ def test_with_valid_id(auth_client):
     assert response_body == {
         "message": "Guia recuperado com sucesso.",
         "data": {
-            "title": new_guide["title"],
-            "model": new_guide["model"],
-            "is_public": False,
-            "owner": response_body["data"]["owner"],
+            "owner": new_user["username"],
             "status": "studying",
-            "temperature": 2.0,
-            "created_at": response_body["data"][
-                "created_at"
-            ],  # ? Seria melhor usar `new_guide["created_at"]` ?
-            "generation_time_seconds": new_guide["generation_time_seconds"],
             "inputs": {
+                "title": new_guide["inputs"]["title"],
                 "topic": new_guide["inputs"]["topic"],
                 "knowledge": new_guide["inputs"]["knowledge"],
                 "focus_time": new_guide["inputs"]["focus_time"],
                 "days": new_guide["inputs"]["days"],
             },
+            "is_public": False,
             "daily_study": new_guide["daily_study"],
+            "generation_time_seconds": new_guide["generation_time_seconds"],
+            "temperature": 2.0,
+            "model": new_guide["model"],
+            "created_at": new_guide["created_at"],
         },
     }
 

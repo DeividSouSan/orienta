@@ -1,0 +1,171 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n    <INPUTS>\n        <TOPIC>Eu quero
+      entender o que s\u00e3o os workers que eu tenho que configurar, por exemplo,
+      no gunicorn.</TOPIC>\n        <KNOWLEDGE>zero</KNOWLEDGE>\n        <FOCUS_TIME>60
+      minutes</FOCUSC_TIME>\n        <DURATION_IN_DAYS>3 days</DURATION_IN_DAYS>\n    </INPUTS>\n    "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5545'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
+        \\\"Servidores Web e Processamento de Requisi\xE7\xF5es\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Entender como um servidor web lida com requisi\xE7\xF5es HTTP
+        e a necessidade de processamento simult\xE2neo.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"O que \xE9 um servidor web (e.g., Nginx, Apache)?\\\",\\n
+        \     \\\"Como funciona o modelo requisi\xE7\xE3o-resposta HTTP?\\\",\\n      \\\"Qual
+        o problema de um servidor que s\xF3 atende uma requisi\xE7\xE3o por vez (introdu\xE7\xE3o
+        \xE0 concorr\xEAncia)?\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Desenhar um diagrama simples que ilustre o fluxo de uma requisi\xE7\xE3o
+        HTTP desde o navegador do cliente at\xE9 o servidor web e o retorno da resposta.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual \xE9 a principal limita\xE7\xE3o
+        de um servidor que processa requisi\xE7\xF5es de forma puramente sequencial,
+        uma de cada vez?\\\"\\n  },\\n  {\\n    \\\"day\\\": 2,\\n    \\\"title\\\":
+        \\\"Introdu\xE7\xE3o a Servidores de Aplica\xE7\xE3o e o Gunicorn\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Compreender o papel de um servidor de aplica\xE7\xE3o
+        como o Gunicorn e a fun\xE7\xE3o essencial dos 'workers' em seu funcionamento.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Qual a diferen\xE7a
+        entre um servidor web (como Nginx) e um servidor de aplica\xE7\xE3o (como
+        Gunicorn)?\\\",\\n      \\\"O que \xE9 Gunicorn e por que ele \xE9 utilizado
+        em aplica\xE7\xF5es Python?\\\",\\n      \\\"O que s\xE3o 'workers' (processos/threads
+        de trabalho) em servidores de aplica\xE7\xE3o de forma conceitual?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Explicar em um par\xE1grafo
+        por que uma aplica\xE7\xE3o web Python tipicamente requer um servidor de aplica\xE7\xE3o
+        como o Gunicorn para lidar com o tr\xE1fego da internet, em vez de simplesmente
+        rodar o script diretamente.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Como o Gunicorn facilita a escalabilidade e o desempenho de uma aplica\xE7\xE3o
+        Python, e qual elemento dele \xE9 crucial para isso?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        3,\\n    \\\"title\\\": \\\"Gunicorn Workers: Tipos, Configura\xE7\xE3o e
+        Implica\xE7\xF5es\\\",\\n    \\\"Meta do Dia\\\": \\\"Diferenciar os tipos
+        de workers do Gunicorn e entender os fatores chave para configurar o n\xFAmero
+        ideal e a classe apropriada de workers.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"Quais s\xE3o as principais classes de workers
+        dispon\xEDveis no Gunicorn (e.g., sync, gevent, async) e suas caracter\xEDsticas?\\\",\\n
+        \     \\\"Como o par\xE2metro '--workers' impacta o consumo de recursos (CPU,
+        mem\xF3ria) e o desempenho da aplica\xE7\xE3o?\\\",\\n      \\\"Quais fatores
+        (n\xFAmero de n\xFAcleos da CPU, I/O bound vs. CPU bound, tempo de resposta)
+        devem ser considerados ao definir o n\xFAmero de workers?\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Formular um comando de exemplo
+        para iniciar o Gunicorn que especifique um n\xFAmero de workers e uma classe
+        de worker. Explique brevemente o prop\xF3sito de cada par\xE2metro no comando
+        (e.g., `gunicorn --workers=X --worker-class=Y nome_do_modulo:aplicacao`).\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Em que cen\xE1rios a escolha
+        de uma classe de worker ass\xEDncrona (como gevent ou uvicorn) pode ser mais
+        ben\xE9fica do que a classe s\xEDncrona padr\xE3o para sua aplica\xE7\xE3o?\\\"\\n
+        \ }\\n]\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n
+        \     \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\":
+        {\n    \"promptTokenCount\": 781,\n    \"candidatesTokenCount\": 784,\n    \"totalTokenCount\":
+        2841,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 781\n      }\n    ],\n    \"thoughtsTokenCount\":
+        1276\n  },\n  \"modelVersion\": \"gemini-2.5-flash\",\n  \"responseId\": \"FdxjabG5HZy-qtsPo977gA8\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 11 Jan 2026 17:21:25 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=10851
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '3675'
+    status:
+      code: 200
+      message: OK
+version: 1

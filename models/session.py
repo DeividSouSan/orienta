@@ -1,7 +1,8 @@
 from datetime import timedelta
+
 from firebase_admin import auth, exceptions
 
-from errors import UnauthorizedError, ValidationError, ServiceError
+from infra.errors import ServiceError, UnauthorizedError, ValidationError
 
 DURATION_IN_SECONDS = 14 * 24 * 60 * 60  # 14 dias
 

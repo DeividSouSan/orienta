@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, g, request
 
+from dtos.guide_request import GuideRequest
 from models import guide
 from utils import protected
 
@@ -9,27 +10,9 @@ guides_bp = Blueprint("guides", __name__)
 @guides_bp.route("/guides", methods=["POST"])
 @protected
 def create() -> Response:
-    data = request.get_json()
+    guide_request = GuideRequest.from_dict(request.get_json())
 
-    guide_info = {
-        "title": data.get("title", ""),
-        "temperature": data.get("temperature", 2.0),
-        "model": data.get("model", ""),
-        "inputs": {
-            "topic": data.get("topic", ""),
-            "knowledge": data.get("knowledge", ""),
-            "focus_time": data.get("focus_time", ""),
-            "days": data.get("days", ""),
-        },
-    }
-
-    study_guide: dict = guide.generate_with_metadata(
-        owner=g.username,
-        title=guide_info["title"],
-        inputs=guide_info["inputs"],
-        model=guide_info["model"],
-        temperature=guide_info["temperature"],
-    )
+    study_guide = guide.generate(owner=g.username, inputs=guide_request)
 
     guide.save(study_guide)
 
@@ -63,7 +46,7 @@ def get_by_id(guide_id: str) -> Response:
 @guides_bp.route("/my-guides", methods=["GET"])
 @protected
 def get_my_guides() -> Response:
-    user_guides: list[dict] = guide.find_all_by_username(g.username)
+    user_guides = guide.find_all_by_username(g.username)
 
     return {
         "message": "Guias recuperados com sucesso.",

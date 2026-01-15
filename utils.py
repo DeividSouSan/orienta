@@ -1,13 +1,14 @@
 # protected route example
-from functools import wraps
 import os
-import firebase_admin
-from firebase_admin import firestore
-from flask import request, g
+from functools import wraps
 
-from errors import UnauthorizedError
-from models import session
+import firebase_admin
 from dotenv import load_dotenv
+from firebase_admin import firestore
+from flask import g, request
+
+from infra.errors import UnauthorizedError
+from models import session
 
 load_dotenv()
 
@@ -157,7 +158,7 @@ def format_date(date):
     return f"{date.day} de {month[date.month]} de {date.year}"
 
 
-def load_prompt(file_name: str) -> str:
+def load_instruction(file_name: str) -> str:
     """Carrega um arquivo de prompt da pasta /prompts."""
 
     current = os.getcwd()
