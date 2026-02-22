@@ -1,13 +1,14 @@
 from datetime import timedelta
+
 from firebase_admin import auth, exceptions
 
-from errors import UnauthorizedError, ValidationError, ServiceError
+from errors import ServiceError, UnauthorizedError, ValidationError
 
 DURATION_IN_SECONDS = 14 * 24 * 60 * 60  # 14 dias
 
 
 def create(
-    token: str,
+    user: dict,
     duration=timedelta(seconds=DURATION_IN_SECONDS),
 ) -> str:
     """Cria um novo cookie de sessão.
@@ -24,6 +25,9 @@ def create(
         UnauthorizedError: se o ID token não for um token do Firebase válido.
         ServiceError: se ocorreu um erro com o Firebase Authentication.
     """
+
+    token = user["idToken"]
+
     if not token:
         raise ValidationError("O idToken não pode ser vazio.")
 

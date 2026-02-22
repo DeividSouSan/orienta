@@ -1,37 +1,34 @@
-from models import session
 from tests import orchestrator
 
 
-def test_create_session_with_valid_data(client):
+def test_with_valid_data(client):
     new_user = orchestrator.create_user()
 
     response = client.post(
         "/api/v1/sessions",
-        json={"email": new_user["email"], "password": "validpassword"},
+        json={
+            "email": new_user["email"],
+            "password": "validpassword",
+        },
     )
 
     assert response.status_code == 201
-
     assert "session_id" in response.headers.get("Set-Cookie")
 
     body = response.get_json()
 
     assert body == {
         "message": "Sessão criada com sucesso.",
-        "data": {
-            "userId": body["data"]["userId"],
-            "username": new_user["username"],
-            "email": new_user["email"],
-            "sessionCookie": body["data"]["sessionCookie"],
-            "sessionExpiresIn": session.DURATION_IN_SECONDS,
-        },
     }
 
 
-def test_create_session_with_wrong_email(client):
+def test_with_wrong_email(client):
     response = client.post(
         "/api/v1/sessions",
-        json={"email": "wrong.email@orienta.com", "password": "123456"},
+        json={
+            "email": "wrong.email@orienta.com",
+            "password": "123456",
+        },
     )
 
     assert response.status_code == 401
@@ -44,10 +41,18 @@ def test_create_session_with_wrong_email(client):
     }
 
 
-def test_create_session_with_wrong_password(client):
+# a partir daqui pode virar teste unitário
+
+
+def test_with_correct_email_and_wrong_password(client):
+    new_user = orchestrator.create_user()
+
     response = client.post(
         "/api/v1/sessions",
-        json={"email": "mock@orienta.com", "password": "wrong.password"},
+        json={
+            "email": new_user["email"],
+            "password": "wrong.password",
+        },
     )
 
     assert response.status_code == 401

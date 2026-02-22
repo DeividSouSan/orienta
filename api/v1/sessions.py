@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Blueprint, Response, make_response, request
 
+from dtos.session_request import SessionRequest
 from models import auth, session
 
 load_dotenv()
@@ -14,23 +15,15 @@ ENV = os.getenv("ENVIRONMENT", "development")
 
 @session_bp.route("/sessions", methods=["POST"])
 def create() -> Response:
-    data = request.get_json()
+    req = SessionRequest.from_dict(request.get_json())
 
-    authenticated_user = auth.authenticate(
-        email=data.get("email", ""), password=data.get("password", "")
-    )
+    auth_user = auth.authenticate(email=req.email, password=req.password)
 
-    # idToken é um JWT
-    session_cookie = session.create(authenticated_user["idToken"])
+    session_cookie = session.create(auth_user)
 
     response = make_response(
         {
             "message": "Sessão criada com sucesso.",
-            "data": {
-                "userId": authenticated_user["localId"],
-                "username": authenticated_user["displayName"],
-                "email": authenticated_user["email"],
-            },
         },
         201,
     )
