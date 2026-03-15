@@ -7,7 +7,6 @@ from flask import (
     Response,
     jsonify,
     make_response,
-    redirect,
     request,
     send_from_directory,
 )
@@ -38,7 +37,13 @@ except EnvironmentError:
     sys.exit(1)
 
 # App configuration
-app = Flask(__name__, static_folder="client/out", static_url_path="")
+app = Flask(
+    __name__,
+    static_folder=os.path.join(
+        os.path.dirname(__file__), "frontend", "orienta-react", "dist"
+    ),
+    static_url_path="",
+)
 app.url_map.strict_slashes = False
 
 
@@ -76,7 +81,13 @@ def handle_not_found_error(error):
         error = NotFoundError(message="Endpoint da API não encontrado.")
         return make_response(jsonify(error.toDict()), error.code)
 
-    return redirect("/")
+    index_path = os.path.join(app.static_folder, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(app.static_folder, "index.html")
+
+    app.logger.error("Frontend build ausente em: %s", index_path)
+    error = InternalServerError()
+    return make_response(jsonify(error.toDict()), error.code)
 
 
 @app.errorhandler(Exception)
