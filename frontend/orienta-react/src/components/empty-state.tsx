@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "./ui/button";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export function EmptyState({
   icon: Icon,
@@ -22,7 +22,7 @@ export function EmptyState({
         {description}
       </p>
       {ctaText && ctaHref && (
-        <Link href={ctaHref}>
+        <Link to={ctaHref}>
           <Button variant="default">{ctaText}</Button>
         </Link>
       )}

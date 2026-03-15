@@ -16,15 +16,14 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SpinnerButton } from "./ui/spinner-button";
 import { useAuth } from "@/hooks/useAuth";
 import { useMessage } from "@/hooks/useMessage";
 
 export function LoginForm({ className, ...props }) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const { addMessage } = useMessage();
@@ -34,26 +33,17 @@ export function LoginForm({ className, ...props }) {
 
     setLoading(true);
 
-    const response = await fetch("/api/v1/sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        email: event.target.email.value,
-        password: event.target.password.value,
-      }),
-    });
+    const result = await login(
+      event.target.email.value,
+      event.target.password.value,
+    );
 
-    if (response.ok) {
-      const responseBody = await response.json();
-      login(responseBody.data);
+    if (result.success) {
       addMessage({
         type: "success",
         text: "Login realizado com sucesso!",
       });
-      router.push("/dashboard");
+      navigate("/dashboard");
       return;
     } else {
       console.error("O backend não conseguiu logar o usuário.");
@@ -100,7 +90,7 @@ export function LoginForm({ className, ...props }) {
                     <Button type="submit">Entrar</Button>
                   )}
                   <FieldDescription className="text-center">
-                    Não tem uma conta? <Link href="/register">Cadastre-se</Link>
+                    Não tem uma conta? <Link to="/register">Cadastre-se</Link>
                     .
                   </FieldDescription>
                 </Field>

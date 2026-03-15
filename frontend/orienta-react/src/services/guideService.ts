@@ -17,7 +17,6 @@ import {
   GenerateGuideResponse,
   GuideForm,
   Topic,
-  TopicData,
 } from "@/schemas/guideSchema";
 
 async function createTopic(topic: Topic): Promise<void> {

@@ -2,7 +2,13 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
-export function ToastMessage({ type, message, onClose, className, ...props }) {
+export function ToastMessage({
+  type,
+  message,
+  onClose,
+  className,
+  ...props
+}: any) {
   const isSuccess = type === "success";
 
   return (
