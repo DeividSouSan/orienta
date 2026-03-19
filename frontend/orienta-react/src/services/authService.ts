@@ -47,6 +47,7 @@ async function createSession(
   }
 
   const responseBody = await response.json();
+  console.log(responseBody);
   const validatedResponse = LoginResponseSchema.parse(responseBody);
   return validatedResponse;
 }

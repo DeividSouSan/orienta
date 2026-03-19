@@ -33,16 +33,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = async (email: string, password: string): Promise<Result> => {
     setIsLoading(true);
+
     try {
       const result = await authService.createSession(email, password);
+      console.log(result);
       setCurrentUser(result.data);
       setIsAuthenticated(true);
+
       return {
         success: true,
         message: result.message,
       };
     } catch (error) {
-      let message = "Um erro interno aconteceu.";
+      let message = "Um erro não interno aconteceu.";
 
       if (error instanceof APIError) {
         message = error.message;

@@ -38,6 +38,7 @@ export default function LoginPage() {
       errorMessage(result.message);
       return;
     }
+
     successMessage(result.message);
     navigate("/dashboard");
   };
