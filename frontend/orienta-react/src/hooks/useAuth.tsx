@@ -37,7 +37,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     try {
       const result = await authService.createSession(email, password);
       console.log(result);
-      setCurrentUser(result.data);
+
+      // Fetch user data after successful session creation
+      const userData = await authService.getCurrentUser();
+      setCurrentUser(userData.data);
       setIsAuthenticated(true);
 
       return {

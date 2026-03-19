@@ -8,7 +8,6 @@ export const SessionUserDataSchema = z.object({
 
 export const LoginResponseSchema = z.object({
   message: z.string(),
-  data: SessionUserDataSchema,
 });
 
 export const LogoutResponseSchema = z.object({
