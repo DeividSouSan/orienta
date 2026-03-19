@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SpinnerButton } from "@/components/ui/spinner-button";
 import { useAuth } from "@/hooks/useAuth";
 import { useMessage } from "@/hooks/useMessage";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login, isLoading } = auth;
   const { successMessage, errorMessage } = message;
@@ -76,13 +78,30 @@ export default function LoginPage() {
                   </Field>
                   <Field className="animate-fade-in animation-delay-400">
                     <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                     <FieldDescription>Insira sua senha.</FieldDescription>
                   </Field>
                   <Field className="animate-fade-in animation-delay-600">

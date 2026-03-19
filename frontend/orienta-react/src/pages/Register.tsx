@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMessage } from "@/hooks/useMessage";
 import { useUser } from "@/hooks/useUser";
 import { z } from "zod";
+import { Eye, EyeOff } from "lucide-react";
 
 const RegisterFormSchema = z
   .object({
@@ -51,6 +52,8 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const submit = async () => {
     const result = await register(formData);
@@ -126,35 +129,73 @@ export default function RegisterPage() {
                   </Field>
                   <Field className="animate-fade-in animation-delay-400">
                     <FieldLabel htmlFor="password">Senha</FieldLabel>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Insira uma senha maior que 6 caracteres."
-                      required
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          password: e.target.value,
-                        })
-                      }
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Insira uma senha maior que 6 caracteres."
+                        required
+                        className="pr-10"
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            password: e.target.value,
+                          })
+                        }
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </Field>
                   <Field className="animate-fade-in animation-delay-400">
                     <FieldLabel htmlFor="confirm-password">
                       Confirmação de senha
                     </FieldLabel>
-                    <Input
-                      id="confirm-password"
-                      type="password"
-                      placeholder="Insira sua senha novamente."
-                      required
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          confirmPassword: e.target.value,
-                        })
-                      }
-                    />
+                    <div className="relative">
+                      <Input
+                        id="confirm-password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Insira sua senha novamente."
+                        required
+                        className="pr-10"
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            confirmPassword: e.target.value,
+                          })
+                        }
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                        aria-label={
+                          showConfirmPassword
+                            ? "Hide password"
+                            : "Show password"
+                        }
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </Field>
                   <FieldGroup>
                     <Field className="animate-fade-in animation-delay-600">
