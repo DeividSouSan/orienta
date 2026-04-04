@@ -6,10 +6,9 @@ def test_with_authenticated_user(auth_client, new_user):
     assert response_body == {
         "message": "Usuário atual recuperado com sucesso.",
         "data": {
-            "uid": response_body["data"]["uid"],
+            "userId": response_body["data"]["userId"],
             "username": new_user["username"],
             "email": new_user["email"],
-            "created_at": response_body["data"]["created_at"],
         },
     }
 

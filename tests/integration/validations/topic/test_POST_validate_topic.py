@@ -33,13 +33,6 @@ def test_validate_topic_with_valid_input(auth_client):
 
     assert response_body == {
         "message": "O tópico é válido.",
-        "data": {
-            "topic": topic,
-            "info": {
-                "is_valid": True,
-                "motive": "N/A",
-            },
-        },
     }
 
 
