@@ -17,9 +17,9 @@ def test_with_password_exactly_six_characters():
 
 
 def test_with_long_password():
-    password = Password("senhamuitolongacommuitos caracteres123!@#")
+    password = Password("senhamuitolongacommuitos_caracteres123!@#")
 
-    assert password.value == "senhamuitolongacommuitos caracteres123!@#"
+    assert password.value == "senhamuitolongacommuitos_caracteres123!@#"
 
 
 def test_with_empty_password():
@@ -77,7 +77,12 @@ def test_with_five_characters():
 
 
 def test_with_whitespace_password():
-    password = Password("abc def")
+    with pytest.raises(ValidationError) as error:
+        Password("abc def")
 
-    # Senha com espaços é aceita (validação simplificada)
-    assert password.value == "abc def"
+    assert error.value.toDict() == {
+        "name": "ValidationError",
+        "message": "A senha não pode conter espaços.",
+        "action": "Forneça uma senha sem espaços e tente novamente.",
+        "code": 400,
+    }

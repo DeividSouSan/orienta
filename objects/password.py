@@ -13,3 +13,8 @@ class Password:
                 message="A senha deve ter pelo menos 6 caracteres.",
                 action="Forneça uma senha com no mínimo 6 caracteres e tente novamente.",
             )
+        if " " in self.value:
+            raise ValidationError(
+                message="A senha não pode conter espaços.",
+                action="Forneça uma senha sem espaços e tente novamente.",
+            )
