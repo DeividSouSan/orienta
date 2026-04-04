@@ -1,7 +1,11 @@
 import os
-from dotenv import load_dotenv
+
 import requests
-from errors import UnauthorizedError, ServiceError, ValidationError
+from dotenv import load_dotenv
+
+from errors import ServiceError, UnauthorizedError
+from objects.email import Email
+from objects.password import Password
 
 load_dotenv()
 
@@ -10,13 +14,12 @@ FB_REST_API = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPas
 KNOWN_ERRORS = {"INVALID_LOGIN_CREDENTIALS", "MISSING_PASSWORD", "INVALID_EMAIL"}
 
 
-def authenticate(email: str, password: str) -> dict[str, str]:
-    if not email or not password:
-        raise ValidationError(
-            "Email ou senha inválidos.", "Verifique os dados e tente novamente."
-        )
-
-    payload = {"email": email, "password": password, "returnSecureToken": True}
+def authenticate(email: Email, password: Password) -> dict[str, str]:
+    payload = {
+        "email": email.value,
+        "password": password.value,
+        "returnSecureToken": True,
+    }
 
     try:
         response = requests.post(url=FB_REST_API, json=payload, timeout=10)

@@ -17,7 +17,7 @@ ENV = os.getenv("ENVIRONMENT", "development")
 def create() -> Response:
     req = SessionRequest.from_dict(request.get_json())
 
-    auth_user = auth.authenticate(email=req.email.value, password=req.password.value)
+    auth_user = auth.authenticate(email=req.email, password=req.password)
 
     session_cookie = session.create(auth_user)
 

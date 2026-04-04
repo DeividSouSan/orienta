@@ -6,6 +6,8 @@ from firebase_admin import firestore
 
 from dtos.guide_request import GuideRequest
 from models import auth, guide, session, user
+from objects.email import Email
+from objects.password import Password
 
 fake = Faker()
 
@@ -21,7 +23,7 @@ def create_user(username: str = None, email: str = None, password: str = None):
 
 
 def authenticate(email: str, password: str):
-    auth_user = auth.authenticate(email, password)
+    auth_user = auth.authenticate(Email(email), Password(password))
     session_cookie = session.create(auth_user)
 
     return session_cookie
