@@ -59,3 +59,17 @@ def test_with_email_ending_with_at():
 
     # Email básico permite @ no final (validação simplificada)
     assert email.value == "usuario@"
+
+
+def test_with_multiple_at_symbols():
+    email = Email("usuario@@exemplo.com")
+
+    # Email básico permite múltiplos @ (validação simplificada)
+    assert email.value == "usuario@@exemplo.com"
+
+
+def test_with_spaces_in_email():
+    email = Email("usuario @exemplo.com")
+
+    # Email básico permite espaços (validação simplificada)
+    assert email.value == "usuario @exemplo.com"

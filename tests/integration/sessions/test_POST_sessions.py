@@ -41,9 +41,6 @@ def test_with_wrong_email(client):
     }
 
 
-# a partir daqui pode virar teste unitário
-
-
 def test_with_correct_email_and_wrong_password(client):
     new_user = orchestrator.create_user()
 
@@ -65,49 +62,55 @@ def test_with_correct_email_and_wrong_password(client):
     }
 
 
-def test_create_session_without_email(client):
+def test_session_cookie_has_correct_max_age(client):
+    new_user = orchestrator.create_user()
+
     response = client.post(
         "/api/v1/sessions",
-        json={"passowrd": "123456"},
+        json={
+            "email": new_user["email"],
+            "password": "validpassword",
+        },
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 201
 
-    assert response.get_json() == {
-        "name": "ValidationError",
-        "message": "Email ou senha inválidos.",
-        "action": "Verifique os dados e tente novamente.",
-        "code": 400,
-    }
+    # Verificar que o cookie tem max_age de 14 dias (1209600 segundos)
+    set_cookie_header = response.headers.get("Set-Cookie")
+    assert "Max-Age=1209600" in set_cookie_header
 
 
-def test_create_session_without_password(client):
+def test_session_cookie_has_httponly_flag(client):
+    new_user = orchestrator.create_user()
+
     response = client.post(
         "/api/v1/sessions",
-        json={"email": "mock@orienta.com"},
+        json={
+            "email": new_user["email"],
+            "password": "validpassword",
+        },
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 201
 
-    assert response.get_json() == {
-        "name": "ValidationError",
-        "message": "Email ou senha inválidos.",
-        "action": "Verifique os dados e tente novamente.",
-        "code": 400,
-    }
+    # Verificar que o cookie tem flag HttpOnly para segurança
+    set_cookie_header = response.headers.get("Set-Cookie")
+    assert "HttpOnly" in set_cookie_header
 
 
-def test_create_session_without_data(client):
+def test_session_cookie_path_is_root(client):
+    new_user = orchestrator.create_user()
+
     response = client.post(
         "/api/v1/sessions",
-        json={},
+        json={
+            "email": new_user["email"],
+            "password": "validpassword",
+        },
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 201
 
-    assert response.get_json() == {
-        "name": "ValidationError",
-        "message": "Email ou senha inválidos.",
-        "action": "Verifique os dados e tente novamente.",
-        "code": 400,
-    }
+    # Verificar que o cookie está disponível em todo o domínio (Path=/)
+    set_cookie_header = response.headers.get("Set-Cookie")
+    assert "Path=/" in set_cookie_header

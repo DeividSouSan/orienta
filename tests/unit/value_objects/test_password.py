@@ -62,3 +62,22 @@ def test_with_password_special_characters():
     password = Password("!@#$%^&*()")
 
     assert password.value == "!@#$%^&*()"
+
+
+def test_with_five_characters():
+    with pytest.raises(ValidationError) as error:
+        Password("abcde")
+
+    assert error.value.toDict() == {
+        "name": "ValidationError",
+        "message": "A senha deve ter pelo menos 6 caracteres.",
+        "action": "Forneça uma senha com no mínimo 6 caracteres e tente novamente.",
+        "code": 400,
+    }
+
+
+def test_with_whitespace_password():
+    password = Password("abc def")
+
+    # Senha com espaços é aceita (validação simplificada)
+    assert password.value == "abc def"
