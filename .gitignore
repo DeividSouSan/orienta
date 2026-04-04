@@ -10,4 +10,7 @@ client/node_modules
 client/out
 **/.pytest_cache
 **/.ruff_cache
-.tasks
+**/.issues
+.github/skills
+.docs
+CLAUDE.md
