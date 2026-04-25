@@ -1,6 +1,9 @@
 import time
 
+import pytest
 
+
+@pytest.mark.vcr
 def test_create_user_with_valid_data(client):
     response = client.post(
         "/api/v1/users",

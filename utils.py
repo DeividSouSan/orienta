@@ -1,13 +1,14 @@
 # protected route example
-from functools import wraps
 import os
+from functools import wraps
+
 import firebase_admin
+from dotenv import load_dotenv
 from firebase_admin import firestore
-from flask import request, g
+from flask import g, request
 
 from errors import UnauthorizedError
 from models import session
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -115,6 +116,7 @@ def validate_config():
 def initialize_app():
     try:
         firebase_admin.initialize_app()
+
         db = firestore.client()
 
         if not db.collection("_internal_status").get():

@@ -1,14 +1,12 @@
-from time import sleep
-from dotenv import load_dotenv
 import pytest
-from firebase_admin.auth import ListUsersPage
+import requests
+from dotenv import load_dotenv
 from firebase_admin import auth as fireauth
 from firebase_admin import firestore
+from firebase_admin.auth import ListUsersPage
 
-import requests
-
-from tests import orchestrator
 from main import app as flask_app
+from tests import orchestrator
 
 load_dotenv()
 
@@ -31,7 +29,6 @@ def clear_firebase_auth():
             fireauth.delete_users(batch)
             print(f"  - Removidos {len(batch)} usuários.")
             batch.clear()
-            sleep(DELAY_SECONDS)
 
     if batch:
         fireauth.delete_users(batch)
@@ -64,12 +61,11 @@ def clear_users_collection():
         if len(batch) == ACCOUNTS_BATCH_SIZE:
             print(f"  - Removidos {len(batch)} usuários")
             batch.clear()
-            sleep(DELAY_SECONDS)
 
     print("✅ Limpeza concluída.")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def auth_request():
     sess = requests.Session()
 

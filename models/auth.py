@@ -10,7 +10,6 @@ from objects.password import Password
 load_dotenv()
 
 API_KEY = os.getenv("FIREBASE_API_KEY")
-FB_REST_API = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={API_KEY}"
 KNOWN_ERRORS = {"INVALID_LOGIN_CREDENTIALS", "MISSING_PASSWORD", "INVALID_EMAIL"}
 
 
@@ -22,7 +21,8 @@ def authenticate(email: Email, password: Password) -> dict[str, str]:
     }
 
     try:
-        response = requests.post(url=FB_REST_API, json=payload, timeout=10)
+        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={API_KEY}"
+        response = requests.post(url=url, json=payload, timeout=10)
         response.raise_for_status()
         return response.json()
     except requests.HTTPError as error:

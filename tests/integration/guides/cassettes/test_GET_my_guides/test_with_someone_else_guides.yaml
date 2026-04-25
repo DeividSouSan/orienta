@@ -1,0 +1,2313 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>9 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5563'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash\\nPlease retry in 28.113673757s.\",\n    \"status\":
+        \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n
+        \       \"links\": [\n          {\n            \"description\": \"Learn more
+        about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n
+        \         }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"model\": \"gemini-2.5-flash\",\n
+        \             \"location\": \"global\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"28s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:37:31 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=251
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1363'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>9 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5563'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n    {\\n        \\\"day\\\": 1,\\n
+        \       \\\"title\\\": \\\"Introdu\xE7\xE3o ao Docker\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Compreender o que \xE9 Docker, seus benef\xEDcios e a diferen\xE7a
+        entre containers e m\xE1quinas virtuais.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"O que \xE9 Docker?\\\",\\n            \\\"Benef\xEDcios
+        do uso de containers Docker\\\",\\n            \\\"Diferen\xE7a entre Docker
+        Containers e M\xE1quinas Virtuais (VMs)\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Instalar o Docker Desktop em seu sistema operacional.
+        Criar uma conta no Docker Hub.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Explique em suas pr\xF3prias palavras por que o Docker \xE9 \xFAtil para
+        o desenvolvimento de software.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        2,\\n        \\\"title\\\": \\\"Conceitos Fundamentais: Imagens e Containers\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Entender a rela\xE7\xE3o entre imagens e
+        containers e como eles s\xE3o criados e gerenciados.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o Imagens Docker?\\\",\\n
+        \           \\\"O que s\xE3o Containers Docker?\\\",\\n            \\\"Como
+        uma imagem se torna um container?\\\"\\n        ],\\n        \\\"M\xE3o na
+        Massa (Pr\xE1tica)\\\": \\\"Executar um container simples a partir de uma
+        imagem oficial (ex: nginx ou ubuntu). Listar e parar o container.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a diferen\xE7a
+        fundamental entre uma imagem Docker e um container Docker em execu\xE7\xE3o?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 3,\\n        \\\"title\\\": \\\"Comandos
+        Essenciais: Gerenciamento de Containers\\\",\\n        \\\"Meta do Dia\\\":
+        \\\"Aprender e praticar os comandos b\xE1sicos para iniciar, parar, remover
+        e inspecionar containers.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"Comando `docker run` e suas op\xE7\xF5es comuns (-d, -p,
+        --name)\\\",\\n            \\\"Comandos `docker ps`, `docker stop`, `docker
+        start`, `docker restart`, `docker rm`\\\",\\n            \\\"Comando `docker
+        logs`\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Iniciar
+        um container em modo detached, verificar se est\xE1 rodando, ver seus logs,
+        par\xE1-lo e remov\xEA-lo. Tentar remover um container em execu\xE7\xE3o e
+        observar o erro.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Descreva o fluxo para executar um container, verificar seu status, ver
+        seus logs e, finalmente, remov\xEA-lo.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        4,\\n        \\\"title\\\": \\\"Construindo Imagens: Dockerfile (Parte 1)\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Compreender a estrutura e os comandos b\xE1sicos
+        de um Dockerfile para criar imagens customizadas.\\\",\\n        \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9 um Dockerfile?\\\",\\n
+        \           \\\"Comandos `FROM`, `RUN`, `COPY`, `WORKDIR`\\\",\\n            \\\"No\xE7\xF5es
+        de camadas de imagem\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Criar um Dockerfile simples que instale um pacote em uma imagem base (ex:
+        instalar o curl em ubuntu) e construir a imagem usando `docker build`.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a fun\xE7\xE3o
+        do comando `RUN` dentro de um Dockerfile?\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        5,\\n        \\\"title\\\": \\\"Construindo Imagens: Dockerfile (Parte 2)\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Aprender a expor portas, definir o comando
+        de inicializa\xE7\xE3o e usar vari\xE1veis de ambiente em Dockerfiles.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Comandos
+        `EXPOSE`, `CMD`, `ENTRYPOINT`, `ENV`\\\",\\n            \\\"Melhores pr\xE1ticas
+        para Dockerfiles (ex: .dockerignore)\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Criar um Dockerfile para uma aplica\xE7\xE3o
+        web simples (ex: um servidor python http.server com um arquivo HTML) que exponha
+        uma porta e tenha um `CMD` definido. Construir a imagem e rodar um container,
+        acessando a aplica\xE7\xE3o.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a diferen\xE7a entre `CMD` e `ENTRYPOINT` em um Dockerfile e quando
+        usar cada um?\\\"\\n    },\\n    {\\n        \\\"day\\\": 6,\\n        \\\"title\\\":
+        \\\"Gerenciando Dados: Volumes e Bind Mounts\\\",\\n        \\\"Meta do Dia\\\":
+        \\\"Entender como persistir dados e compartilhar arquivos entre o host e os
+        containers usando volumes e bind mounts.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"O que s\xE3o Volumes Docker?\\\",\\n            \\\"O
+        que s\xE3o Bind Mounts?\\\",\\n            \\\"Diferen\xE7as e casos de uso
+        para Volumes e Bind Mounts\\\",\\n            \\\"Comando `docker volume`\\\"\\n
+        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um container
+        que grave logs em um volume persistente. Criar outro container usando bind
+        mount para montar um diret\xF3rio local com um arquivo de configura\xE7\xE3o.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Por que \xE9 importante
+        usar volumes ou bind mounts para dados que precisam ser persistidos ou compartilhados?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 7,\\n        \\\"title\\\": \\\"Redes
+        Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Compreender os diferentes tipos
+        de redes Docker e como os containers se comunicam entre si.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Redes Bridge (padr\xE3o)\\\",\\n
+        \           \\\"Redes Host\\\",\\n            \\\"Redes None\\\",\\n            \\\"Criando
+        redes customizadas (`docker network create`)\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Criar duas redes bridge customizadas. Iniciar
+        containers em redes diferentes e tentar a comunica\xE7\xE3o entre eles. Iniciar
+        containers na mesma rede e testar a comunica\xE7\xE3o.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Descreva o cen\xE1rio em que voc\xEA criaria uma rede
+        Docker customizada em vez de usar a rede bridge padr\xE3o.\\\"\\n    },\\n
+        \   {\\n        \\\"day\\\": 8,\\n        \\\"title\\\": \\\"Orquestra\xE7\xE3o
+        com Docker Compose\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender a definir
+        e executar aplica\xE7\xF5es multi-container usando Docker Compose.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9
+        Docker Compose?\\\",\\n            \\\"Estrutura do arquivo `docker-compose.yml`
+        (services, image, build, ports, volumes, networks, environment)\\\",\\n            \\\"Comandos
+        `docker-compose up`, `docker-compose down`, `docker-compose ps`\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um arquivo `docker-compose.yml`
+        para uma aplica\xE7\xE3o simples com dois servi\xE7os (ex: um frontend e um
+        backend ou um web server e um banco de dados). Usar `docker-compose up` para
+        subir a aplica\xE7\xE3o e `docker-compose down` para parar.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual problema o Docker Compose resolve que n\xE3o
+        \xE9 facilmente resolvido apenas com comandos `docker run` individuais?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 9,\\n        \\\"title\\\": \\\"Revis\xE3o
+        e Pr\xF3ximos Passos\\\",\\n        \\\"Meta do Dia\\\": \\\"Revisar os principais
+        conceitos e comandos de Docker e Docker Compose, e planejar estudos futuros.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Resumo dos
+        principais comandos Docker e Docker Compose.\\\",\\n            \\\"T\xF3picos
+        avan\xE7ados: Docker Swarm, Kubernetes, CI/CD com Docker.\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Refazer os exerc\xEDcios
+        pr\xE1ticos dos dias anteriores. Tentar modificar um dos exemplos de Docker
+        Compose para adicionar um novo servi\xE7o ou funcionalidade.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Cite pelo menos 3 comandos Docker que voc\xEA considera
+        essenciais e explique brevemente para que servem.\\\"\\n    }\\n]\\n\"\n          }\n
+        \       ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        776,\n    \"candidatesTokenCount\": 1765,\n    \"totalTokenCount\": 2541,\n
+        \   \"cachedContentTokenCount\": 533,\n    \"promptTokensDetails\": [\n      {\n
+        \       \"modality\": \"TEXT\",\n        \"tokenCount\": 776\n      }\n    ],\n
+        \   \"cacheTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 533\n      }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n
+        \ \"responseId\": \"MkLtafeyMqXnqtsP_-3bwQo\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:37:38 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=6797
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '7949'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>29 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5564'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash\\nPlease retry in 950.488081ms.\",\n    \"status\":
+        \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n
+        \       \"links\": [\n          {\n            \"description\": \"Learn more
+        about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n
+        \         }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"location\": \"global\",\n
+        \             \"model\": \"gemini-2.5-flash\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"0s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:37:59 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=953
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1361'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>29 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5564'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n    {\\n        \\\"day\\\": 1,\\n
+        \       \\\"title\\\": \\\"Introdu\xE7\xE3o ao Docker e Conceitos Fundamentais\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Compreender o que \xE9 o Docker, seus benef\xEDcios
+        e os conceitos b\xE1sicos de cont\xEAineres.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"O que \xE9 Docker?\\\",\\n            \\\"Quais
+        os benef\xEDcios do Docker?\\\",\\n            \\\"O que s\xE3o cont\xEAineres
+        vs. m\xE1quinas virtuais?\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Instalar o Docker Desktop (ou Docker Engine em Linux) e verificar a instala\xE7\xE3o
+        executando o comando 'docker version'.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Em suas pr\xF3prias palavras, explique a diferen\xE7a
+        fundamental entre um cont\xEAiner Docker e uma m\xE1quina virtual.\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 2,\\n        \\\"title\\\": \\\"Comandos
+        Essenciais do Docker: Imagens e Cont\xEAineres\\\",\\n        \\\"Meta do
+        Dia\\\": \\\"Aprender os comandos b\xE1sicos para buscar, criar e gerenciar
+        imagens e cont\xEAineres Docker.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"Comando 'docker pull'\\\",\\n            \\\"Comando 'docker
+        run'\\\",\\n            \\\"Comandos 'docker ps' e 'docker ps -a'\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Busque a imagem oficial
+        do Ubuntu, execute um cont\xEAiner e liste todos os cont\xEAineres (ativos
+        e parados).\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual
+        a finalidade do comando 'docker pull' e como ele difere do 'docker run'?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 3,\\n        \\\"title\\\": \\\"Gerenciando
+        Ciclo de Vida de Cont\xEAineres e Imagens\\\",\\n        \\\"Meta do Dia\\\":
+        \\\"Entender como parar, iniciar, remover cont\xEAineres e imagens, e a import\xE2ncia
+        de suas etapas.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Comandos
+        'docker stop', 'docker start', 'docker restart'\\\",\\n            \\\"Comandos
+        'docker rm' e 'docker rmi'\\\",\\n            \\\"O que significa o estado
+        de um cont\xEAiner?\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Inicie um cont\xEAiner, pare-o, inicie-o novamente, e ent\xE3o remova-o.
+        Remova tamb\xE9m a imagem baixada anteriormente.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual a diferen\xE7a entre remover um cont\xEAiner
+        e remover uma imagem no Docker?\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        4,\\n        \\\"title\\\": \\\"Explorando o Docker Hub\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Compreender a utilidade do Docker Hub como reposit\xF3rio
+        de imagens e como utiliz\xE1-lo.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"O que \xE9 o Docker Hub?\\\",\\n            \\\"Como pesquisar
+        e encontrar imagens no Docker Hub?\\\",\\n            \\\"O que s\xE3o imagens
+        oficiais e por que us\xE1-las?\\\"\\n        ],\\n        \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Procure por uma imagem popular (ex: `nginx`, `redis`)
+        no Docker Hub, leia sua documenta\xE7\xE3o na p\xE1gina e puxe-a para o seu
+        Docker.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Para
+        que serve o Docker Hub e qual sua rela\xE7\xE3o com o comando 'docker pull'?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 5,\\n        \\\"title\\\": \\\"Introdu\xE7\xE3o
+        ao Dockerfile\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender o conceito
+        de Dockerfile e como us\xE1-lo para criar imagens personalizadas.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9
+        um Dockerfile?\\\",\\n            \\\"Principais instru\xE7\xF5es em um Dockerfile:
+        FROM, RUN, CMD\\\",\\n            \\\"Como construir uma imagem a partir de
+        um Dockerfile?\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Crie um Dockerfile simples que utilize a imagem 'ubuntu', execute um comando
+        `RUN` para instalar um pacote (ex: `apt-get update && apt-get install -y vim`)
+        e defina um `CMD`.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a fun\xE7\xE3o do Dockerfile e por que ele \xE9 usado para automatizar
+        a cria\xE7\xE3o de imagens?\\\"\\n    },\\n    {\\n        \\\"day\\\": 6,\\n
+        \       \\\"title\\\": \\\"Construindo e Executando Imagens Dockerfile\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Praticar a constru\xE7\xE3o de imagens a
+        partir de Dockerfiles e a execu\xE7\xE3o de cont\xEAineres a partir delas.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Comando 'docker
+        build'\\\",\\n            \\\"A import\xE2ncia do '.' no comando 'docker build'\\\",\\n
+        \           \\\"Como testar o cont\xEAiner constru\xEDdo?\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Utilize o Dockerfile criado
+        no dia anterior para construir uma imagem com um nome e tag espec\xEDficos.
+        Execute um cont\xEAiner a partir dessa nova imagem.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Explique o prop\xF3sito do comando 'docker build'
+        e cite um exemplo de sua utiliza\xE7\xE3o com o caminho correto do contexto.\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 7,\\n        \\\"title\\\": \\\"Comandos
+        Avan\xE7ados em Dockerfile: COPY e WORKDIR\\\",\\n        \\\"Meta do Dia\\\":
+        \\\"Aprender a incluir arquivos na imagem e definir diret\xF3rios de trabalho
+        com Dockerfile.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Instru\xE7\xE3o
+        'COPY' em Dockerfile\\\",\\n            \\\"Instru\xE7\xE3o 'WORKDIR' em Dockerfile\\\",\\n
+        \           \\\"Quando usar 'COPY' em vez de 'RUN' para adicionar arquivos?\\\"\\n
+        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie um Dockerfile
+        que copie um arquivo de configura\xE7\xE3o local (pode ser um arquivo de texto
+        simples) para dentro do cont\xEAiner usando 'COPY' e defina o diret\xF3rio
+        de trabalho com 'WORKDIR'. Construa a imagem.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Descreva o uso das instru\xE7\xF5es 'COPY' e 'WORKDIR'
+        em um Dockerfile e explique a import\xE2ncia da ordem em que aparecem.\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 8,\\n        \\\"title\\\": \\\"Expondo
+        Portas em Cont\xEAineres Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Compreender
+        como expor e acessar portas de servi\xE7os rodando dentro de cont\xEAineres.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Op\xE7\xE3o
+        '-p' em 'docker run' (Ex: '-p 8080:80')\\\",\\n            \\\"Como o mapeamento
+        de portas funciona?\\\",\\n            \\\"Diferen\xE7a entre expor uma porta
+        (EXPOSE em Dockerfile) e publicar uma porta (-p em run).\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Execute um cont\xEAiner
+        `nginx` e mapeie a porta 80 do cont\xEAiner para a porta 8080 da sua m\xE1quina.
+        Acesse o `nginx` pelo navegador.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Explique com um exemplo o que significa a op\xE7\xE3o '-p 8080:80' ao
+        executar um cont\xEAiner Docker.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        9,\\n        \\\"title\\\": \\\"Volumes no Docker: Persist\xEAncia de Dados\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Entender o conceito de volumes para persistir
+        dados fora do ciclo de vida do cont\xEAiner.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"O que s\xE3o volumes no Docker?\\\",\\n
+        \           \\\"Como criar e usar volumes (-v)\\\",\\n            \\\"Por
+        que a persist\xEAncia de dados \xE9 importante?\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Crie um cont\xEAiner que rode um banco de dados
+        simples (ex: `postgres` ou `mysql`) e configure um volume para que os dados
+        do banco sejam salvos em um diret\xF3rio da sua m\xE1quina. Inicie e pare
+        o cont\xEAiner para verificar que os dados persistem.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual a principal vantagem de usar volumes no Docker
+        em compara\xE7\xE3o com salvar dados diretamente dentro do cont\xEAiner?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 10,\\n        \\\"title\\\": \\\"Docker
+        Compose: Orquestra\xE7\xE3o de M\xFAltiplos Cont\xEAineres\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Introdu\xE7\xE3o ao Docker Compose para gerenciar aplica\xE7\xF5es
+        com m\xFAltiplos servi\xE7os.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"O que \xE9 Docker Compose?\\\",\\n            \\\"Estrutura
+        de um arquivo `docker-compose.yml`\\\",\\n            \\\"Comandos b\xE1sicos:
+        `docker-compose up`, `docker-compose down`\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Crie um arquivo `docker-compose.yml` para um
+        cen\xE1rio simples, como um aplicativo web com um banco de dados. Defina dois
+        servi\xE7os: um para o banco de dados (ex: `redis`) e outro para a aplica\xE7\xE3o
+        web (pode ser uma imagem simples ou uma constru\xE7\xE3o local).\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Explique o prop\xF3sito do Docker Compose e cite uma
+        situa\xE7\xE3o onde ele seria mais \xFAtil do que o Docker CLI padr\xE3o.\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 11,\\n        \\\"title\\\": \\\"Trabalhando
+        com Docker Compose\\\",\\n        \\\"Meta do Dia\\\": \\\"Praticar a cria\xE7\xE3o
+        e o gerenciamento de stacks de aplica\xE7\xF5es com Docker Compose.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Definindo
+        depend\xEAncias entre servi\xE7os (`depends_on`)\\\",\\n            \\\"Configurando
+        redes e volumes no `docker-compose.yml`\\\",\\n            \\\"Comando `docker-compose
+        ps`\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Utilize
+        o `docker-compose.yml` criado no dia anterior, adicione a configura\xE7\xE3o
+        de `depends_on` para garantir que o banco de dados inicie antes da aplica\xE7\xE3o,
+        e suba os servi\xE7os usando `docker-compose up -d`. Verifique os cont\xEAineres
+        rodando.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Como
+        o Docker Compose facilita o gerenciamento de aplica\xE7\xF5es compostas por
+        m\xFAltiplos servi\xE7os interconectados?\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        12,\\n        \\\"title\\\": \\\"Redes no Docker: B\xE1sico\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Compreender como os cont\xEAineres se comunicam atrav\xE9s
+        de redes Docker.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \           \\\"Redes no Docker (bridge, host, none)\\\",\\n            \\\"Comando
+        'docker network'\\\",\\n            \\\"Como cont\xEAineres na mesma rede
+        se comunicam?\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Crie uma rede customizada, rode dois cont\xEAineres simples (ex: `alpine`
+        executando `ping`) nessa rede e observe se eles conseguem se comunicar pelo
+        nome do cont\xEAiner.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual o principal benef\xEDcio de usar redes Docker customizadas em vez
+        da rede `bridge` padr\xE3o?\\\"\\n    },\\n    {\\n        \\\"day\\\": 13,\\n
+        \       \\\"title\\\": \\\"Gerenciando M\xFAltiplas Redes Docker e `docker-compose`\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Aprender a configurar e gerenciar redes Docker
+        dentro do Docker Compose.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"Configura\xE7\xE3o de redes no `docker-compose.yml`\\\",\\n
+        \           \\\"Como a rede padr\xE3o do Compose funciona?\\\",\\n            \\\"Conectando
+        servi\xE7os a redes espec\xEDficas.\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Modifique o `docker-compose.yml` para criar
+        uma rede customizada explicitamente. Atribua seus servi\xE7os (aplica\xE7\xE3o
+        e banco de dados) a essa rede e verifique a comunica\xE7\xE3o entre eles.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Como o Docker Compose
+        gerencia automaticamente as redes e como voc\xEA pode intervir para customizar
+        essa configura\xE7\xE3o?\\\"\\n    },\\n    {\\n        \\\"day\\\": 14,\\n
+        \       \\\"title\\\": \\\"Considera\xE7\xF5es de Seguran\xE7a no Docker\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Reconhecer as melhores pr\xE1ticas b\xE1sicas
+        de seguran\xE7a ao trabalhar com Docker.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"Executar cont\xEAineres com o menor privil\xE9gio
+        poss\xEDvel.\\\",\\n            \\\"Seguran\xE7a de imagens: scan de vulnerabilidades.\\\",\\n
+        \           \\\"Evitar `USER root` em Dockerfiles.\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Pesquise ferramentas para escanear imagens
+        Docker em busca de vulnerabilidades (ex: Trivy) e simule uma imagem insegura
+        (ex: executando um servi\xE7o como root) e teste com um scanner.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Cite duas pr\xE1ticas recomendadas para aumentar a
+        seguran\xE7a de cont\xEAineres Docker.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        15,\\n        \\\"title\\\": \\\"Docker Registries: Al\xE9m do Docker Hub\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Entender o que s\xE3o registries privados
+        e como utiliz\xE1-los.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"O que s\xE3o registries de cont\xEAineres?\\\",\\n            \\\"Registries
+        privados vs. p\xFAblicos.\\\",\\n            \\\"Exemplos de registries (AWS
+        ECR, GCP Container Registry, GitLab Container Registry).\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Pesquise como funciona o
+        login em um registry Docker diferente do Docker Hub (se tiver acesso a um,
+        tente o login). Tente fazer um `docker pull` de uma imagem que voc\xEA n\xE3o
+        tenha localmente, mas que exista em um registry p\xFAblico conhecido.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Quando seria vantajoso
+        utilizar um registry privado em vez do Docker Hub?\\\"\\n    },\\n    {\\n
+        \       \\\"day\\\": 16,\\n        \\\"title\\\": \\\"T\xF3picos Espec\xEDficos:
+        Dockerfile - ADD vs COPY\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprofundar
+        o conhecimento sobre as diferen\xE7as e usos corretos de ADD e COPY.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Diferen\xE7as
+        detalhadas entre ADD e COPY.\\\",\\n            \\\"Usos espec\xEDficos de
+        ADD (ex: descompactar arquivos TAR).\\\",\\n            \\\"Quando `COPY`
+        \xE9 sempre prefer\xEDvel?\\\"\\n        ],\\n        \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Crie um pequeno arquivo de teste e um arquivo .tar.gz
+        contendo ele. Crie dois Dockerfiles: um usando `ADD` para descompactar o .tar.gz
+        e outro usando `COPY` para copiar um arquivo simples. Compare o resultado.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Explique a principal
+        diferen\xE7a entre as instru\xE7\xF5es `ADD` e `COPY` em um Dockerfile.\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 17,\\n        \\\"title\\\": \\\"T\xF3picos
+        Espec\xEDficos: Dockerfile - ENV, ARG e HEALTHCHECK\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Entender como gerenciar vari\xE1veis de ambiente, argumentos
+        e health checks.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \           \\\"Instru\xE7\xE3o 'ENV'.\\\",\\n            \\\"Instru\xE7\xE3o
+        'ARG'.\\\",\\n            \\\"Instru\xE7\xE3o 'HEALTHCHECK'.\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Crie um Dockerfile que use
+        `ENV` para definir uma vari\xE1vel de ambiente, `ARG` para passar um valor
+        durante o build, e `HEALTHCHECK` para monitorar se um servi\xE7o est\xE1 rodando
+        (simule um servi\xE7o que pode falhar). Construa a imagem e rode um cont\xEAiner.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a diferen\xE7a
+        entre `ENV` e `ARG` e em que contexto cada um \xE9 usado?\\\"\\n    },\\n
+        \   {\\n        \\\"day\\\": 18,\\n        \\\"title\\\": \\\"Gerenciando
+        Logs de Cont\xEAineres Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender
+        a coletar e gerenciar logs gerados pelos cont\xEAineres.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Comando 'docker logs'.\\\",\\n
+        \           \\\"Como os logs s\xE3o armazenados?\\\",\\n            \\\"Estrat\xE9gias
+        de gerenciamento de logs em produ\xE7\xE3o.\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Execute um cont\xEAiner que escreve logs em
+        intervalos (pode ser um script simples). Use 'docker logs' para visualiz\xE1-los,
+        e explore as op\xE7\xF5es de follow (`-f`) e timestamps (`--timestamps`).\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Como voc\xEA acessaria
+        os logs de um cont\xEAiner Docker que est\xE1 rodando em segundo plano e quais
+        op\xE7\xF5es o comando `docker logs` oferece para facilitar a visualiza\xE7\xE3o?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 19,\\n        \\\"title\\\": \\\"Comandos
+        \xDAteis: Docker Stats e Top\\\",\\n        \\\"Meta do Dia\\\": \\\"Monitorar
+        o uso de recursos (CPU, mem\xF3ria) dos cont\xEAineres.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Comando 'docker stats'.\\\",\\n
+        \           \\\"Comando 'docker top'.\\\",\\n            \\\"Interpreta\xE7\xE3o
+        das m\xE9tricas de 'docker stats'.\\\"\\n        ],\\n        \\\"M\xE3o na
+        Massa (Pr\xE1tica)\\\": \\\"Execute alguns cont\xEAineres que consomem recursos
+        (ex: `busybox` rodando um loop que faz alguma opera\xE7\xE3o simples). Use
+        `docker stats` para observar o consumo em tempo real. Compare com os processos
+        rodando dentro de um cont\xEAiner usando `docker top`.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Para que serve o comando `docker stats` e quais informa\xE7\xF5es
+        ele fornece sobre os cont\xEAineres em execu\xE7\xE3o?\\\"\\n    },\\n    {\\n
+        \       \\\"day\\\": 20,\\n        \\\"title\\\": \\\"T\xF3picos Avan\xE7ados:
+        Docker-in-Docker (DooD)\\\",\\n        \\\"Meta do Dia\\\": \\\"Compreender
+        o conceito e as implica\xE7\xF5es de rodar Docker dentro de um cont\xEAiner
+        Docker.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O
+        que \xE9 Docker-in-Docker (DinD)?\\\",\\n            \\\"Quando (e se) usar
+        DinD?\\\",\\n            \\\"Alternativas como Docker-out-of-Docker (DooD).\\\"\\n
+        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Pesquise sobre
+        um exemplo pr\xE1tico de uso para Docker-in-Docker (ex: em CI/CD). Se poss\xEDvel,
+        execute um cont\xEAiner DinD e tente rodar comandos Docker b\xE1sicos dentro
+        dele (pode ser em um ambiente de teste controlado).\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Explique o conceito de Docker-in-Docker (DinD) e um
+        dos desafios ou motivos para se evitar o seu uso.\\\"\\n    },\\n    {\\n
+        \       \\\"day\\\": 21,\\n        \\\"title\\\": \\\"Melhores Pr\xE1ticas
+        para Dockerfiles\\\",\\n        \\\"Meta do Dia\\\": \\\"Consolidar o aprendizado
+        com as melhores pr\xE1ticas para a escrita de Dockerfiles eficientes.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Minimizar
+        o n\xFAmero de camadas.\\\",\\n            \\\"Usar imagens base menores (alpine).\\\",\\n
+        \           \\\"Limpar caches e arquivos desnecess\xE1rios.\\\",\\n            \\\"Organiza\xE7\xE3o
+        das instru\xE7\xF5es.\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Pegue um Dockerfile simples que voc\xEA criou antes e refatore-o para
+        seguir as melhores pr\xE1ticas aprendidas. Crie uma imagem a partir da vers\xE3o
+        otimizada e compare o tamanho dela com a original.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Liste tr\xEAs das principais melhores pr\xE1ticas
+        ao escrever um Dockerfile.\\\"\\n    },\\n    {\\n        \\\"day\\\": 22,\\n
+        \       \\\"title\\\": \\\"T\xF3picos Avan\xE7ados: BuildKit\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Explorar as novas funcionalidades e otimiza\xE7\xF5es do BuildKit
+        para builds Docker.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \           \\\"O que \xE9 o BuildKit?\\\",\\n            \\\"Benef\xEDcios
+        em rela\xE7\xE3o ao builder cl\xE1ssico.\\\",\\n            \\\"Cache inteligente
+        e parallelismo em builds.\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Pesquise como habilitar o BuildKit (pode ser via vari\xE1vel de ambiente
+        `DOCKER_BUILDKIT=1`). Compare o tempo de build de uma imagem com e sem BuildKit,
+        especialmente em cen\xE1rios com cache e m\xFAltiplas etapas.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Cite um benef\xEDcio do BuildKit em compara\xE7\xE3o
+        com o sistema de build Docker tradicional.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        23,\\n        \\\"title\\\": \\\"Conceitos de Orquestra\xE7\xE3o: Introdu\xE7\xE3o
+        a Kubernetes e Swarm\\\",\\n        \\\"Meta do Dia\\\": \\\"Entender o que
+        s\xE3o orquestradores de cont\xEAineres e suas fun\xE7\xF5es.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9 orquestra\xE7\xE3o
+        de cont\xEAineres?\\\",\\n            \\\"Principais funcionalidades (escalabilidade,
+        auto-healing, descoberta de servi\xE7o).\\\",\\n            \\\"Breve introdu\xE7\xE3o
+        ao Docker Swarm e Kubernetes.\\\"\\n        ],\\n        \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Pesquise os casos de uso e as principais diferen\xE7as
+        conceituais entre Docker Swarm e Kubernetes.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Para que servem ferramentas de orquestra\xE7\xE3o
+        de cont\xEAineres como Kubernetes e Docker Swarm?\\\"\\n    },\\n    {\\n
+        \       \\\"day\\\": 24,\\n        \\\"title\\\": \\\"Imagens Multi-Arquitetura\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Aprender como criar imagens Docker que rodam
+        em diferentes arquiteturas de processador (amd64, arm64).\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o imagens multi-arquitetura?\\\",\\n
+        \           \\\"Ferramentas como `docker buildx`.\\\",\\n            \\\"Import\xE2ncia
+        para compatibilidade de hardware.\\\"\\n        ],\\n        \\\"M\xE3o na
+        Massa (Pr\xE1tica)\\\": \\\"Pesquise como configurar o `docker buildx` para
+        construir uma imagem para uma arquitetura diferente da sua m\xE1quina (ex:
+        compilar para ARM64 se voc\xEA estiver em x86_64). Se poss\xEDvel, tente rodar
+        uma imagem multi-arch.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual problema as imagens Docker multi-arquitetura buscam resolver e como
+        ferramentas como `docker buildx` auxiliam nesse processo?\\\"\\n    },\\n
+        \   {\\n        \\\"day\\\": 25,\\n        \\\"title\\\": \\\"An\xE1lise de
+        Um Dockerfile de Exemplo Complexo\\\",\\n        \\\"Meta do Dia\\\": \\\"Praticar
+        a an\xE1lise de um Dockerfile real, entendendo suas otimiza\xE7\xF5es e funcionalidade.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Encontre
+        um Dockerfile de um projeto open source conhecido (ex: Node.js, Python, Java).\\\",\\n
+        \           \\\"Analise as instru\xE7\xF5es: base image, COPY, RUN, ENV, CMD,
+        WORKDIR, etc.\\\",\\n            \\\"Tente identificar as otimiza\xE7\xF5es
+        (ex: ordem das instru\xE7\xF5es, multi-stage builds).\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Escolha um projeto open
+        source popular, encontre seu Dockerfile e construa a imagem. Anote suas observa\xE7\xF5es
+        sobre as escolhas feitas no Dockerfile.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Ao analisar um Dockerfile complexo, que ind\xEDcios
+        voc\xEA procura para determinar se ele foi otimizado para tamanho ou velocidade
+        de build?\\\"\\n    },\\n    {\\n        \\\"day\\\": 26,\\n        \\\"title\\\":
+        \\\"Debugando Cont\xEAineres Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender
+        t\xE9cnicas para identificar e resolver problemas em cont\xEAineres Docker.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Usando 'docker
+        logs' e 'docker events'.\\\",\\n            \\\"Entrando em um cont\xEAiner
+        em execu\xE7\xE3o ('docker exec').\\\",\\n            \\\"An\xE1lise de erros
+        comuns no build e run.\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Intencionalmente crie um Dockerfile com um erro que impe\xE7a o build
+        (ex: comando inexistente). Corrija-o. Em seguida, rode um cont\xEAiner com
+        um erro no script de inicializa\xE7\xE3o (ex: loop infinito ou erro de sintaxe)
+        e use 'docker exec' para investigar o problema dentro do cont\xEAiner.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Quais comandos do Docker
+        s\xE3o essenciais para investigar e diagnosticar problemas em cont\xEAineres
+        em execu\xE7\xE3o?\\\"\\n    },\\n    {\\n        \\\"day\\\": 27,\\n        \\\"title\\\":
+        \\\"Docker Compose: Servi\xE7os `build` e `image`\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Entender a diferen\xE7a entre usar uma imagem preexistente
+        e construir uma imagem localmente em `docker-compose.yml`.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Se\xE7\xE3o `image:` em
+        `docker-compose.yml`.\\\",\\n            \\\"Se\xE7\xE3o `build:` em `docker-compose.yml`.\\\",\\n
+        \           \\\"Contexto do build e Dockerfile especificados em `build:`.\\\"\\n
+        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Modifique o
+        `docker-compose.yml` para que um dos seus servi\xE7os use a instru\xE7\xE3o
+        `build` para construir a imagem a partir de um Dockerfile local (voc\xEA pode
+        criar um Dockerfile simples para este exerc\xEDcio), em vez de apenas referenciar
+        uma imagem do Docker Hub.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Explique quando voc\xEA usaria a chave `build` em vez da chave `image`
+        ao definir um servi\xE7o no `docker-compose.yml`.\\\"\\n    },\\n    {\\n
+        \       \\\"day\\\": 28,\\n        \\\"title\\\": \\\"Introdu\xE7\xE3o ao
+        Docker Scan\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender a verificar imagens
+        em busca de vulnerabilidades conhecidas.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"Comando 'docker scan'.\\\",\\n            \\\"Integra\xE7\xE3o
+        com Snyk (ou outra ferramenta de seguran\xE7a).\\\",\\n            \\\"Interpreta\xE7\xE3o
+        dos resultados do scan.\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Utilize o comando `docker scan` em uma imagem popular (ex: `ubuntu`) e
+        analise os relat\xF3rios de vulnerabilidade apresentados. Tente entender o
+        impacto de alguma das vulnerabilidades encontradas.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual a utilidade do comando `docker scan` e como ele
+        ajuda na seguran\xE7a de aplica\xE7\xF5es containerizadas?\\\"\\n    },\\n
+        \   {\\n        \\\"day\\\": 29,\\n        \\\"title\\\": \\\"Revis\xE3o e
+        Projeto Integrador\\\",\\n        \\\"Meta do Dia\\\": \\\"Revisar todos os
+        conceitos e aplicar o conhecimento em um pequeno projeto.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Revisitar notas dos dias
+        anteriores.\\\",\\n            \\\"Escolher um pequeno projeto para containerizar
+        (ex: um site est\xE1tico, um pequeno script Python com Flask, etc.).\\\"\\n
+        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Desenvolva
+        um Dockerfile e um `docker-compose.yml` para rodar seu projeto. Garanta que
+        ele funcione corretamente usando os comandos aprendidos (build, up, logs,
+        exec, etc.).\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Reflita
+        sobre os principais desafios que voc\xEA enfrentou durante este plano de estudos
+        e como voc\xEA os superou. Qual foi o conceito mais \xFAtil que voc\xEA aprendeu?\\\"\\n
+        \   }\\n]\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n
+        \     \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\":
+        {\n    \"promptTokenCount\": 777,\n    \"candidatesTokenCount\": 6118,\n    \"totalTokenCount\":
+        6895,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 777\n      }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n
+        \ \"responseId\": \"XELtacCSDd-tz7IPioy2yAo\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:38:20 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=21020
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '24988'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>9 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5563'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash\\nPlease retry in 28.113673757s.\",\n    \"status\":
+        \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n
+        \       \"links\": [\n          {\n            \"description\": \"Learn more
+        about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n
+        \         }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"model\": \"gemini-2.5-flash\",\n
+        \             \"location\": \"global\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"28s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:37:31 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=251
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1363'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>9 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5563'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n    {\\n        \\\"day\\\": 1,\\n
+        \       \\\"title\\\": \\\"Introdu\xE7\xE3o ao Docker\\\",\\n        \\\"Meta
+        do Dia\\\": \\\"Compreender o que \xE9 Docker, seus benef\xEDcios e a diferen\xE7a
+        entre containers e m\xE1quinas virtuais.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"O que \xE9 Docker?\\\",\\n            \\\"Benef\xEDcios
+        do uso de containers Docker\\\",\\n            \\\"Diferen\xE7a entre Docker
+        Containers e M\xE1quinas Virtuais (VMs)\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Instalar o Docker Desktop em seu sistema operacional.
+        Criar uma conta no Docker Hub.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Explique em suas pr\xF3prias palavras por que o Docker \xE9 \xFAtil para
+        o desenvolvimento de software.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        2,\\n        \\\"title\\\": \\\"Conceitos Fundamentais: Imagens e Containers\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Entender a rela\xE7\xE3o entre imagens e
+        containers e como eles s\xE3o criados e gerenciados.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que s\xE3o Imagens Docker?\\\",\\n
+        \           \\\"O que s\xE3o Containers Docker?\\\",\\n            \\\"Como
+        uma imagem se torna um container?\\\"\\n        ],\\n        \\\"M\xE3o na
+        Massa (Pr\xE1tica)\\\": \\\"Executar um container simples a partir de uma
+        imagem oficial (ex: nginx ou ubuntu). Listar e parar o container.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a diferen\xE7a
+        fundamental entre uma imagem Docker e um container Docker em execu\xE7\xE3o?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 3,\\n        \\\"title\\\": \\\"Comandos
+        Essenciais: Gerenciamento de Containers\\\",\\n        \\\"Meta do Dia\\\":
+        \\\"Aprender e praticar os comandos b\xE1sicos para iniciar, parar, remover
+        e inspecionar containers.\\\",\\n        \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n            \\\"Comando `docker run` e suas op\xE7\xF5es comuns (-d, -p,
+        --name)\\\",\\n            \\\"Comandos `docker ps`, `docker stop`, `docker
+        start`, `docker restart`, `docker rm`\\\",\\n            \\\"Comando `docker
+        logs`\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Iniciar
+        um container em modo detached, verificar se est\xE1 rodando, ver seus logs,
+        par\xE1-lo e remov\xEA-lo. Tentar remover um container em execu\xE7\xE3o e
+        observar o erro.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Descreva o fluxo para executar um container, verificar seu status, ver
+        seus logs e, finalmente, remov\xEA-lo.\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        4,\\n        \\\"title\\\": \\\"Construindo Imagens: Dockerfile (Parte 1)\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Compreender a estrutura e os comandos b\xE1sicos
+        de um Dockerfile para criar imagens customizadas.\\\",\\n        \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9 um Dockerfile?\\\",\\n
+        \           \\\"Comandos `FROM`, `RUN`, `COPY`, `WORKDIR`\\\",\\n            \\\"No\xE7\xF5es
+        de camadas de imagem\\\"\\n        ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Criar um Dockerfile simples que instale um pacote em uma imagem base (ex:
+        instalar o curl em ubuntu) e construir a imagem usando `docker build`.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a fun\xE7\xE3o
+        do comando `RUN` dentro de um Dockerfile?\\\"\\n    },\\n    {\\n        \\\"day\\\":
+        5,\\n        \\\"title\\\": \\\"Construindo Imagens: Dockerfile (Parte 2)\\\",\\n
+        \       \\\"Meta do Dia\\\": \\\"Aprender a expor portas, definir o comando
+        de inicializa\xE7\xE3o e usar vari\xE1veis de ambiente em Dockerfiles.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Comandos
+        `EXPOSE`, `CMD`, `ENTRYPOINT`, `ENV`\\\",\\n            \\\"Melhores pr\xE1ticas
+        para Dockerfiles (ex: .dockerignore)\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Criar um Dockerfile para uma aplica\xE7\xE3o
+        web simples (ex: um servidor python http.server com um arquivo HTML) que exponha
+        uma porta e tenha um `CMD` definido. Construir a imagem e rodar um container,
+        acessando a aplica\xE7\xE3o.\\\",\\n        \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a diferen\xE7a entre `CMD` e `ENTRYPOINT` em um Dockerfile e quando
+        usar cada um?\\\"\\n    },\\n    {\\n        \\\"day\\\": 6,\\n        \\\"title\\\":
+        \\\"Gerenciando Dados: Volumes e Bind Mounts\\\",\\n        \\\"Meta do Dia\\\":
+        \\\"Entender como persistir dados e compartilhar arquivos entre o host e os
+        containers usando volumes e bind mounts.\\\",\\n        \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n            \\\"O que s\xE3o Volumes Docker?\\\",\\n            \\\"O
+        que s\xE3o Bind Mounts?\\\",\\n            \\\"Diferen\xE7as e casos de uso
+        para Volumes e Bind Mounts\\\",\\n            \\\"Comando `docker volume`\\\"\\n
+        \       ],\\n        \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um container
+        que grave logs em um volume persistente. Criar outro container usando bind
+        mount para montar um diret\xF3rio local com um arquivo de configura\xE7\xE3o.\\\",\\n
+        \       \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Por que \xE9 importante
+        usar volumes ou bind mounts para dados que precisam ser persistidos ou compartilhados?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 7,\\n        \\\"title\\\": \\\"Redes
+        Docker\\\",\\n        \\\"Meta do Dia\\\": \\\"Compreender os diferentes tipos
+        de redes Docker e como os containers se comunicam entre si.\\\",\\n        \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Redes Bridge (padr\xE3o)\\\",\\n
+        \           \\\"Redes Host\\\",\\n            \\\"Redes None\\\",\\n            \\\"Criando
+        redes customizadas (`docker network create`)\\\"\\n        ],\\n        \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Criar duas redes bridge customizadas. Iniciar
+        containers em redes diferentes e tentar a comunica\xE7\xE3o entre eles. Iniciar
+        containers na mesma rede e testar a comunica\xE7\xE3o.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Descreva o cen\xE1rio em que voc\xEA criaria uma rede
+        Docker customizada em vez de usar a rede bridge padr\xE3o.\\\"\\n    },\\n
+        \   {\\n        \\\"day\\\": 8,\\n        \\\"title\\\": \\\"Orquestra\xE7\xE3o
+        com Docker Compose\\\",\\n        \\\"Meta do Dia\\\": \\\"Aprender a definir
+        e executar aplica\xE7\xF5es multi-container usando Docker Compose.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"O que \xE9
+        Docker Compose?\\\",\\n            \\\"Estrutura do arquivo `docker-compose.yml`
+        (services, image, build, ports, volumes, networks, environment)\\\",\\n            \\\"Comandos
+        `docker-compose up`, `docker-compose down`, `docker-compose ps`\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um arquivo `docker-compose.yml`
+        para uma aplica\xE7\xE3o simples com dois servi\xE7os (ex: um frontend e um
+        backend ou um web server e um banco de dados). Usar `docker-compose up` para
+        subir a aplica\xE7\xE3o e `docker-compose down` para parar.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual problema o Docker Compose resolve que n\xE3o
+        \xE9 facilmente resolvido apenas com comandos `docker run` individuais?\\\"\\n
+        \   },\\n    {\\n        \\\"day\\\": 9,\\n        \\\"title\\\": \\\"Revis\xE3o
+        e Pr\xF3ximos Passos\\\",\\n        \\\"Meta do Dia\\\": \\\"Revisar os principais
+        conceitos e comandos de Docker e Docker Compose, e planejar estudos futuros.\\\",\\n
+        \       \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n            \\\"Resumo dos
+        principais comandos Docker e Docker Compose.\\\",\\n            \\\"T\xF3picos
+        avan\xE7ados: Docker Swarm, Kubernetes, CI/CD com Docker.\\\"\\n        ],\\n
+        \       \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Refazer os exerc\xEDcios
+        pr\xE1ticos dos dias anteriores. Tentar modificar um dos exemplos de Docker
+        Compose para adicionar um novo servi\xE7o ou funcionalidade.\\\",\\n        \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Cite pelo menos 3 comandos Docker que voc\xEA considera
+        essenciais e explique brevemente para que servem.\\\"\\n    }\\n]\\n\"\n          }\n
+        \       ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        776,\n    \"candidatesTokenCount\": 1765,\n    \"totalTokenCount\": 2541,\n
+        \   \"cachedContentTokenCount\": 533,\n    \"promptTokensDetails\": [\n      {\n
+        \       \"modality\": \"TEXT\",\n        \"tokenCount\": 776\n      }\n    ],\n
+        \   \"cacheTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 533\n      }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.5-flash-lite\",\n
+        \ \"responseId\": \"MkLtafeyMqXnqtsP_-3bwQo\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:37:38 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=6797
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '7949'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>11 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5564'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash\\nPlease retry in 34.982390088s.\",\n    \"status\":
+        \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n
+        \       \"links\": [\n          {\n            \"description\": \"Learn more
+        about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n
+        \         }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"location\": \"global\",\n
+        \             \"model\": \"gemini-2.5-flash\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"34s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:40:25 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=248
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1363'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>11 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5564'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash-lite\\nPlease retry in 34.6314361s.\",\n
+        \   \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\":
+        \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n
+        \           \"description\": \"Learn more about Gemini API quotas\",\n            \"url\":
+        \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n
+        \     },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"location\": \"global\",\n
+        \             \"model\": \"gemini-2.5-flash-lite\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"34s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:40:25 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=192
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1371'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>120
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>11 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5564'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
+        \\\"Fundamentos e Conceitos Iniciais\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
+        o que \xE9 o Docker e como ele se diferencia de m\xE1quinas virtuais.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que s\xE3o containers?\\\",\\n
+        \     \\\"Diferen\xE7a entre Virtualiza\xE7\xE3o x Containeriza\xE7\xE3o\\\",\\n
+        \     \\\"Hist\xF3ria do Docker e o projeto Moby\\\"\\n    ],\\n    \\\"M\xE3o
+        na Massa (Pr\xE1tica)\\\": \\\"Instalar o Docker Desktop ou Docker Engine
+        em sua m\xE1quina e validar a instala\xE7\xE3o com o comando docker --version.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Por que um container inicia
+        mais r\xE1pido do que uma m\xE1quina virtual?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        2,\\n    \\\"title\\\": \\\"Arquitetura do Docker\\\",\\n    \\\"Meta do Dia\\\":
+        \\\"Entender as pe\xE7as que comp\xF5em o ecossistema Docker.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 o Docker Client, Docker
+        Host e Docker Daemon?\\\",\\n      \\\"O papel das Images e Containers no
+        ecossistema\\\",\\n      \\\"O que \xE9 o Docker Registry (Docker Hub)?\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Executar o comando
+        'docker run hello-world' e analisar as etapas descritas na sa\xEDda do terminal.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a responsabilidade
+        do Docker Daemon na cria\xE7\xE3o de um container?\\\"\\n  },\\n  {\\n    \\\"day\\\":
+        3,\\n    \\\"title\\\": \\\"Manipula\xE7\xE3o B\xE1sica de Containers\\\",\\n
+        \   \\\"Meta do Dia\\\": \\\"Aprender os comandos essenciais para gerenciar
+        o ciclo de vida de um container.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Como funcionam os comandos: docker run, docker ps, docker stop
+        e docker start\\\",\\n      \\\"Diferen\xE7a entre containers rodando em foreground
+        e background (detached)\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Subir um container Nginx em modo background, verificar se ele est\xE1
+        rodando e par\xE1-lo via terminal.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual comando voc\xEA usaria para listar todos os containers, inclusive
+        os que foram interrompidos?\\\"\\n  },\\n  {\\n    \\\"day\\\": 4,\\n    \\\"title\\\":
+        \\\"Explora\xE7\xE3o e Interatividade\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender
+        a interagir com containers em execu\xE7\xE3o e extrair informa\xE7\xF5es.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Uso das flags -it (interactive
+        terminal)\\\",\\n      \\\"Como usar o docker exec para entrar em containers\\\",\\n
+        \     \\\"Diferen\xE7a entre docker logs e docker inspect\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Rodar um container Ubuntu, acess\xE1-lo
+        via terminal iterativo, criar um arquivo dentro dele e sair sem deletar o
+        container.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual a
+        diferen\xE7a entre usar 'docker run' e 'docker exec' em rela\xE7\xE3o ao ciclo
+        de vida do container?\\\"\\n  },\\n  {\\n    \\\"day\\\": 5,\\n    \\\"title\\\":
+        \\\"Gest\xE3o de Imagens\\\",\\n    \\\"Meta do Dia\\\": \\\"Dominar a busca,
+        download e limpeza de imagens.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\":
+        [\\n      \\\"Como pesquisar imagens no Docker Hub via terminal\\\",\\n      \\\"Comandos
+        docker pull, docker images e docker rmi\\\",\\n      \\\"O conceito de tags
+        em imagens Docker\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Baixar 3 vers\xF5es diferentes de imagens (ex: Alpine, Redis e Python),
+        listar o tamanho delas e remover uma imagem espec\xEDfica.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"O que acontece se voc\xEA tentar baixar uma imagem
+        sem especificar a tag?\\\"\\n  },\\n  {\\n    \\\"day\\\": 6,\\n    \\\"title\\\":
+        \\\"Cria\xE7\xE3o de Imagens (Dockerfile - Parte 1)\\\",\\n    \\\"Meta do
+        Dia\\\": \\\"Entender como construir suas pr\xF3prias imagens de forma automatizada.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 um Dockerfile?\\\",\\n
+        \     \\\"Instru\xE7\xF5es b\xE1sicas: FROM, RUN, CMD e ENTRYPOINT\\\",\\n
+        \     \\\"Como o Docker utiliza camadas (layers) e cache na constru\xE7\xE3o\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um Dockerfile
+        que utilize uma imagem base leve e instale o utilit\xE1rio 'curl' ou 'vim'
+        via gerenciador de pacotes.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual a diferen\xE7a de comportamento entre as instru\xE7\xF5es CMD e ENTRYPOINT?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 7,\\n    \\\"title\\\": \\\"Personaliza\xE7\xE3o
+        de Imagens (Dockerfile - Parte 2)\\\",\\n    \\\"Meta do Dia\\\": \\\"Avan\xE7ar
+        na configura\xE7\xE3o de ambientes personalizados com Dockerfile.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Instru\xE7\xF5es: COPY
+        vs ADD, WORKDIR, EXPOSE e ENV\\\",\\n      \\\"Boas pr\xE1ticas para reduzir
+        o tamanho da imagem\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Criar um Dockerfile para uma aplica\xE7\xE3o est\xE1tica (HTML simples)
+        usando Apache ou Nginx, copiando arquivos locais para o container e definindo
+        a porta.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Por que
+        \xE9 recomendado definir o WORKDIR em vez de usar m\xFAltiplos comandos 'cd'
+        no RUN?\\\"\\n  },\\n  {\\n    \\\"day\\\": 8,\\n    \\\"title\\\": \\\"Persist\xEAncia
+        de Dados (Volumes e Bind Mounts)\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
+        como manter os dados salvos ap\xF3s a exclus\xE3o do container.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Diferen\xE7a entre Docker Volumes
+        e Bind Mounts\\\",\\n      \\\"Comandos docker volume create e docker volume
+        inspect\\\",\\n      \\\"Natureza ef\xEAmera dos containers\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Rodar um container de banco
+        de dados (ex: MySQL ou Postgres) mapeando um volume local para garantir que
+        os dados n\xE3o se percam ao deletar o container.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Onde o Docker armazena fisicamente um volume criado
+        pelo comando 'docker volume create'?\\\"\\n  },\\n  {\\n    \\\"day\\\": 9,\\n
+        \   \\\"title\\\": \\\"Redes no Docker (Networking)\\\",\\n    \\\"Meta do
+        Dia\\\": \\\"Aprender como os containers se comunicam entre si e com o mundo
+        externo.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Tipos
+        de rede (Drivers): bridge, host e none\\\",\\n      \\\"Resolu\xE7\xE3o de
+        nomes via DNS interno do Docker\\\",\\n      \\\"Exposi\xE7\xE3o de portas
+        (-p ou --publish)\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\":
+        \\\"Criar uma rede do tipo bridge personalizada, conectar dois containers
+        a ela e realizar um teste de 'ping' de um para o outro usando o nome do container.\\\",\\n
+        \   \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual o benef\xEDcio de criar
+        uma rede bridge pr\xF3pria em vez de usar a default do Docker?\\\"\\n  },\\n
+        \ {\\n    \\\"day\\\": 10,\\n    \\\"title\\\": \\\"Orquestra\xE7\xE3o com
+        Docker Compose\\\",\\n    \\\"Meta do Dia\\\": \\\"Subir ambientes complexos
+        de m\xFAltiplos containers com um \xFAnico comando.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 Docker Compose e sua estrutura
+        de arquivos .yaml\\\",\\n      \\\"Se\xE7\xF5es do arquivo: version, services,
+        networks e volumes\\\",\\n      \\\"Comandos: docker-compose up, down e build\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Escrever um arquivo
+        docker-compose.yml que orquestre uma aplica\xE7\xE3o web simples ligada a
+        um banco de dados Redis ou MySQL.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"O que o comando 'docker-compose down' faz al\xE9m de parar os containers?\\\"\\n
+        \ },\\n  {\\n    \\\"day\\\": 11,\\n    \\\"title\\\": \\\"Limpeza e Pr\xE1ticas
+        do Mundo Real\\\",\\n    \\\"Meta do Dia\\\": \\\"Dominar a manuten\xE7\xE3o
+        preventiva do ambiente Docker e consolidar aprendizados.\\\",\\n    \\\"O
+        Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Uso do comando docker system
+        prune\\\",\\n      \\\"Diferen\xE7a entre containers vs processos do host\\\",\\n
+        \     \\\"Gerenciamento de recursos (limitando mem\xF3ria e CPU)\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Realizar uma limpeza completa
+        de imagens orf\xE3s, containers parados e volumes n\xE3o utilizados, seguido
+        de um deploy total de sua stack via Docker Compose.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Como garantir que um container inicie automaticamente
+        se o sistema operacional for reiniciado?\\\"\\n  }\\n]\",\n            \"thoughtSignature\":
+        \"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\"\n
+        \         }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        777,\n    \"candidatesTokenCount\": 1952,\n    \"totalTokenCount\": 3831,\n
+        \   \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 777\n      }\n    ],\n    \"thoughtsTokenCount\":
+        1102\n  },\n  \"modelVersion\": \"gemini-3-flash-preview\",\n  \"responseId\":
+        \"8ELtaZbJMo_Vz7IP4O6qEA\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:40:48 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=23401
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '14026'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>30
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>7 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5562'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash\\nPlease retry in 34.099214639s.\",\n    \"status\":
+        \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n
+        \       \"links\": [\n          {\n            \"description\": \"Learn more
+        about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n
+        \         }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"model\": \"gemini-2.5-flash\",\n
+        \             \"location\": \"global\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"34s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:41:25 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=280
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1363'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>30
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>7 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5562'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded
+        your current quota, please check your plan and billing details. For more information
+        on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+        To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota
+        exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests,
+        limit: 20, model: gemini-2.5-flash-lite\\nPlease retry in 33.719933713s.\",\n
+        \   \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\":
+        \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n
+        \           \"description\": \"Learn more about Gemini API quotas\",\n            \"url\":
+        \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n
+        \     },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n
+        \       \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n
+        \           \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n
+        \           \"quotaDimensions\": {\n              \"model\": \"gemini-2.5-flash-lite\",\n
+        \             \"location\": \"global\"\n            },\n            \"quotaValue\":
+        \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n
+        \       \"retryDelay\": \"33s\"\n      }\n    ]\n  }\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:41:26 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=203
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '1373'
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"contents": [{"parts": [{"text": "\n        <INPUTS>\n            <TOPIC>Eu
+      quero estudar sobre docker. Como funciona e quais s\u00e3o seus principais comandos.</TOPIC>\n            <KNOWLEDGE>zero</KNOWLEDGE>\n            <FOCUS_TIME>30
+      minutes</FOCUSC_TIME>\n            <DURATION_IN_DAYS>7 days</DURATION_IN_DAYS>\n        </INPUTS>\n        "}],
+      "role": "user"}], "systemInstruction": {"parts": [{"text": "    <ROLE>\n        Voc\u00ea
+      \u00e9 um especialista em design instrucional e um planejador de curr\u00edculo
+      acad\u00eamico. Sua especialidade \u00e9 decompor t\u00f3picos complexos em
+      roteiros de aprendizagem l\u00f3gicos e sequenciais para estudantes aut\u00f4nomos.
+      Sua resposta deve ser estruturada, objetiva e seguir rigorosamente as regras
+      definidas.\n    </ROLE>\n\n    <TASK>\n        Com base nos <INPUTS>, sua tarefa
+      \u00e9 gerar um Guia de Estudos detalhado, dividido em dias.\n\n        Primeiro,
+      analise o Tempo Total (minutos) = (<FOCUS_TIME> * <DURATION_IN_DAYS>) e distribua
+      o conte\u00fado de forma realista. O plano deve ter uma progress\u00e3o l\u00f3gica
+      e coerente: comece o Dia 1 considerando o <KNOWLEDGE> do aluno e aumente a complexidade
+      gradualmente, garantindo que cada dia construa sobre o conhecimento do dia anterior.
+      O <TOPIC> deve receber aten\u00e7\u00e3o especial e ser aprofundado na segunda
+      metade do plano.\n        **Restri\u00e7\u00e3o Cr\u00edtica:** Seu \u00fanico
+      trabalho \u00e9 criar o cronograma. N\u00c3O forne\u00e7a explica\u00e7\u00f5es,
+      aulas ou resumos sobre os t\u00f3picos. Apenas liste o que o aluno deve fazer.\n    </TAREFA>\n\n    <OUTPUT_FORMAT>\n        Formate
+      a sa\u00edda em JSON. O guia deve ser estruturado exatamente da seguinte forma,
+      sem exce\u00e7\u00f5es:\n\n        {{\n            \"Dia\": (N\u00famero do
+      Dia),\n            \"Titulo\": (T\u00edtulo Conciso do Dia),\n            \"Meta
+      do Dia\": (Escreva um objetivo claro e alcan\u00e7\u00e1vel. Ex: \"Entender
+      o que \u00e9 uma vari\u00e1vel e como declar\u00e1-la.\"),\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": (Liste no m\u00ednimo 2 a 3 termos ou perguntas-chave
+      para o aluno pesquisar. Ex: \"O que s\u00e3o tipos de dados em Python?\", \"Como
+      atribuir valores a vari\u00e1veis?\"),\n            \"M\u00e3o na Massa (Pr\u00e1tica)\":
+      (Descreva uma tarefa pr\u00e1tica e curta para aplicar a teoria. Ex: \"Escrever
+      um c\u00f3digo que declare 5 vari\u00e1veis de tipos diferentes (inteiro, texto,
+      booleano, etc.) e imprima seus valores.\"),\n            \"Verifica\u00e7\u00e3o
+      de Aprendizado\": (Crie uma \u00fanica pergunta conceitual para o aluno se autoavaliar.
+      Ex: \"Qual a diferen\u00e7a entre uma vari\u00e1vel e um valor constante?\")\n        }}\n    </OUTPUT_FORMAT>\n\n    <EXAMPLE>\n        {{\n            \"Dia\":
+      7,\n            \"Titulo\": \"Modelagem: Aplica\u00e7\u00f5es e Desafios\",\n            \"Meta
+      do Dia\": \"Aplicar e aprofundar os conhecimentos em Modelagem.\",\n            \"O
+      Qu\u00ea Pesquisar (Teoria)\": \"Modelagem em diferentes cen\u00e1rios.\", \"Desafios
+      comuns na modelagem.\",\n            \"M\u00e3o na Massa (Pr\u00e1tica)\": \"Resolver
+      diferentes exemplos de modelagem.\",\n            \"Verifica\u00e7\u00e3o de
+      Aprendizado\": \"Como a modelagem pode ser aplicada em diferentes contextos?\"\n        }}\n    </EXAMPLE>\n\n    INICIE
+      A GERA\u00c7\u00c3O DO GUIA DE ESTUDOS PERSONALIZADO ABAIXO, CERTIFIQUE-SE QUE
+      A SA\u00cdDA \u00c9 UM JSON V\u00c1LIDO.\n"}], "role": "user"}, "generationConfig":
+      {"temperature": 2.0, "responseMimeType": "application/json", "responseSchema":
+      {"items": {"description": "Represents the study plan for a given day,\nwith
+      goals, research topics, practical activities, and\nlearning verification methods.",
+      "properties": {"day": {"description": "O n\u00famero do dia no plano de estudos.",
+      "example": 7, "title": "Day", "type": "INTEGER"}, "title": {"description": "O
+      t\u00edtulo ou tema principal do dia.", "example": "Modelagem: Aplica\u00e7\u00f5es
+      e Desafios", "title": "Title", "type": "STRING"}, "Meta do Dia": {"description":
+      "O objetivo claro e principal a ser alcan\u00e7ado no dia.", "example": "Aplicar
+      e aprofundar os conhecimentos em Modelagem.", "title": "Meta Do Dia", "type":
+      "STRING"}, "O Qu\u00ea Pesquisar (Teoria)": {"description": "Lista de 2 a 3
+      termos ou perguntas-chave para o aluno pesquisar.", "example": "Pesquise ''Modelagem
+      em diferentes cen\u00e1rios.'', ''Desafios comuns na modelagem.''", "items":
+      {"type": "STRING"}, "title": "O Qu\u00ea Pesquisar (Teoria)", "type": "ARRAY"},
+      "M\u00e3o na Massa (Pr\u00e1tica)": {"description": "Uma tarefa ou atividade
+      pr\u00e1tica a serem realizadas para aplicar a teoria.", "example": "Resolver
+      diferentes exemplos de modelagem.", "title": "M\u00e3o Na Massa (Pr\u00e1tica)",
+      "type": "STRING"}, "Verifica\u00e7\u00e3o de Aprendizado": {"description": "Quest\u00e3o
+      ou m\u00e9todo para o aluno autoavaliar o seu entendimento do conte\u00fado.",
+      "example": "Como a modelagem pode ser aplicada em diferentes contextos?", "title":
+      "Verifica\u00e7\u00e3o De Aprendizado", "type": "STRING"}, "completed": {"default":
+      false, "title": "Completed", "type": "BOOLEAN"}}, "property_ordering": ["day",
+      "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na Massa
+      (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado", "completed"], "required":
+      ["day", "title", "Meta do Dia", "O Qu\u00ea Pesquisar (Teoria)", "M\u00e3o na
+      Massa (Pr\u00e1tica)", "Verifica\u00e7\u00e3o de Aprendizado"], "title": "DailyStudySchema",
+      "type": "OBJECT"}, "title": "Placeholder", "type": "ARRAY"}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5562'
+      Content-Type:
+      - application/json
+      Host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-client:
+      - google-genai-sdk/1.31.0 gl-python/3.12.3
+      x-goog-api-key:
+      - XD
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"[\\n  {\\n    \\\"day\\\": 1,\\n    \\\"title\\\":
+        \\\"Fundamentos da Containeriza\xE7\xE3o\\\",\\n    \\\"Meta do Dia\\\": \\\"Compreender
+        o conceito de containers e a diferen\xE7a entre Docker e m\xE1quinas virtuais.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 um container
+        e por que ele \xE9 isolado?\\\",\\n      \\\"Diferen\xE7a entre arquitetura
+        de M\xE1quina Virtual (Hypervisor) e Containers (Docker Engine).\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Pesquisar e desenhar um diagrama
+        simples comparando as camadas de uma VM versus as camadas de um Container
+        Docker.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual \xE9
+        a principal caracter\xEDstica que torna o container mais leve que uma m\xE1quina
+        virtual?\\\",\\n    \\\"completed\\\": false\\n  },\\n  {\\n    \\\"day\\\":
+        2,\\n    \\\"title\\\": \\\"Arquitetura e Conceitos Chave\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Entender o ciclo de vida b\xE1sico e os componentes Imagem,
+        Container e Registro.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n
+        \     \\\"O que \xE9 uma Docker Image e o Docker Hub?\\\",\\n      \\\"Qual
+        a diferen\xE7a fundamental entre uma Imagem e um Container?\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Instalar o Docker Desktop ou
+        Docker Engine no sistema e verificar se o servi\xE7o est\xE1 rodando corretamente
+        via terminal.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Uma
+        imagem pode ser considerada como o 'molde' para criar m\xFAltiplos containers?\\\",\\n
+        \   \\\"completed\\\": false\\n  },\\n  {\\n    \\\"day\\\": 3,\\n    \\\"title\\\":
+        \\\"O Primeiro Container e o Comando Run\\\",\\n    \\\"Meta do Dia\\\": \\\"Executar
+        containers simples e entender os par\xE2metros b\xE1sicos de inicializa\xE7\xE3o.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Como funciona o comando
+        'docker run'?\\\",\\n      \\\"Par\xE2metros b\xE1sicos: -it (interatividade),
+        -d (detach/segundo plano) e --name.\\\"\\n    ],\\n    \\\"M\xE3o na Massa
+        (Pr\xE1tica)\\\": \\\"Executar o container 'hello-world' e, em seguida, rodar
+        um container de Ubuntu em modo interativo.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Qual o comando para rodar um container e conseguir
+        interagir com o terminal dele imediatamente?\\\",\\n    \\\"completed\\\":
+        false\\n  },\\n  {\\n    \\\"day\\\": 4,\\n    \\\"title\\\": \\\"Gerenciamento
+        e Monitoramento\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender a listar, parar
+        e remover containers em execu\xE7\xE3o ou pausados.\\\",\\n    \\\"O Qu\xEA
+        Pesquisar (Teoria)\\\": [\\n      \\\"Diferen\xE7a entre 'docker ps' e 'docker
+        ps -a'.\\\",\\n      \\\"Comandos 'docker stop', 'docker start' e 'docker
+        rm'.\\\"\\n    ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar tr\xEAs
+        containers diferentes, listar todos eles (incluindo os parados) e remover
+        dois deles permanentemente.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Como fa\xE7o para visualizar um container que foi criado, mas que n\xE3o
+        est\xE1 em execu\xE7\xE3o no momento?\\\",\\n    \\\"completed\\\": false\\n
+        \ },\\n  {\\n    \\\"day\\\": 5,\\n    \\\"title\\\": \\\"Manipula\xE7\xE3o
+        de Imagens Localmente\\\",\\n    \\\"Meta do Dia\\\": \\\"Aprender a buscar,
+        baixar e limpar imagens do disco local.\\\",\\n    \\\"O Qu\xEA Pesquisar
+        (Teoria)\\\": [\\n      \\\"Comando 'docker pull' para baixar imagens.\\\",\\n
+        \     \\\"Como listar e remover imagens com 'docker images' e 'docker rmi'.\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Fazer o pull das imagens
+        'nginx' e 'python', listar as imagens instaladas e remover a imagem do python
+        para liberar espa\xE7o.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\":
+        \\\"Qual o comando utilizado para baixar uma imagem do Docker Hub sem necessariamente
+        execut\xE1-la?\\\",\\n    \\\"completed\\\": false\\n  },\\n  {\\n    \\\"day\\\":
+        6,\\n    \\\"title\\\": \\\"Introdu\xE7\xE3o ao Dockerfile\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Compreender como criar suas pr\xF3prias imagens de forma automatizada.\\\",\\n
+        \   \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"O que \xE9 um Dockerfile
+        e para que servem as instru\xE7\xF5es FROM, COPY e CMD?\\\",\\n      \\\"Como
+        transformar um Dockerfile em uma imagem com 'docker build'.\\\"\\n    ],\\n
+        \   \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Criar um arquivo 'Dockerfile'
+        simples que utilize uma imagem base de servidor web (como Nginx) e exiba uma
+        frase customizada.\\\",\\n    \\\"Verifica\xE7\xE3o de Aprendizado\\\": \\\"Qual
+        instru\xE7\xE3o do Dockerfile define qual ser\xE1 a imagem base do nosso novo
+        container?\\\",\\n    \\\"completed\\\": false\\n  },\\n  {\\n    \\\"day\\\":
+        7,\\n    \\\"title\\\": \\\"Logs, Exec e Limpeza Geral\\\",\\n    \\\"Meta
+        do Dia\\\": \\\"Dominar comandos de diagn\xF3stico e manuten\xE7\xE3o do ambiente
+        Docker.\\\",\\n    \\\"O Qu\xEA Pesquisar (Teoria)\\\": [\\n      \\\"Como
+        inspecionar o que acontece dentro do container com 'docker logs' e 'docker
+        exec'.\\\",\\n      \\\"O comando de limpeza profunda: 'docker system prune'.\\\"\\n
+        \   ],\\n    \\\"M\xE3o na Massa (Pr\xE1tica)\\\": \\\"Rodar um container
+        web, acessar o terminal dele com 'exec', visualizar os logs de acesso e, por
+        fim, executar o comando prune para limpar o sistema.\\\",\\n    \\\"Verifica\xE7\xE3o
+        de Aprendizado\\\": \\\"Como posso entrar dentro de um container que j\xE1
+        est\xE1 rodando para alterar um arquivo ou rodar um comando interno?\\\",\\n
+        \   \\\"completed\\\": false\\n  }\\n]\",\n            \"thoughtSignature\":
+        \"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\"\n
+        \         }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        775,\n    \"candidatesTokenCount\": 1245,\n    \"totalTokenCount\": 2978,\n
+        \   \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 775\n      }\n    ],\n    \"thoughtsTokenCount\":
+        958\n  },\n  \"modelVersion\": \"gemini-3-flash-preview\",\n  \"responseId\":
+        \"IkPtafrtFaShz7IPxbvbCA\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Apr 2026 22:41:38 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=12005
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Gemini-Service-Tier:
+      - standard
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '10451'
+    status:
+      code: 200
+      message: OK
+version: 1

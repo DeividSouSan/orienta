@@ -1,13 +1,19 @@
+import pytest
+
 from tests import orchestrator
 
 
-def test_with_valid_data(client):
-    new_user = orchestrator.create_user()
+@pytest.fixture(scope="module")
+def shared_user():
+    return orchestrator.create_user()
 
+
+@pytest.mark.vcr
+def test_with_valid_data(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": new_user["email"],
+            "email": shared_user["email"],
             "password": "validpassword",
         },
     )
@@ -41,13 +47,11 @@ def test_with_wrong_email(client):
     }
 
 
-def test_with_correct_email_and_wrong_password(client):
-    new_user = orchestrator.create_user()
-
+def test_with_correct_email_and_wrong_password(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": new_user["email"],
+            "email": shared_user["email"],
             "password": "wrong.password",
         },
     )
@@ -62,13 +66,11 @@ def test_with_correct_email_and_wrong_password(client):
     }
 
 
-def test_session_cookie_has_correct_max_age(client):
-    new_user = orchestrator.create_user()
-
+def test_session_cookie_has_correct_max_age(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": new_user["email"],
+            "email": shared_user["email"],
             "password": "validpassword",
         },
     )
@@ -80,13 +82,11 @@ def test_session_cookie_has_correct_max_age(client):
     assert "Max-Age=1209600" in set_cookie_header
 
 
-def test_session_cookie_has_httponly_flag(client):
-    new_user = orchestrator.create_user()
-
+def test_session_cookie_has_httponly_flag(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": new_user["email"],
+            "email": shared_user["email"],
             "password": "validpassword",
         },
     )
@@ -98,13 +98,11 @@ def test_session_cookie_has_httponly_flag(client):
     assert "HttpOnly" in set_cookie_header
 
 
-def test_session_cookie_path_is_root(client):
-    new_user = orchestrator.create_user()
-
+def test_session_cookie_path_is_root(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": new_user["email"],
+            "email": shared_user["email"],
             "password": "validpassword",
         },
     )

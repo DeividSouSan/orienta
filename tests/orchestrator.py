@@ -1,5 +1,4 @@
 import random
-from time import sleep
 
 from faker import Faker
 from firebase_admin import firestore
@@ -56,7 +55,6 @@ def delete_guide(guide_id: str, username: str):
 
 def clear_database():
     GUIDES_BATCH_SIZE = 100
-    DELAY_SECONDS = 0.5
 
     db = firestore.client()
     guides_collection_ref = db.collection("users_guides")
@@ -69,4 +67,3 @@ def clear_database():
         if len(batch) == GUIDES_BATCH_SIZE:
             print(f"  - Removidos {len(batch)} guias.")
             batch.clear()
-            sleep(DELAY_SECONDS)
