@@ -31,6 +31,7 @@ dev = [
 minversion = "9.0.1"
 addopts = ["-ra", "-q"]
 pythonpath = ["."]
+filterwarnings = ["ignore::DeprecationWarning:httplib2.*"]
 
 [tool.commitizen]
 name = "cz_conventional_commits"

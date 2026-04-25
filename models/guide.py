@@ -8,6 +8,7 @@ import google.genai.errors as genai_errors
 from firebase_admin import firestore
 from firebase_admin.exceptions import FirebaseError
 from google import genai
+from google.cloud.firestore_v1.base_query import FieldFilter
 from pydantic import TypeAdapter
 from pydantic import ValidationError as PydValidationError
 
@@ -115,16 +116,16 @@ def find_all_by_username(username: str, only_public: bool = False) -> list[dict]
         if only_public:
             guides_snapshots = (
                 db.collection("users_guides")
-                .where("owner", "==", username)
-                .where("is_public", "==", True)
-                .where("status", "!=", "deleted")
+                .where(filter=FieldFilter("owner", "==", username))
+                .where(filter=FieldFilter("is_public", "==", True))
+                .where(filter=FieldFilter("status", "!=", "deleted"))
                 .get()
             )
         else:
             guides_snapshots = (
                 db.collection("users_guides")
-                .where("owner", "==", username)
-                .where("status", "!=", "deleted")
+                .where(filter=FieldFilter("owner", "==", username))
+                .where(filter=FieldFilter("status", "!=", "deleted"))
                 .get()
             )
 
