@@ -1,48 +1,46 @@
-import typing
 from dataclasses import dataclass
 
-from errors import SchemaError
+from errors import SchemaError, ValidationError
+from objects.focus_time import FocusTime
+from objects.knowledge_level import KnowledgeLevel
+from objects.study_days import StudyDays
+from objects.title import Title
+from objects.topic import Topic
 
 
 @dataclass(frozen=True)
 class GuideRequest:
-    title: str
-    topic: str
-    knowledge: str
-    focus_time: int
-    days: int
+    title: Title
+    topic: Topic
+    knowledge: KnowledgeLevel
+    focus_time: FocusTime
+    days: StudyDays
 
     @classmethod
     def from_dict(cls, data: dict) -> "GuideRequest":
-        missing_fields = []
-        wrong_type_fields = []
-
-        type_hints = typing.get_type_hints(cls)
-
-        for field_name, field_type in type_hints.items():
-            if field_name not in data.keys():
-                missing_fields.append(field_name)
-                continue
-
-            if not isinstance(data[field_name], field_type):
-                wrong_type_fields.append(field_name)
-
-        if missing_fields:
-            raise SchemaError(
-                message=f"Os campos {missing_fields} estão faltando.",
-                action="Preencha os campos faltantes e tente novamente.",
+        try:
+            return cls(
+                title=Title(data.get("title", "")),
+                topic=Topic(data.get("topic", "")),
+                knowledge=KnowledgeLevel(data.get("knowledge", "")),
+                focus_time=FocusTime(data.get("focus_time", 0)),
+                days=StudyDays(data.get("days", 0)),
             )
-
-        if wrong_type_fields:
+        except ValidationError as error:
+            # Re-raise with same info but could wrap if needed.
+            # In this project, VOs already have specific messages.
+            raise error
+        except Exception as error:
             raise SchemaError(
-                message=f"Erro de tipo nos campos: {wrong_type_fields}.",
-                action="Preencha os campos com os dados do tipo certo e tente novamente.",
-            )
+                message="Dados inválidos para criação do guia.",
+                action="Verifique todos os campos e tente novamente.",
+            ) from error
 
-        return cls(
-            title=data["title"],
-            topic=data["topic"],
-            knowledge=data["knowledge"],
-            focus_time=data["focus_time"],
-            days=data["days"],
-        )
+    def to_dict(self) -> dict:
+        return {
+            "title": self.title.value,
+            "topic": self.topic.value,
+            "knowledge": self.knowledge.value,
+            "focus_time": self.focus_time.value,
+            "days": self.days.value,
+        }
