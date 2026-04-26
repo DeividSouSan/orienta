@@ -8,7 +8,7 @@ O projeto foi inicializado para um ciclo de manutenção focado em **estabilidad
 
 ### Phase Progress
 - **Fase 1: Expansão de Testes Unitários (Prompt)** — ✅ Concluído (97% coverage)
-- **Fase 2: Expansão de Testes Unitários (Session)** — ⏳ Pendente
+- **Fase 2: Expansão de Testes Unitários (Session)** — 🏗️ Em andamento
 - **Fase 3: Auditoria de Erros** — ⏳ Pendente
 - **Fase 4: Desacoplamento de Prompt** — ⏳ Pendente
 - **Fase 5: Revisão Final** — ⏳ Pendente
