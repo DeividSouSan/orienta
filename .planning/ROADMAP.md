@@ -4,12 +4,11 @@ Foco: Melhoria da cobertura de testes, tratamento de erros e desacoplamento arqu
 
 ## Milestone 1: Technical Excellence (Q2 2026)
 
-### Fase 1: Expansão de Testes Unitários (Prompt)
-Melhorar a confiabilidade das validações de IA.
-- **Task 1.1:** Criar suíte de testes unitários para `models/prompt.py`.
-- **Task 1.2:** Validar funções de parseamento de tópicos e dias.
-- **Task 1.3:** Validar funções de formatação de mensagens para o Gemini.
-- **UAT:** Coverage de `models/prompt.py` > 95%.
+- [x] **Fase 1: Expansão de Testes Unitários (Prompt)** — ✅ Concluído
+- **Task 1.1:** Criar suíte de testes unitários para `models/prompt.py`. — ✅
+- **Task 1.2:** Validar funções de parseamento de tópicos e dias. — ✅
+- **Task 1.3:** Validar funções de formatação de mensagens para o Gemini. — ✅
+- **UAT:** Coverage de `models/prompt.py` > 95%. (Atingido: 97%)
 
 ### Fase 2: Expansão de Testes Unitários (Session)
 Garantir a integridade do gerenciamento de sessões.
