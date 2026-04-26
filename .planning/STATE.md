@@ -26,3 +26,4 @@ O projeto foi inicializado para um ciclo de manutenção focado em **estabilidad
 ### Pending Todos
 - [ ] Fix typos in prompt model and tests (models)
 - [ ] Study refactoring models into Value Objects (architecture)
+- [ ] Project file audit and cleanup (tooling)
