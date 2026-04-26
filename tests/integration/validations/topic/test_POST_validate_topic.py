@@ -67,7 +67,7 @@ def test_validate_topic_without_topic(auth_client):
 
     assert response_body == {
         "name": "ValidationError",
-        "message": "O tópico de estudo precisa ter no mínimo 10 e no máximo 150 caracteres.",
-        "action": "Verifique o número de caracteres e tente novamente.",
+        "message": "O tópico de estudo precisa ter entre 10 e 150 caracteres.",
+        "action": "Forneça um tópico válido e tente novamente.",
         "code": 400,
     }

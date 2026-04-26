@@ -2,7 +2,7 @@ import faker
 import pytest
 
 from dtos.guide_request import GuideRequest
-from errors import SchemaError
+from errors import ValidationError
 
 fake = faker.Faker()
 
@@ -18,52 +18,46 @@ def test_with_valid_data():
 
     guide_request = GuideRequest.from_dict(inputs)
 
-    assert guide_request.title == inputs["title"]
-    assert guide_request.topic == inputs["topic"]
-    assert guide_request.knowledge == inputs["knowledge"]
-    assert guide_request.focus_time == inputs["focus_time"]
-    assert guide_request.days == inputs["days"]
+    assert guide_request.title.value == inputs["title"]
+    assert guide_request.topic.value == inputs["topic"]
+    assert guide_request.knowledge.value == inputs["knowledge"]
+    assert guide_request.focus_time.value == inputs["focus_time"]
+    assert guide_request.days.value == inputs["days"]
 
 
 def test_with_one_field_missing():
-    missing = ["title"]
-
     inputs = {
         "topic": "A segunda guerra mundial.",
         "knowledge": "iniciante",
         "focus_time": 30,
         "days": 5,
     }
-    with pytest.raises(SchemaError) as error:
+    with pytest.raises(ValidationError) as error:
         GuideRequest.from_dict(inputs)
 
     assert error.value.toDict() == {
-        "name": "SchemaError",
-        "message": f"Os campos {missing} estão faltando.",
-        "action": "Preencha os campos faltantes e tente novamente.",
+        "name": "ValidationError",
+        "message": "O título do estudo precisa ter no mínimo 10 e no máximo 80 caracteres.",
+        "action": "Verifique o número de caracteres do título e tente novamente.",
         "code": 400,
     }
 
 
 def test_with_all_fields_missing():
-    missing = ["title", "topic", "knowledge", "focus_time", "days"]
-
     inputs = {}
 
-    with pytest.raises(SchemaError) as error:
+    with pytest.raises(ValidationError) as error:
         GuideRequest.from_dict(inputs)
 
     assert error.value.toDict() == {
-        "name": "SchemaError",
-        "message": f"Os campos {missing} estão faltando.",
-        "action": "Preencha os campos faltantes e tente novamente.",
+        "name": "ValidationError",
+        "message": "O título do estudo precisa ter no mínimo 10 e no máximo 80 caracteres.",
+        "action": "Verifique o número de caracteres do título e tente novamente.",
         "code": 400,
     }
 
 
 def test_with_str_fields_as_int():
-    wrong_type = ["title", "topic", "knowledge"]
-
     inputs = {
         "title": 90,
         "topic": 1000,
@@ -72,34 +66,34 @@ def test_with_str_fields_as_int():
         "days": 5,
     }
 
-    with pytest.raises(SchemaError) as error:
+    with pytest.raises(ValidationError) as error:
         GuideRequest.from_dict(inputs)
 
     assert error.value.toDict() == {
-        "name": "SchemaError",
-        "message": f"Erro de tipo nos campos: {wrong_type}.",
-        "action": "Preencha os campos com os dados do tipo certo e tente novamente.",
+        "name": "ValidationError",
+        "message": "O título do estudo precisa ser um texto.",
+        "action": "Verifique os dados e tente novamente.",
         "code": 400,
     }
 
 
 def test_with_int_fields_as_str():
-    wrong_type = ["focus_time", "days"]
-
+    # '30' e '5' são convertidos automaticamente nos VOs atuais
+    # Para testar erro de tipo, usamos algo que não pode ser convertido
     inputs = {
         "title": "A segunda guerra mundial.",
         "topic": "A segunda guerra mundial.",
         "knowledge": "iniciante",
-        "focus_time": "30",
-        "days": "5",
+        "focus_time": "trinta",
+        "days": "cinco",
     }
 
-    with pytest.raises(SchemaError) as error:
+    with pytest.raises(ValidationError) as error:
         GuideRequest.from_dict(inputs)
 
     assert error.value.toDict() == {
-        "name": "SchemaError",
-        "message": f"Erro de tipo nos campos: {wrong_type}.",
-        "action": "Preencha os campos com os dados do tipo certo e tente novamente.",
+        "name": "ValidationError",
+        "message": "O tempo de foco (minutos) deve ser um número inteiro.",
+        "action": "Verifique os dados e tente novamente.",
         "code": 400,
     }

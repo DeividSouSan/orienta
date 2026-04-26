@@ -7,8 +7,8 @@ def test_with_authenticated_user(auth_client, new_user):
         "message": "Usuário atual recuperado com sucesso.",
         "data": {
             "userId": response_body["data"]["userId"],
-            "username": new_user["username"],
-            "email": new_user["email"],
+            "username": new_user.username,
+            "email": new_user.email,
         },
     }
 

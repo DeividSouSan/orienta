@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Blueprint, Response, make_response, request
 
+from dtos.session_create import SessionCreateDTO
 from dtos.session_request import SessionRequest
 from models import auth, session
 
@@ -19,7 +20,8 @@ def create() -> Response:
 
     auth_user = auth.authenticate(email=req.email, password=req.password)
 
-    session_cookie = session.create(auth_user)
+    session_create_data = SessionCreateDTO.from_auth_response(auth_user)
+    session_cookie = session.create(session_create_data)
 
     response = make_response(
         {

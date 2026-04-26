@@ -13,7 +13,7 @@ def test_with_valid_data(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": shared_user["email"],
+            "email": shared_user.email,
             "password": "validpassword",
         },
     )
@@ -51,7 +51,7 @@ def test_with_correct_email_and_wrong_password(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": shared_user["email"],
+            "email": shared_user.email,
             "password": "wrong.password",
         },
     )
@@ -70,7 +70,7 @@ def test_session_cookie_has_correct_max_age(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": shared_user["email"],
+            "email": shared_user.email,
             "password": "validpassword",
         },
     )
@@ -86,7 +86,7 @@ def test_session_cookie_has_httponly_flag(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": shared_user["email"],
+            "email": shared_user.email,
             "password": "validpassword",
         },
     )
@@ -102,7 +102,7 @@ def test_session_cookie_path_is_root(client, shared_user):
     response = client.post(
         "/api/v1/sessions",
         json={
-            "email": shared_user["email"],
+            "email": shared_user.email,
             "password": "validpassword",
         },
     )

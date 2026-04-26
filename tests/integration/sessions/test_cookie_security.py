@@ -17,7 +17,7 @@ def test_cookie_secure_flag_in_production(client, shared_user):
         response = client.post(
             "/api/v1/sessions",
             json={
-                "email": shared_user["email"],
+                "email": shared_user.email,
                 "password": "validpassword",
             },
         )
@@ -34,7 +34,7 @@ def test_cookie_secure_flag_not_in_development(client, shared_user):
         response = client.post(
             "/api/v1/sessions",
             json={
-                "email": shared_user["email"],
+                "email": shared_user.email,
                 "password": "validpassword",
             },
         )

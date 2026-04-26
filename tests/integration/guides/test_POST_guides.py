@@ -21,6 +21,7 @@ def test_with_valid_input(auth_client):
     assert response_body == {
         "message": "Guia de estudos gerado com sucesso.",
         "data": {
+            "id": response_body["data"]["id"],
             "owner": response_body["data"]["owner"],
             "inputs": {
                 "title": "Generate Valid Guide",
@@ -39,5 +40,6 @@ def test_with_valid_input(auth_client):
                 "created_at"
             ],  # ! Validar se ocorreu no passado
             "is_public": False,
+            "status": "studying",
         },
     }

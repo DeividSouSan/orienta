@@ -1,36 +1,37 @@
 import pytest
 
 from models import guide
+from objects.guide_id import GuideId
 from tests import orchestrator
 
 
 @pytest.mark.vcr
 def test_update_studies_on_valid_guide(auth_client, new_user):
-    new_guide = orchestrator.create_guide(owner=new_user["username"], days=3)
+    new_guide = orchestrator.create_guide(owner=new_user.username, days=3)
 
-    assert new_guide["status"] == "studying"
-    assert new_guide["daily_study"][0]["completed"] is False
-    assert new_guide["daily_study"][1]["completed"] is False
-    assert new_guide["daily_study"][2]["completed"] is False
+    assert new_guide.status == "studying"
+    assert new_guide.daily_study[0]["completed"] is False
+    assert new_guide.daily_study[1]["completed"] is False
+    assert new_guide.daily_study[2]["completed"] is False
 
     response = auth_client.patch(
-        f"/api/v1/guides/{new_guide['id']}",
+        f"/api/v1/guides/{new_guide.id}",
         headers={"Content-Type": "application/json"},
         json={
             "new_studies_list": [
                 {
                     "day": 1,
-                    **new_guide["daily_study"][0],
+                    **new_guide.daily_study[0],
                     "completed": True,
                 },
                 {
                     "day": 2,
-                    **new_guide["daily_study"][1],
+                    **new_guide.daily_study[1],
                     "completed": True,
                 },
                 {
                     "day": 3,
-                    **new_guide["daily_study"][2],
+                    **new_guide.daily_study[2],
                     "completed": False,
                 },
             ]
@@ -51,12 +52,12 @@ def test_update_studies_on_valid_guide(auth_client, new_user):
             },
             {
                 "day": 2,
-                **new_guide["daily_study"][1],
+                **new_guide.daily_study[1],
                 "completed": True,
             },
             {
                 "day": 3,
-                **new_guide["daily_study"][2],
+                **new_guide.daily_study[2],
                 "completed": False,
             },
         ],
@@ -68,23 +69,23 @@ def test_update_studies_with_unauthorized_user(auth_client):
     new_guide = orchestrator.create_guide()  # Random owner
 
     response = auth_client.patch(
-        f"/api/v1/guides/{new_guide['id']}",
+        f"/api/v1/guides/{new_guide.id}",
         headers={"Content-Type": "application/json"},
         json={
             "new_studies_list": [
                 {
                     "day": 1,
-                    **new_guide["daily_study"][0],
+                    **new_guide.daily_study[0],
                     "completed": True,
                 },
                 {
                     "day": 2,
-                    **new_guide["daily_study"][1],
+                    **new_guide.daily_study[1],
                     "completed": True,
                 },
                 {
                     "day": 3,
-                    **new_guide["daily_study"][2],
+                    **new_guide.daily_study[2],
                     "completed": True,
                 },
             ]
@@ -105,28 +106,28 @@ def test_update_studies_with_unauthorized_user(auth_client):
 
 @pytest.mark.vcr("test_PATCH_guides_id/test_update_studies_on_valid_guide.yaml")
 def test_update_studies_with_completed_guide(auth_client, new_user):
-    new_guide = orchestrator.create_guide(owner=new_user["username"])
+    new_guide = orchestrator.create_guide(owner=new_user.username)
 
-    assert new_guide["status"] == "studying"
+    assert new_guide.status == "studying"
 
     response = auth_client.patch(
-        f"/api/v1/guides/{new_guide['id']}",
+        f"/api/v1/guides/{new_guide.id}",
         headers={"Content-Type": "application/json"},
         json={
             "new_studies_list": [
                 {
                     "day": 1,
-                    **new_guide["daily_study"][0],
+                    **new_guide.daily_study[0],
                     "completed": True,
                 },
                 {
                     "day": 2,
-                    **new_guide["daily_study"][1],
+                    **new_guide.daily_study[1],
                     "completed": True,
                 },
                 {
                     "day": 3,
-                    **new_guide["daily_study"][2],
+                    **new_guide.daily_study[2],
                     "completed": True,
                 },
             ]
@@ -141,22 +142,22 @@ def test_update_studies_with_completed_guide(auth_client, new_user):
         "data": [
             {
                 "day": 1,
-                **new_guide["daily_study"][0],
+                **new_guide.daily_study[0],
                 "completed": True,
             },
             {
                 "day": 2,
-                **new_guide["daily_study"][1],
+                **new_guide.daily_study[1],
                 "completed": True,
             },
             {
                 "day": 3,
-                **new_guide["daily_study"][2],
+                **new_guide.daily_study[2],
                 "completed": True,
             },
         ],
     }
 
-    completed_guide = guide.find_by_id(new_guide["id"])
-    assert completed_guide["status"] == "completed"
-    assert completed_guide["completed_at"]
+    completed_guide = guide.find_by_id(GuideId(new_guide.id))
+    assert completed_guide.status == "completed"
+    assert completed_guide.to_dict().get("completed_at")

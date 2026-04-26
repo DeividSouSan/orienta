@@ -28,9 +28,9 @@ def protected(f):
             )
 
         decoded_claims = session.verify_cookie(session_cookie)
-        g.username = decoded_claims.get("name")
-        g.email = decoded_claims.get("email")
-        g.uid = decoded_claims.get("user_id")
+        g.username = decoded_claims.name
+        g.email = decoded_claims.email
+        g.uid = decoded_claims.uid
 
         return f(*args, **kwargs)
 

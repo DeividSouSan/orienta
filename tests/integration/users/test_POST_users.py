@@ -65,8 +65,8 @@ def test_create_user_without_email(client):
 
     assert response.get_json() == {
         "name": "ValidationError",
-        "message": "Ocorreu um erro de validação nos dados fornecidos.",
-        "action": "Verifique o e-mail e tente novamente.",
+        "message": "Formato de email inválido.",
+        "action": "Forneça um email válido e tente novamente.",
         "code": 400,
     }
 
@@ -86,8 +86,8 @@ def test_create_user_without_password(client):
 
     assert response_body == {
         "name": "ValidationError",
-        "message": "Ocorreu um erro de validação nos dados fornecidos.",
-        "action": "Insira uma senha maior que 6 caracteres.",
+        "message": "A senha deve ter pelo menos 6 caracteres.",
+        "action": "Forneça uma senha com no mínimo 6 caracteres e tente novamente.",
         "code": 400,
     }
 
@@ -108,8 +108,8 @@ def test_create_user_with_short_password(client):
 
     assert response_body == {
         "name": "ValidationError",
-        "message": "Ocorreu um erro de validação nos dados fornecidos.",
-        "action": "Insira uma senha maior que 6 caracteres.",
+        "message": "A senha deve ter pelo menos 6 caracteres.",
+        "action": "Forneça uma senha com no mínimo 6 caracteres e tente novamente.",
         "code": 400,
     }
 

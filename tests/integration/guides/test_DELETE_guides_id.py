@@ -1,18 +1,19 @@
 import pytest
+
 from tests import orchestrator
 
 
 @pytest.mark.vcr
 def test_with_valid_id(auth_client, new_user):
-    new_guide = orchestrator.create_guide(owner=new_user["username"])
+    new_guide = orchestrator.create_guide(owner=new_user.username)
 
-    response1 = auth_client.delete(f"/api/v1/guides/{new_guide['id']}")
+    response1 = auth_client.delete(f"/api/v1/guides/{new_guide.id}")
     response1_body = response1.get_json()
 
     assert response1_body == {"message": "Guia de estudo deletado com sucesso."}
     assert response1.status_code == 200
 
-    response2 = auth_client.get(f"/api/v1/guides/{new_guide['id']}")
+    response2 = auth_client.get(f"/api/v1/guides/{new_guide.id}")
     response2_body = response2.get_json()
 
     assert response2_body == {
@@ -30,8 +31,8 @@ def test_with_just_spaces(auth_client):
     assert response.status_code == 400
     assert response_body == {
         "name": "ValidationError",
-        "message": "ID do Guia não é válido.",
-        "action": "Verifique o ID e tente novamente.",
+        "message": "O ID do guia não pode ser vazio.",
+        "action": "Verifique se o ID foi enviado corretamente e tente novamente.",
         "code": 400,
     }
 
@@ -79,7 +80,7 @@ def test_with_valid_but_inexistant_id(auth_client):
 def test_with_someone_else_guide(auth_client):
     new_guide = orchestrator.create_guide(owner="mock")
 
-    response = auth_client.delete(f"/api/v1/guides/{new_guide['id']}")
+    response = auth_client.delete(f"/api/v1/guides/{new_guide.id}")
     response_body = response.get_json()
 
     assert response.status_code == 403

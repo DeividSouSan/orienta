@@ -70,7 +70,7 @@ def auth_request():
     sess = requests.Session()
 
     new_user = orchestrator.create_user()
-    session_cookie = orchestrator.authenticate(new_user["email"], "validpassword")
+    session_cookie = orchestrator.authenticate(new_user.email, "validpassword")
     sess.cookies.set("session_id", session_cookie)
 
     yield sess
@@ -101,7 +101,7 @@ def new_user():
 
 @pytest.fixture(scope="session")
 def session_cookie(new_user):
-    return orchestrator.authenticate(new_user["email"], "validpassword")
+    return orchestrator.authenticate(new_user.email, "validpassword")
 
 
 @pytest.fixture(scope="function")

@@ -11,7 +11,7 @@ def clear_database():
 
 @pytest.mark.vcr
 def test_with_direct_access(auth_client, new_user):
-    new_guide = orchestrator.create_guide(owner=new_user["username"])
+    new_guide = orchestrator.create_guide(owner=new_user.username)
 
     response = auth_client.get("/api/v1/my-guides")
     response_body = response.get_json()
@@ -22,13 +22,22 @@ def test_with_direct_access(auth_client, new_user):
         "message": "Guias recuperados com sucesso.",
         "data": [
             {
-                "id": new_guide["id"],
-                "title": new_guide["inputs"]["title"],
-                "topic": new_guide["inputs"]["topic"],
-                "days": new_guide["inputs"]["days"],
-                "daily_studies": new_guide["daily_study"],
+                "id": new_guide.id,
+                "owner": new_guide.owner.value,
+                "model": new_guide.model,
+                "temperature": 2.0,
+                "generation_time_seconds": new_guide.generation_time_seconds,
+                "inputs": {
+                    "title": new_guide.inputs.title.value,
+                    "topic": new_guide.inputs.topic.value,
+                    "knowledge": new_guide.inputs.knowledge.value,
+                    "focus_time": new_guide.inputs.focus_time.value,
+                    "days": new_guide.inputs.days.value,
+                },
+                "daily_study": new_guide.daily_study,
                 "created_at": response_body["data"][0]["created_at"],
                 "status": "studying",
+                "is_public": False,
             }
         ],
     }
@@ -36,8 +45,8 @@ def test_with_direct_access(auth_client, new_user):
 
 @pytest.mark.vcr("test_with_direct_access.yaml")
 def test_with_deleted_guides(auth_client, new_user):
-    new_guide = orchestrator.create_guide(owner=new_user["username"])
-    orchestrator.delete_guide(new_guide["id"], new_user["username"])
+    new_guide = orchestrator.create_guide(owner=new_user.username)
+    orchestrator.delete_guide(new_guide.id, new_user.username)
 
     response = auth_client.get("/api/v1/my-guides")
     response_body = response.get_json()
