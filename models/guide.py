@@ -1,7 +1,6 @@
 import os
-from dataclasses import asdict
 from datetime import datetime, timezone
-from typing import Any, List
+from typing import List, Tuple
 
 import dotenv
 import google.genai.errors as genai_errors
@@ -12,6 +11,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from pydantic import TypeAdapter
 from pydantic import ValidationError as PydValidationError
 
+from dtos.guide import GuideDTO
 from dtos.guide_request import GuideRequest
 from errors import (
     ForbiddenError,
@@ -21,6 +21,9 @@ from errors import (
     UnauthorizedError,
     ValidationError,
 )
+from objects.guide_id import GuideId
+from objects.prompt import Prompt
+from objects.username import Username
 from schemas import DailyStudySchema
 from utils import load_prompt
 
@@ -31,20 +34,11 @@ try:
 except AttributeError as error:
     raise InternalServerError() from error
 
-MIN_TITLE_CHARS = 10
-MAX_TITLE_CHARS = 80
-MIN_TOPIC_CHARS = 10
-MAX_TOPIC_CHARS = 150
-KNOWLEDGE_STATES = ("zero", "iniciante", "intermediario")
-MIN_FOCUS_TIME = 30
-MAX_FOCUS_TIME = 480
-MIN_DAYS = 3
-MAX_DAYS = 30
 
-
-def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
+def update_studies(guide_id: GuideId, new_studies: list, username: Username) -> dict:
     """Atualiza o campo 'daily_study'."""
 
+    # Validação básica de entrada
     if not isinstance(new_studies, list):
         raise ValidationError(
             "O campo 'new_studies_state' enviado não é uma lista.",
@@ -58,10 +52,10 @@ def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
         guide_is_complete = all(study["completed"] for study in new_studies)
 
         db = firestore.client()
-        guide_ref = db.collection("users_guides").document(guide_id)
+        guide_ref = db.collection("users_guides").document(guide_id.value)
         guide_snap = guide_ref.get()
 
-        if guide_snap.get("owner") != username:
+        if guide_snap.get("owner") != username.value:
             raise UnauthorizedError(
                 "Você não tem acesso à esse guia.",
                 "Acesse um guia de sua autoria e tente novamente.",
@@ -93,22 +87,10 @@ def update_studies(guide_id: str, new_studies: list, username: str) -> dict:
         ) from error
 
 
-def find_all_by_username(username: str, only_public: bool = False) -> list[dict]:
-    """Busca os guias de um usuário, ignora os guias que foram deletados.
-
-    Args:
-        username (str): nome do usuário proprietário dos guias
-        only_public (bool):
-            True: busca apenas os guias que o usuário marcou como 'is_public: true'.
-            False: busca totod os guias do usuário.
-
-    Returns:
-        list[dict]: uma lista contendo todos os metadados dos guias encontrados.
-
-    Raises:
-        ServiceError: se o serviço do Firebase falhar.
-
-    """
+def find_all_by_username(
+    username: Username, only_public: bool = False
+) -> list[GuideDTO]:
+    """Busca os guias de um usuário, ignora os guias que foram deletados."""
     try:
         db = firestore.client()
 
@@ -116,7 +98,7 @@ def find_all_by_username(username: str, only_public: bool = False) -> list[dict]
         if only_public:
             guides_snapshots = (
                 db.collection("users_guides")
-                .where(filter=FieldFilter("owner", "==", username))
+                .where(filter=FieldFilter("owner", "==", username.value))
                 .where(filter=FieldFilter("is_public", "==", True))
                 .where(filter=FieldFilter("status", "!=", "deleted"))
                 .get()
@@ -124,33 +106,18 @@ def find_all_by_username(username: str, only_public: bool = False) -> list[dict]
         else:
             guides_snapshots = (
                 db.collection("users_guides")
-                .where(filter=FieldFilter("owner", "==", username))
+                .where(filter=FieldFilter("owner", "==", username.value))
                 .where(filter=FieldFilter("status", "!=", "deleted"))
                 .get()
             )
 
-        guides_metadata = list()
-        for guide in guides_snapshots:
-            guides_metadata.append(
-                {
-                    "id": guide.id,
-                    "title": guide.get("inputs.title"),
-                    "topic": guide.get("inputs.topic"),
-                    "days": guide.get("inputs.days"),
-                    "daily_studies": guide.get("daily_study"),
-                    "created_at": guide.get("created_at"),
-                    "status": guide.get("status"),
-                }
-            )
+        guides = list()
+        for snap in guides_snapshots:
+            data = snap.to_dict()
+            data["id"] = snap.id
+            guides.append(GuideDTO.from_dict(data))
 
-            if guide.get("status") == "completed":
-                guides_metadata[-1].update(
-                    {
-                        "completed_at": guide.get("completed_at"),
-                    }
-                )
-
-        return guides_metadata
+        return guides
 
     except FirebaseError as error:
         raise ServiceError(
@@ -158,34 +125,15 @@ def find_all_by_username(username: str, only_public: bool = False) -> list[dict]
         ) from error
 
 
-def delete(guide_id: str, username: str) -> None:
-    """Realiza o SOFT DELETE do guia no banco de dados.
-
-    Args:
-        guide_id (str): o ID do guia que será deletado ('status=deleted').
-        username (str): o o nodedo usuário que executou a ação de deletar.
-
-    Raises:
-        ForbiddenError: se o usuário tentar apagar um guia que não é de sua autoria;
-        NotFoundError: se o guia não for encontrado;
-        ServiceError: se o serviço do Firebase falhar;
-
-    """
-    guide_id = guide_id.strip()
-
-    if not guide_id:
-        raise ValidationError(
-            message="ID do Guia não é válido.",
-            action="Verifique o ID e tente novamente.",
-        )
-
+def delete(guide_id: GuideId, username: Username) -> None:
+    """Realiza o SOFT DELETE do guia no banco de dados."""
     try:
         db = firestore.client()
-        guide_ref = db.collection("users_guides").document(guide_id)
+        guide_ref = db.collection("users_guides").document(guide_id.value)
         guide_snap = guide_ref.get()
 
         if guide := guide_snap.to_dict():
-            if guide.get("owner") != username:
+            if guide.get("owner") != username.value:
                 raise ForbiddenError(
                     "Você não tem permissão para deletar esse guia.",
                     "Verifique se o guia é de sua autoria e tente novamente.",
@@ -202,25 +150,16 @@ def delete(guide_id: str, username: str) -> None:
         ) from error
 
 
-def find_by_id(guide_id: str) -> dict[str, Any]:
-    """Busca um Guia pelo seu ID.
-
-    Args:
-        guide_id (str): o ID do Guia que quer buscar.
-
-    Return:
-        dict: dicionário com as informações do guia encontrado.
-
-    Raises:
-        NotFoundError: se o guia não for encontrado;
-        ServiceError: se o Firebase não conseguir recuperar o guia;
-    """
+def find_by_id(guide_id: GuideId) -> GuideDTO:
+    """Busca um Guia pelo seu ID."""
     try:
         db = firestore.client()
-        guide_snapshot = db.collection("users_guides").document(guide_id).get()
+        guide_snapshot = db.collection("users_guides").document(guide_id.value).get()
 
         if guide_snapshot.exists and guide_snapshot.get("status") != "deleted":
-            return guide_snapshot.to_dict()
+            data = guide_snapshot.to_dict()
+            data["id"] = guide_snapshot.id
+            return GuideDTO.from_dict(data)
         else:
             raise NotFoundError(
                 "O guia não foi encontrado.",
@@ -233,27 +172,21 @@ def find_by_id(guide_id: str) -> dict[str, Any]:
         ) from error
 
 
-def save(guide_info: dict) -> dict[str, Any]:
-    """Persiste o guia gerado no banco de dados.
-
-    Args:
-        guide_info (dict): guia gerado através de guide.build().
-
-    Returns:
-        str: ID do documento salvo no Firestore.
-    """
+def save(guide: GuideDTO) -> GuideDTO:
+    """Persiste o guia gerado no banco de dados."""
     try:
         db = firestore.client()
         guides_collection_ref = db.collection("users_guides")
         guide_doc_ref = guides_collection_ref.document()
-        guide_doc_ref.set(
-            {
-                **guide_info,
-                "status": "studying",
-            }
-        )
 
-        return {"id": guide_doc_ref.id, **guide_doc_ref.get().to_dict()}
+        guide_data = guide.to_dict()
+        guide_data["status"] = "studying"
+
+        guide_doc_ref.set(guide_data)
+
+        data = guide_doc_ref.get().to_dict()
+        data["id"] = guide_doc_ref.id
+        return GuideDTO.from_dict(data)
 
     except FirebaseError as error:
         raise ServiceError(
@@ -292,16 +225,8 @@ def generate_with_model(
 
 def generate_with_fallback(
     user_prompt: str,
-) -> list[DailyStudySchema]:
-    """Gera um guia de estudos a partir de um prompt usando fallback de modelos.
-
-    Args:
-        user_prompt (str): prompt do usuário com as informações do guia.
-
-    Returns:
-        Tuple[DailyStudySchema, str, Literal(2)]: Tupla com a lista com os guias de estudos diários, nome do modelo e temperatura.
-
-    """
+) -> Tuple[List[DailyStudySchema], str]:
+    """Gera um guia de estudos a partir de um prompt usando fallback de modelos."""
 
     client = genai.Client()
 
@@ -337,69 +262,34 @@ def generate_with_fallback(
     )
 
 
-def _validate_inputs(inputs: GuideRequest):
-    chars_count = len(inputs.title)
-    if not MIN_TITLE_CHARS <= chars_count <= MAX_TITLE_CHARS:
-        raise ValidationError(
-            message=f"O título do estudo precisa ter no mínimo {MIN_TITLE_CHARS} e no máximo {MAX_TITLE_CHARS} caracteres.",
-            action="Verifique o número de caracteres do título e tente novamente.",
-        )
-
-    chars_count = len(inputs.topic)
-    if not MIN_TOPIC_CHARS <= chars_count <= MAX_TOPIC_CHARS:
-        raise ValidationError(
-            message=f"O tópico de estudo precisa ter no mínimo {MIN_TOPIC_CHARS} e no máximo {MAX_TOPIC_CHARS} caracteres.",
-            action="Verifique o número de caracteres e tente novamente.",
-        )
-
-    if not MIN_FOCUS_TIME <= inputs.focus_time <= MAX_FOCUS_TIME:
-        raise ValidationError(
-            message=f"O tempo de foco precisa estar entre {MIN_FOCUS_TIME} minutos e {MAX_FOCUS_TIME}.",
-            action="Verifique se o campo 'tempo de foco' está preenchido corretamente e tente novamente.",
-        )
-
-    if not MIN_DAYS <= inputs.days <= MAX_DAYS:
-        raise ValidationError(
-            message=f"A número de dias precisa estar entre {MIN_DAYS} e {MAX_DAYS} dias.",
-            action="Verifique se o campo 'dias' está preenchido corretamente e tente novamente.",
-        )
-
-    if inputs.knowledge not in KNOWLEDGE_STATES:
-        raise ValidationError(
-            message="O conhecimento deve ser 'zero', 'iniciante' ou 'intermediário'.",
-            action="Preencha o campo 'knowledge' corretamente e tente novamente.",
-        )
-
-
 def generate_with_metadata(
-    owner: str,
+    owner: Username,
     inputs: GuideRequest,
     is_public: bool = False,
-) -> dict:
-    _validate_inputs(inputs)
+) -> GuideDTO:
+    """Gera um guia de estudos e seus metadados."""
 
     start_time = datetime.now()
 
-    prompt = f"""
-        <INPUTS>
-            <TOPIC>{inputs.topic}</TOPIC>
-            <KNOWLEDGE>{inputs.knowledge}</KNOWLEDGE>
-            <FOCUS_TIME>{inputs.focus_time} minutes</FOCUSC_TIME>
-            <DURATION_IN_DAYS>{inputs.days} days</DURATION_IN_DAYS>
-        </INPUTS>
-        """
+    # Criação do Prompt VO para geração do XML
+    prompt_vo = Prompt(
+        topic=inputs.topic,
+        knowledge=inputs.knowledge,
+        focus_time=inputs.focus_time,
+        days=inputs.days,
+    )
 
-    daily_study, model = generate_with_fallback(prompt)
+    daily_study, model = generate_with_fallback(prompt_vo.to_xml())
 
     finished_time = datetime.now()
 
-    return {
-        "owner": owner,
-        "inputs": asdict(inputs),
-        "model": model,
-        "temperature": 2.0,
-        "generation_time_seconds": int((finished_time - start_time).total_seconds()),
-        "daily_study": list(map(lambda study: study.model_dump(), daily_study)),
-        "created_at": datetime.now(timezone.utc),
-        "is_public": is_public,
-    }
+    return GuideDTO(
+        owner=owner,
+        inputs=inputs,
+        model=model,
+        temperature=2.0,
+        generation_time_seconds=int((finished_time - start_time).total_seconds()),
+        daily_study=list(map(lambda study: study.model_dump(), daily_study)),
+        created_at=datetime.now(timezone.utc),
+        is_public=is_public,
+    )

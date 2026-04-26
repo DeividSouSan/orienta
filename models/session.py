@@ -2,19 +2,21 @@ from datetime import timedelta
 
 from firebase_admin import auth, exceptions
 
+from dtos.firebase_user import FirebaseUserDTO
+from dtos.session_create import SessionCreateDTO
 from errors import ServiceError, UnauthorizedError, ValidationError
 
 DURATION_IN_SECONDS = 14 * 24 * 60 * 60  # 14 dias
 
 
 def create(
-    user: dict,
-    duration=timedelta(seconds=DURATION_IN_SECONDS),
+    session_data: SessionCreateDTO,
+    duration: timedelta = timedelta(seconds=DURATION_IN_SECONDS),
 ) -> str:
     """Cria um novo cookie de sessão.
 
     Args:
-        token (str): Firebase ID token do usuário.
+        session_data (SessionCreateDTO): Dados para criação da sessão (idToken).
         duration (timedelta): duração do cookie de sessão (default é 14 dias)
 
     Returns:
@@ -26,7 +28,7 @@ def create(
         ServiceError: se ocorreu um erro com o Firebase Authentication.
     """
 
-    token = user["idToken"]
+    token = session_data.id_token
 
     if not token:
         raise ValidationError("O idToken não pode ser vazio.")
@@ -56,14 +58,14 @@ def create(
 
 def verify_cookie(
     cookie: str,
-) -> dict:
+) -> FirebaseUserDTO:
     """Verifica se o cookie de sessão é válido.
 
     Args:
         cookie (str): o cookie de sessão que se quer verificar.
 
     Returns:
-        dict: um dicionário com informações sobre o cookie.
+        FirebaseUserDTO: um objeto com informações sobre o usuário da sessão.
 
     Raises:
         ValidationError: se o cookie estiver vazio.
@@ -76,7 +78,8 @@ def verify_cookie(
         )
 
     try:
-        return auth.verify_session_cookie(cookie, check_revoked=True)
+        claims = auth.verify_session_cookie(cookie, check_revoked=True)
+        return FirebaseUserDTO.from_claims(claims)
     except (auth.ExpiredSessionCookieError, auth.RevokedSessionCookieError) as error:
         raise UnauthorizedError(
             "Ocorreu um erro ao verificar a sessão: sessão expirada ou revogada."

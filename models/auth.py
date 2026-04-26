@@ -3,6 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
+from dtos.auth_response import AuthResponseDTO
 from errors import ServiceError, UnauthorizedError
 from objects.email import Email
 from objects.password import Password
@@ -13,7 +14,7 @@ API_KEY = os.getenv("FIREBASE_API_KEY")
 KNOWN_ERRORS = {"INVALID_LOGIN_CREDENTIALS", "MISSING_PASSWORD", "INVALID_EMAIL"}
 
 
-def authenticate(email: Email, password: Password) -> dict[str, str]:
+def authenticate(email: Email, password: Password) -> AuthResponseDTO:
     payload = {
         "email": email.value,
         "password": password.value,
@@ -24,7 +25,7 @@ def authenticate(email: Email, password: Password) -> dict[str, str]:
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={API_KEY}"
         response = requests.post(url=url, json=payload, timeout=10)
         response.raise_for_status()
-        return response.json()
+        return AuthResponseDTO.from_dict(response.json())
     except requests.HTTPError as error:
         error_data = error.response.json()
         error_code = error_data.get("error", {}).get("message")
