@@ -16,6 +16,14 @@ Foco: Melhoria da cobertura de testes, tratamento de erros e desacoplamento arqu
 - **Task 2.3:** Testar criação de cookies com flags de segurança (HttpOnly/Secure). — ✅
 - **UAT:** Coverage de `models/session.py` > 90%. (Atingido: 100%)
 
+### Fase 2.1: Refatoração de Domínio (Value Objects & DTOs) (INSERTED)
+Resolver obsessão primitiva e estruturar modelos com DDD.
+- **Task 2.1.1:** Criar Value Objects para inputs primitivos (Topic, Knowledge, etc.).
+- **Task 2.1.2:** Refatorar `models/user.py` e `models/prompt.py` para usar novos Value Objects.
+- **Task 2.1.3:** Refatorar `models/session.py` para substituir `dict` por uma Entidade/DTO de User.
+- **Task 2.1.4:** Refatorar `models/guide.py` para consistência de dados estruturados.
+- **UAT:** 100% de aprovação nos testes unitários com os novos objetos.
+
 ### Fase 3: Auditoria e Refatoração de Erros Globais
 Unificar a resposta de erro do sistema.
 - **Task 3.1:** Mapear todos os pontos de integração (Gemini, Firebase) sem `try/except`.
