@@ -6,6 +6,7 @@ files:
   - models/prompt.py
   - models/session.py
   - models/user.py
+  - models/guide.py
 ---
 
 ## Problem
@@ -19,4 +20,5 @@ Estudar e planejar uma refatoração profunda para transformar os models em Valu
 - Campos de User Input (Topic, Knowledge, FocusTime, Days) como Value Objects individuais com suas próprias regras de validação encapsuladas.
 - `User` em `models/session.py`: substituir `dict` por uma Entidade ou DTO estruturado para evitar ambiguidades.
 - `models/user.py`: resolver "obsessão primitiva" transformando `username`, `email` e `password` em Value Objects dedicados.
+- `models/guide.py`: aplicar Value Objects e DTOs para estruturar os dados do guia e seus subcomponentes, eliminando a obsessão primitiva.
 - Isso permitiria remover as funções de validação avulsas em favor de objetos que garantem sua própria validade na criação.
