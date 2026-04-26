@@ -14,3 +14,5 @@ client/out
 .github/skills
 .docs
 CLAUDE.md
+.coverage
+htmlcov/
