@@ -10,12 +10,11 @@ Foco: Melhoria da cobertura de testes, tratamento de erros e desacoplamento arqu
 - **Task 1.3:** Validar funções de formatação de mensagens para o Gemini. — ✅
 - **UAT:** Coverage de `models/prompt.py` > 95%. (Atingido: 97%)
 
-### Fase 2: Expansão de Testes Unitários (Session)
-Garantir a integridade do gerenciamento de sessões.
-- **Task 2.1:** Implementar mocks para Firebase Auth em testes unitários de sessão.
-- **Task 2.2:** Testar fluxos de expiração e revogação de tokens.
-- **Task 2.3:** Testar criação de cookies com flags de segurança (HttpOnly/Secure).
-- **UAT:** Coverage de `models/session.py` > 90%.
+- [x] **Fase 2: Expansão de Testes Unitários (Session)** — ✅ Concluído
+- **Task 2.1:** Implementar mocks para Firebase Auth em testes unitários de sessão. — ✅
+- **Task 2.2:** Testar fluxos de expiração e revogação de tokens. — ✅
+- **Task 2.3:** Testar criação de cookies com flags de segurança (HttpOnly/Secure). — ✅
+- **UAT:** Coverage de `models/session.py` > 90%. (Atingido: 100%)
 
 ### Fase 3: Auditoria e Refatoração de Erros Globais
 Unificar a resposta de erro do sistema.
