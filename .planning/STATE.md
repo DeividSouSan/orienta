@@ -20,3 +20,8 @@ O projeto foi inicializado para um ciclo de manutenção focado em **estabilidad
 ## Next Steps
 1. Iniciar a **Fase 2**: Expansão de testes unitários para `models/session.py`.
 2. Executar `/gsd-plan-phase 2`.
+
+## Accumulated Context
+
+### Pending Todos
+- [ ] Fix typos in prompt model and tests (models)
